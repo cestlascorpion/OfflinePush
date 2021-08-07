@@ -6,13 +6,6 @@ type UniqueId struct {
 }
 
 type AuthToken struct {
-	Token    string `json:"token"`
-	ExpireAt int64  `json:"expire_at"`
-}
-
-type AuthDoc struct {
-	PushAgent string `bson:"push_agent"`
-	BundleId  string `bson:"bundle_id"`
-	Token     string `bson:"token"`
-	ExpireAt  int64  `bson:"expire_at"`
+	Token    string `json:"token" bson:"token"`
+	ExpireAt int64  `json:"expire_at" bson:"expire_at"`
 }

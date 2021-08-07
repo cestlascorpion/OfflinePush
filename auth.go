@@ -2,7 +2,6 @@ package main
 
 import (
 	"net"
-	"os"
 
 	"github.com/cestlascorpion/push/auth"
 	"github.com/cestlascorpion/push/core"
@@ -11,13 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-)
 
-func init() {
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.TraceLevel)
-	log.SetFormatter(&log.JSONFormatter{})
-}
+)
 
 func main() {
 	lis, err := net.Listen("tcp", ":8080")

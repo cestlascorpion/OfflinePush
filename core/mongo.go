@@ -47,19 +47,19 @@ func (d *AuthDao) GetToken(id UniqueId) (*AuthToken, error) {
 	s := d.Session.Clone()
 	defer s.Close()
 
-	doc := &AuthDoc{}
+	auth := &AuthToken{}
 	err := s.DB(d.DataBase).C(d.Collection).Find(
-		bson.M{"push_agent": id.PushAgent, "bundle_id": id.BundleId}).One(doc)
+		bson.M{"push_agent": id.PushAgent, "bundle_id": id.BundleId}).One(auth)
 	if err == mgo.ErrNotFound {
 		log.Infof("mgo not found push agent %s bundle id %s", id.PushAgent, id.BundleId)
 		return nil, nil
 	}
 	if err != nil {
 		log.Errorf("mgo find err %+v", err)
-		return &AuthToken{Token: doc.Token, ExpireAt: doc.ExpireAt}, err
+		return nil, err
 	}
 
-	return &AuthToken{}, nil
+	return auth, nil
 }
 
 func (d *AuthDao) SetToken(id UniqueId, auth *AuthToken) error {
@@ -79,5 +79,5 @@ func (d *AuthDao) SetToken(id UniqueId, auth *AuthToken) error {
 }
 
 func (d *AuthDao) Close() {
-
+	d.Session.Close()
 }

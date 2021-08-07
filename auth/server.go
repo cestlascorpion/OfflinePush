@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	. "github.com/cestlascorpion/push/core"
@@ -53,6 +54,11 @@ func NewServer(conf *AuthConfig) (*Server, error) {
 func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetTokenResp, error) {
 	out := &pb.GetTokenResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
 	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Dao.GetToken(uniqueId)
 	if err != nil {
@@ -83,6 +89,11 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetTokenResp, error) {
 	out := &pb.SetTokenResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 || len(in.Token) == 0 || in.ExpireAt < time.Now().Unix() {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
 	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	err := s.Dao.SetToken(uniqueId, &AuthToken{Token: in.Token, ExpireAt: in.ExpireAt})
 	if err != nil {
@@ -95,6 +106,11 @@ func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetToken
 
 func (s *Server) DelToken(ctx context.Context, in *pb.DelTokenReq) (*pb.DelTokenResp, error) {
 	out := &pb.DelTokenResp{}
+
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 || len(in.Token) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
 
 	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	err := s.Mgr.DelAuth(uniqueId, in.Token)
