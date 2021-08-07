@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package Push.Auth;
+
+option go_package = ".;proto";
+
+service Auth {
+  rpc GetToken (GetTokenReq) returns (GetTokenResp) {}
+  rpc SetToken (SetTokenReq) returns (SetTokenResp) {}
+  rpc DelToken (DelTokenReq) returns (DelTokenResp) {}
+}
+
+message GetTokenReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string old_token = 3;
+}
+
+message GetTokenResp {
+  string token = 1;
+  int64 expire_at = 2;     // unix_second
+}
+
+message SetTokenReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string token = 3;
+  int64 expire_at = 4;     // unix_second
+}
+
+message SetTokenResp {
+  // nothing
+}
+
+message DelTokenReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string token = 3;
+}
+
+message DelTokenResp {
+  // nothing
+}
