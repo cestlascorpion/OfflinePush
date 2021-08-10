@@ -66,7 +66,7 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 		return out, err
 	}
 
-	if in.OldToken == auth.Token || auth.ExpireAt < time.Now().Unix() {
+	if auth == nil || in.OldToken == auth.Token || auth.ExpireAt < time.Now().Unix() {
 		newAuth, err := s.Mgr.GetAuth(uniqueId)
 		if err != nil {
 			log.Errorf("mgr get token err %+v", err)

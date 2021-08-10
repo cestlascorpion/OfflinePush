@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package Push.Stats;
+
+option go_package = ".;proto";
+
+
+service Stats {
+  rpc GetTasks (GetTasksReq) returns (GetTasksResp) {}
+  rpc GetTaskGroup (GetTaskGroupReq) returns (GetTaskGroupResp) {}
+  rpc GetPushCount (GetPushCountReq) returns (GetPushCountResp) {}
+  rpc GetPushDataByDay (GetPushDataByDayReq) returns (GetPushDataByDayResp) {}
+  rpc GetUserDataByDay (GetUserDataByDayReq) returns (GetUserDataByDayResp) {}
+  rpc GetOnlineUserBy24H (GetOnlineUserBy24HReq) returns (GetOnlineUserBy24HResp) {}
+}
+
+message BaseStatics {
+  message Total {
+    int32 target = 1;
+    int32 receive = 2;
+    int32 display = 3;
+    int32 click = 4;
+    int32 msg = 5;
+  }
+  message Detail {
+    int32 target = 1;
+    int32 receive = 2;
+    int32 display = 3;
+    int32 click = 4;
+    string manufacturer = 5;
+  }
+  message Action {
+    string key = 1;
+    int32 value = 2;
+  }
+
+  Total total = 1;
+  repeated Detail detail_list = 2;
+  repeated Action action_list = 3;
+}
+
+message BasePushCount {
+  string manufacturer = 1;
+  string describe_tag = 2;
+  int32 total_num = 3;
+  int32 push_num = 4;
+  int32 remain_num = 5;
+  bool has_limit = 6;
+}
+
+message GetTasksReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string task_list = 3;
+}
+
+message GetTasksResp {
+  repeated string task_list = 1;
+  repeated BaseStatics statics_list = 2;
+}
+
+message GetTaskGroupReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string group = 3;
+}
+
+message GetTaskGroupResp {
+  string group = 1;
+  BaseStatics statics = 2;
+}
+
+message GetPushCountReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  int64 unix_second = 3;
+}
+
+message GetPushCountResp {
+  repeated BasePushCount count_list = 1;
+}
+
+message GetPushDataByDayReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  int64 unix_second = 3;
+}
+
+message GetPushDataByDayResp {
+  string date = 1;
+  BaseStatics statics = 2;
+}
+
+message GetUserDataByDayReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  int64 unix_second = 3;
+}
+
+message GetUserDataByDayResp {
+  string date = 1;
+  int32 accumulative = 2;
+  int32 register = 3;
+  int32 active = 4;
+  int32 online = 5;
+}
+
+message GetOnlineUserBy24HReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  int64 unix_second = 3;
+}
+
+message GetOnlineUserBy24HResp {
+  message OnlineInfo {
+    int64 unix_millisecond = 1;
+    int32 online = 2;
+  }
+
+  string date = 1;
+  repeated OnlineInfo online_list = 2;
+}

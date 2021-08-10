@@ -3,9 +3,9 @@ package main
 import (
 	"net"
 
-	"github.com/cestlascorpion/push/auth"
 	"github.com/cestlascorpion/push/core"
 	"github.com/cestlascorpion/push/proto"
+	"github.com/cestlascorpion/push/stats"
 	"github.com/jinzhu/configor"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -13,18 +13,18 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", core.AuthServerAddr)
+	lis, err := net.Listen("tcp", core.StatsServerAddr)
 	if err != nil {
 		log.Fatalf("listen failed err %+v", err)
 		return
 	}
-	conf := &core.AuthConfig{}
-	err = configor.Load(conf, "auth.yml")
+	conf := &core.StatsConfig{}
+	err = configor.Load(conf, "stats.yml")
 	if err != nil {
 		log.Fatalf("config failed err %+v", err)
 		return
 	}
-	svr, err := auth.NewServer(conf)
+	svr, err := stats.NewServer(conf)
 	if err != nil {
 		log.Fatalf("new server failed err %+v", err)
 		return
@@ -32,7 +32,7 @@ func main() {
 	defer svr.Close()
 
 	s := grpc.NewServer()
-	proto.RegisterAuthServer(s, svr)
+	proto.RegisterStatsServer(s, svr)
 	reflection.Register(s)
 
 	err = s.Serve(lis)

@@ -7,7 +7,7 @@ import (
 )
 
 type Agent interface {
-	GetAuth() (token string, expireAt int64, err error)
+	GetAuth() (auth *AuthToken, err error)
 	DelAuth(token string) (err error)
 }
 
@@ -31,11 +31,7 @@ func (m *AgentMgr) GetAuth(uniqueId UniqueId) (*AuthToken, error) {
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	token, expireAt, err := agent.GetAuth()
-	if err != nil {
-		return nil, err
-	}
-	return &AuthToken{Token: token, ExpireAt: expireAt}, nil
+	return agent.GetAuth()
 }
 
 func (m *AgentMgr) DelAuth(uniqueId UniqueId, token string) error {

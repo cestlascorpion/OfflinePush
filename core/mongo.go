@@ -81,3 +81,40 @@ func (d *AuthDao) SetToken(id UniqueId, auth *AuthToken) error {
 func (d *AuthDao) Close() {
 	d.Session.Close()
 }
+
+type StatsDao struct {
+	DataBase   string
+	Collection string
+	Session    *mgo.Session
+}
+
+func NewStatsDao(conf *StatsConfig) (*StatsDao, error) {
+	session, err := mgo.Dial(conf.Mongo.Url)
+	if err != nil {
+		log.Errorf("mgo dial err %+v", err)
+		return nil, err
+	}
+	session.SetPoolLimit(conf.Mongo.PoolSize)
+
+	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.Collection).EnsureIndex(
+		mgo.Index{
+			Key:        []string{"push_agent", "bundle_id"},
+			Unique:     true,
+			Background: false,
+			Sparse:     true,
+		})
+	if err != nil {
+		log.Errorf("mgo ensure index err %+v", err)
+		return nil, err
+	}
+
+	return &StatsDao{
+		DataBase:   conf.Mongo.DataBase,
+		Collection: conf.Mongo.Collection,
+		Session:    session,
+	}, nil
+}
+
+func (d *StatsDao) Close() {
+	d.Session.Close()
+}

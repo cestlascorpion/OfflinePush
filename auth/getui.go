@@ -27,7 +27,7 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Dur
 	}, nil
 }
 
-func (g *GeTuiAuth) GetAuth() (string, int64, error) {
+func (g *GeTuiAuth) GetAuth() (*AuthToken, error) {
 	sign, tp := Signature(g.AppKey, g.MasterSecret)
 	result, err := POST(g.url("/auth"), "", authReq{
 		Sign:      sign,
@@ -36,30 +36,33 @@ func (g *GeTuiAuth) GetAuth() (string, int64, error) {
 	}, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
-		return "", 0, err
+		return nil, err
 	}
 	var resp authResp
 	err = json.Unmarshal(result, &resp)
 	if err != nil {
 		log.Errorf("unmarshal failed err %+v", err)
-		return "", 0, err
+		return nil, err
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return "", 0, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
 	if resp.Data == nil {
 		log.Errorf("resp.Data is nil")
-		return "", 0, errors.New("resp.Data is nil")
+		return nil, errors.New("resp.Data is nil")
 	}
 	token := resp.Data.Token
 	expireAtMs, err := strconv.ParseInt(resp.Data.ExpireTime, 10, 64)
 	if err != nil {
 		log.Errorf(" parseInt failed expire time %s ms", resp.Data.ExpireTime)
-		return "", 0, fmt.Errorf("parseInt failed expire time %s ms", resp.Data.ExpireTime)
+		return nil, fmt.Errorf("parseInt failed expire time %s ms", resp.Data.ExpireTime)
 	}
 	log.Tracef("get auth ok token %s expireAtSec %d", token, expireAtMs/1000)
-	return token, expireAtMs / 1000, nil
+	return &AuthToken{
+		Token:    token,
+		ExpireAt: expireAtMs / 1000,
+	}, nil
 }
 
 func (g *GeTuiAuth) DelAuth(token string) error {

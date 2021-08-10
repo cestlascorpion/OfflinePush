@@ -17,7 +17,7 @@ type AuthCache struct {
 }
 
 func NewAuthCache() (*AuthCache, error) {
-	conn, err := grpc.Dial(AuthServerAddr, grpc.WithBlock(),grpc.WithInsecure())
+	conn, err := grpc.Dial(AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		log.Errorf("grpc dial err %+v", err)
 		return nil, err
