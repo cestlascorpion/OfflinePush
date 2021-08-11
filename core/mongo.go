@@ -43,7 +43,7 @@ func NewAuthDao(conf *AuthConfig) (*AuthDao, error) {
 	}, nil
 }
 
-func (d *AuthDao) GetToken(id UniqueId) (*AuthToken, error) {
+func (d *AuthDao) GetAuth(id UniqueId) (*AuthToken, error) {
 	s := d.Session.Clone()
 	defer s.Close()
 
@@ -62,7 +62,7 @@ func (d *AuthDao) GetToken(id UniqueId) (*AuthToken, error) {
 	return auth, nil
 }
 
-func (d *AuthDao) SetToken(id UniqueId, auth *AuthToken) error {
+func (d *AuthDao) SetAuth(id UniqueId, auth *AuthToken) error {
 	s := d.Session.Clone()
 	defer s.Close()
 

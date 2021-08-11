@@ -60,7 +60,7 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 	}
 
 	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Dao.GetToken(uniqueId)
+	auth, err := s.Dao.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("dao get token err %+v", err)
 		return out, err
@@ -72,7 +72,7 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 			log.Errorf("mgr get token err %+v", err)
 			return out, err
 		}
-		err = s.Dao.SetToken(uniqueId, newAuth)
+		err = s.Dao.SetAuth(uniqueId, newAuth)
 		if err != nil {
 			log.Errorf("dao set token err %+v", err)
 			return out, err
@@ -95,7 +95,7 @@ func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetToken
 	}
 
 	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	err := s.Dao.SetToken(uniqueId, &AuthToken{Token: in.Token, ExpireAt: in.ExpireAt})
+	err := s.Dao.SetAuth(uniqueId, &AuthToken{Token: in.Token, ExpireAt: in.ExpireAt})
 	if err != nil {
 		log.Errorf("dao set token err %+v", err)
 		return out, err

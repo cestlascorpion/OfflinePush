@@ -58,7 +58,7 @@ func (g *GeTuiAuth) GetAuth() (*AuthToken, error) {
 		log.Errorf(" parseInt failed expire time %s ms", resp.Data.ExpireTime)
 		return nil, fmt.Errorf("parseInt failed expire time %s ms", resp.Data.ExpireTime)
 	}
-	log.Tracef("get auth ok token %s expireAtSec %d", token, expireAtMs/1000)
+	log.Debugf("get auth ok token %s expireAtSec %d", token, expireAtMs/1000)
 	return &AuthToken{
 		Token:    token,
 		ExpireAt: expireAtMs / 1000,
