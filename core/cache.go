@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cestlascorpion/push/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )

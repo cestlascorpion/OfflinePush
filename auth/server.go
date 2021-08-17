@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	. "github.com/cestlascorpion/push/core"
-	pb "github.com/cestlascorpion/push/proto"
+	. "github.com/cestlascorpion/offlinepush/core"
+	pb "github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 

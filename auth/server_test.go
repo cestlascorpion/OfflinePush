@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/cestlascorpion/push/core"
-	"github.com/cestlascorpion/push/proto"
+	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/proto"
 	"github.com/jinzhu/configor"
 	"google.golang.org/grpc"
 )

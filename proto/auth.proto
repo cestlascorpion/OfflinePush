@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Push.Auth;
+package OfflinePush.Auth;
 
 option go_package = ".;proto";
 

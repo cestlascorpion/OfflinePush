@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/cestlascorpion/push/core"
+	. "github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
 )
 

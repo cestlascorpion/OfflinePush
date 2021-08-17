@@ -1,7 +1,7 @@
 package core
 
 type AuthConfig struct {
-	Name  string `default:"push-auth"`
+	Name  string `default:"server"`
 	Mongo struct {
 		Name       string `default:"Mongo"`
 		Url        string `required:"true"`

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	. "github.com/cestlascorpion/push/core"
-	"github.com/cestlascorpion/push/proto"
+	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/proto"
 )
 
 type Agent interface {

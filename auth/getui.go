@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	. "github.com/cestlascorpion/push/core"
+	. "github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
 )
 

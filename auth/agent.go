@@ -3,7 +3,7 @@ package auth
 import (
 	"fmt"
 
-	. "github.com/cestlascorpion/push/core"
+	. "github.com/cestlascorpion/offlinepush/core"
 )
 
 type Agent interface {

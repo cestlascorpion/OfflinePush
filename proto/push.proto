@@ -1,0 +1,196 @@
+syntax = "proto3";
+
+package OfflinePush.Push;
+
+option go_package = ".;proto";
+
+service Push {
+  rpc PushToSingle (PushToSingleReq) returns (PushToSingleResp) {}
+  rpc CreateTask (CreateTaskReq) returns (CreateTaskResp) {}
+  rpc PushToList (PushToListRep) returns (PushToListResp) {}
+  rpc PushToApp (PushToAppReq) returns (PushToAppResp) {}
+  rpc StopTask (StopTaskReq) returns (StopTaskResp) {}
+  rpc CheckTask (CheckTaskReq) returns (CheckTaskResp) {}
+  rpc RemoveTask (RemoveTaskReq) returns (RemoveTaskResp) {}
+  rpc ViewDetail (ViewDetailReq) returns (ViewDetailResp) {}
+}
+
+message Audience {
+  message PushTag {
+    enum TagOpt {
+      OR = 0;
+      AND = 1;
+      NOT = 2;
+    }
+
+    string key = 1;
+    string value_list = 2;
+    TagOpt opt_type = 3;
+  }
+
+  repeated string cid_list = 1;
+  repeated string alias_list = 2;
+  repeated PushTag tag_list = 3;
+  string fast_tag = 4;
+}
+
+message Settings {
+  message Strategy {
+    int32 default = 1;
+    int32 ios = 2;
+    int32 st = 3;
+    int32 hw = 4;
+    int32 xm = 5;
+    int32 vv = 6;
+    int32 op = 7;
+  }
+
+  int64 ttl_millisecond = 1;
+  Strategy strategy = 2;
+  int64 speed = 3;
+  int64 scheduled_millisecond = 4;
+}
+
+message Notification {
+  message Options {
+    string constraint = 1;
+    string key = 2;
+    string value = 3;
+  }
+  string title = 1;
+  string body = 2;
+  string big_text = 3;
+  string big_image = 4;
+  string logo = 5;
+  string logo_url = 6;
+  string channel_id = 7;
+  string channel_name = 8;
+  string channel_level = 9;
+  string click_type = 10;
+  string intent = 11;
+  string jump_url = 12;
+  string payload = 13;
+  int64 notifyId = 14;
+  string ring_name = 15;
+  int32 badge_add_num = 16;
+  Options options = 17;
+}
+
+message Revoke {
+  string old_task_id = 1;
+  bool force = 2;
+}
+
+message Message {
+  string duration = 1;
+  Notification notification = 2;
+  string transmission = 3;
+  Revoke revoke = 4;
+}
+
+message IosChannel {
+  message Aps {
+    message Alert {
+      string title = 1;
+      string body = 2;
+      string action_loc_key = 3;
+      string loc_key = 4;
+      repeated string loc_args = 5;
+      string launch_image = 6;
+      string title_loc_key = 7;
+      repeated string title_loc_args = 8;
+      string sub_title = 9;
+      string sub_title_loc_key = 10;
+      repeated string sub_title_loc_args = 11;
+    }
+
+    Alert alert = 1;
+    int32 content_available = 2;
+    string sound = 3;
+    string category = 4;
+    string thread_id = 5;
+  }
+  message Multimedia {
+    string url = 1;
+    int32 type = 2;
+    bool only_wifi = 3;
+  }
+
+  string type = 1;
+  Aps aps = 2;
+  string auto_badge = 3;
+  string payload = 4;
+  repeated Multimedia multimedia_list = 5;
+  string apns_collapse_id = 6;
+}
+
+message AndroidChannel {
+  message Ups {
+    Notification notification = 1;
+    string transmission = 2;
+  }
+
+  Ups ups = 1;
+}
+
+message Channel {
+  IosChannel ios = 1;
+  AndroidChannel android = 2;
+}
+
+message PushMessage {
+  string request_id = 1;
+  Audience audience = 2;
+  Settings settings = 3;
+  Message message = 4;
+  Channel channel = 5;
+}
+
+message PushToSingleReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated PushMessage message_list = 3;
+  bool is_async = 4;
+}
+
+message Receipt {
+  message Detail {
+    string cid = 1;
+    string status = 2;
+  }
+
+  string task_id = 1;
+  repeated Detail detail_list = 2;
+}
+
+message PushToSingleResp {
+  repeated Receipt receipt_list = 1;
+}
+
+message CreateTaskReq {}
+
+message CreateTaskResp {}
+
+message PushToListRep {}
+
+message PushToListResp {}
+
+message PushToAppReq {}
+
+message PushToAppResp {}
+
+message StopTaskReq {}
+
+message StopTaskResp {}
+
+message CheckTaskReq {}
+
+message CheckTaskResp {}
+
+message RemoveTaskReq {}
+
+message RemoveTaskResp {}
+
+message ViewDetailReq {}
+
+message ViewDetailResp {}

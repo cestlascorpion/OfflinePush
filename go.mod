@@ -1,4 +1,4 @@
-module github.com/cestlascorpion/push
+module github.com/cestlascorpion/offlinepush
 
 go 1.16
 
