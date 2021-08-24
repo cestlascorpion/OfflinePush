@@ -72,7 +72,6 @@ message GetTaskGroupResp {
 message GetPushCountReq {
   string push_agent = 1;
   string bundle_id = 2;
-  int64 unix_second = 3;
 }
 
 message GetPushCountResp {
@@ -107,7 +106,6 @@ message GetUserDataByDayResp {
 message GetOnlineUserBy24HReq {
   string push_agent = 1;
   string bundle_id = 2;
-  int64 unix_second = 3;
 }
 
 message GetOnlineUserBy24HResp {

@@ -16,8 +16,8 @@ const (
 )
 
 const (
-	TestAuthToken    = ""
-	TestAuthExpireAt = 1628689936
+	TestAuthToken    = "c84b5c69f84d81bb68eee9a311fb9b2e19130a19d33028dd5aa90b0b0d3bb37a"
+	TestAuthExpireAt = 1629899783
 )
 
 const (

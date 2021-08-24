@@ -1,9 +1,11 @@
 package core
 
 import (
+	"fmt"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	log "github.com/sirupsen/logrus"
+	"time"
 )
 
 func init() {
@@ -16,7 +18,7 @@ type AuthDao struct {
 	Session    *mgo.Session
 }
 
-func NewAuthDao(conf *AuthConfig) (*AuthDao, error) {
+func NewAuthDao(conf *PushConfig) (*AuthDao, error) {
 	session, err := mgo.Dial(conf.Mongo.Url)
 	if err != nil {
 		log.Errorf("mgo dial err %+v", err)
@@ -24,7 +26,7 @@ func NewAuthDao(conf *AuthConfig) (*AuthDao, error) {
 	}
 	session.SetPoolLimit(conf.Mongo.PoolSize)
 
-	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.Collection).EnsureIndex(
+	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.AuthCollection).EnsureIndex(
 		mgo.Index{
 			Key:        []string{"push_agent", "bundle_id"},
 			Unique:     true,
@@ -38,7 +40,7 @@ func NewAuthDao(conf *AuthConfig) (*AuthDao, error) {
 
 	return &AuthDao{
 		DataBase:   conf.Mongo.DataBase,
-		Collection: conf.Mongo.Collection,
+		Collection: conf.Mongo.AuthCollection,
 		Session:    session,
 	}, nil
 }
@@ -88,7 +90,7 @@ type StatsDao struct {
 	Session    *mgo.Session
 }
 
-func NewStatsDao(conf *StatsConfig) (*StatsDao, error) {
+func NewStatsDao(conf *PushConfig) (*StatsDao, error) {
 	session, err := mgo.Dial(conf.Mongo.Url)
 	if err != nil {
 		log.Errorf("mgo dial err %+v", err)
@@ -96,12 +98,12 @@ func NewStatsDao(conf *StatsConfig) (*StatsDao, error) {
 	}
 	session.SetPoolLimit(conf.Mongo.PoolSize)
 
-	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.Collection).EnsureIndex(
+	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.StatsCollection).EnsureIndex(
 		mgo.Index{
-			Key:        []string{"push_agent", "bundle_id"},
-			Unique:     true,
-			Background: false,
-			Sparse:     true,
+			Key:         []string{"push_agent", "bundle_id", "describe", "time"},
+			Unique:      true,
+			Background:  false,
+			Sparse:      true,
 		})
 	if err != nil {
 		log.Errorf("mgo ensure index err %+v", err)
@@ -110,9 +112,28 @@ func NewStatsDao(conf *StatsConfig) (*StatsDao, error) {
 
 	return &StatsDao{
 		DataBase:   conf.Mongo.DataBase,
-		Collection: conf.Mongo.Collection,
+		Collection: conf.Mongo.StatsCollection,
 		Session:    session,
 	}, nil
+}
+
+func (d *StatsDao) SetStats(id UniqueId, describe string, time time.Time, content interface{}) error {
+	s := d.Session.Clone()
+	defer s.Close()
+
+	_, err := s.DB(d.DataBase).C(d.Collection).Upsert(
+		bson.M{"push_agent": id.PushAgent,
+			"bundle_id": id.BundleId,
+			"describe":  describe,
+			"time":      time.Format("2006-01-02@15:04")},
+		bson.M{"$set": bson.M{"content": fmt.Sprintf("%+v", content)}},
+	)
+	if err != nil {
+		log.Errorf("mgo upsert err %+v", err)
+		return err
+	}
+
+	return nil
 }
 
 func (d *StatsDao) Close() {

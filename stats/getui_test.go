@@ -10,8 +10,8 @@ import (
 )
 
 func TestGeTuiStats_Resp2Tasks(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -32,8 +32,8 @@ func TestGeTuiStats_Resp2Tasks(t *testing.T) {
 }
 
 func TestGeTuiStats_GetTaskGroup(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -54,8 +54,8 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 }
 
 func TestGeTuiStats_GetPushCount(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -76,8 +76,8 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 }
 
 func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -98,8 +98,8 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 }
 
 func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -120,8 +120,8 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 }
 
 func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()

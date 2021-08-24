@@ -8,8 +8,8 @@ import (
 )
 
 func TestAuthDao_GetToken(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "auth.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -22,7 +22,7 @@ func TestAuthDao_GetToken(t *testing.T) {
 	}
 
 	uniqueId := UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}
-	auth, err := dao.GetToken(uniqueId)
+	auth, err := dao.GetAuth(uniqueId)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -32,8 +32,8 @@ func TestAuthDao_GetToken(t *testing.T) {
 }
 
 func TestAuthDao_SetToken(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "auth.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -47,7 +47,7 @@ func TestAuthDao_SetToken(t *testing.T) {
 
 	uniqueId := UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}
 	auth := &AuthToken{Token: TestAuthToken, ExpireAt: TestAuthExpireAt}
-	err = dao.SetToken(uniqueId, auth)
+	err = dao.SetAuth(uniqueId, auth)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()

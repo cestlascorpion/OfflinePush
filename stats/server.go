@@ -16,7 +16,7 @@ type Server struct {
 	Auth *AuthCache
 }
 
-func NewServer(conf *StatsConfig) (*Server, error) {
+func NewServer(conf *PushConfig) (*Server, error) {
 	dao, err := NewStatsDao(conf)
 	if err != nil {
 		log.Errorf("new stats dao err %+v", err)
@@ -99,6 +99,11 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 		out.TaskList = append(out.TaskList, task)
 		out.StaticsList = append(out.StaticsList, statics)
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetTasks", time.Now(), resp) != nil {
+		log.Errorf("save tasks err %+v", err)
+	}
+
 	return out, nil
 }
 
@@ -139,14 +144,18 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 		out.Group = group
 		out.Statics = statics
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetTaskGroup", time.Now(), resp) != nil {
+		log.Errorf("save task group err %+v", err)
+	}
+
 	return out, nil
 }
 
 func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*proto.GetPushCountResp, error) {
 	out := &proto.GetPushCountResp{}
 
-	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
-		time.Unix(in.UnixSecond, 0).Format("2006-01-02") != time.Now().Format("2006-01-02") {
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
 	}
@@ -175,6 +184,11 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 	for i := range resp {
 		out.CountList = append(out.CountList, resp[i])
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetPushCount", time.Now(), resp) != nil {
+		log.Errorf("save push count err %+v", err)
+	}
+
 	return out, nil
 }
 
@@ -215,6 +229,11 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 		out.Date = date
 		out.Statics = statics
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetPushDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+		log.Errorf("save push data by day err %+v", err)
+	}
+
 	return out, nil
 }
 
@@ -266,14 +285,18 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 			}
 		}
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetUserDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+		log.Errorf("save user data by day err %+v", err)
+	}
+
 	return out, nil
 }
 
 func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUserBy24HReq) (*proto.GetOnlineUserBy24HResp, error) {
 	out := &proto.GetOnlineUserBy24HResp{}
 
-	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
-		time.Unix(in.UnixSecond, 0).Format("2006-01-02") != time.Now().Format("2006-01-02") {
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
 	}
@@ -305,6 +328,11 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 			Online:          statics,
 		})
 	}
+
+	if s.Dao.SetStats(uniqueId, "GetOnlineUserBy24H", time.Now(), resp) != nil {
+		log.Errorf("save online user by 24h err %+v", err)
+	}
+
 	return out, nil
 }
 

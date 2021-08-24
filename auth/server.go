@@ -15,7 +15,7 @@ type Server struct {
 	Mgr *AgentMgr
 }
 
-func NewServer(conf *AuthConfig) (*Server, error) {
+func NewServer(conf *PushConfig) (*Server, error) {
 	dao, err := NewAuthDao(conf)
 	if err != nil {
 		log.Errorf("new auth dao err %+v", err)

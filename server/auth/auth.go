@@ -18,8 +18,8 @@ func main() {
 		log.Fatalf("listen failed err %+v", err)
 		return
 	}
-	conf := &core.AuthConfig{}
-	err = configor.Load(conf, "auth.yml")
+	conf := &core.PushConfig{}
+	err = configor.Load(conf, "conf.yml")
 	if err != nil {
 		log.Fatalf("config failed err %+v", err)
 		return

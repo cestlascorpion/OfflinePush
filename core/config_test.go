@@ -8,17 +8,18 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	conf := &AuthConfig{}
-	err := configor.Load(conf, "auth.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
-	fmt.Println(conf.Name)
+
 	fmt.Println(conf.Mongo.Name)
 	fmt.Println(conf.Mongo.Url)
 	fmt.Println(conf.Mongo.DataBase)
-	fmt.Println(conf.Mongo.Collection)
+	fmt.Println(conf.Mongo.AuthCollection)
+	fmt.Println(conf.Mongo.StatsCollection)
 	fmt.Println(conf.Mongo.PoolSize)
 	fmt.Println(conf.TestApp.PushAgent)
 	fmt.Println(conf.TestApp.BundleId)

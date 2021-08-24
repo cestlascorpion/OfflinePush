@@ -12,8 +12,8 @@ import (
 )
 
 func TestServer_GetTasks(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -37,8 +37,8 @@ func TestServer_GetTasks(t *testing.T) {
 }
 
 func TestServer_GetTaskGroup(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -62,8 +62,8 @@ func TestServer_GetTaskGroup(t *testing.T) {
 }
 
 func TestServer_GetPushCount(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -77,7 +77,6 @@ func TestServer_GetPushCount(t *testing.T) {
 	resp, err := svr.GetPushCount(context.Background(), &proto.GetPushCountReq{
 		PushAgent:  conf.TestApp.PushAgent,
 		BundleId:   conf.TestApp.BundleId,
-		UnixSecond: time.Now().Unix(),
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -87,8 +86,8 @@ func TestServer_GetPushCount(t *testing.T) {
 }
 
 func TestServer_GetPushDataByDay(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -112,8 +111,8 @@ func TestServer_GetPushDataByDay(t *testing.T) {
 }
 
 func TestServer_GetUserDataByDay(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -137,8 +136,8 @@ func TestServer_GetUserDataByDay(t *testing.T) {
 }
 
 func TestServer_GetOnlineUserBy24H(t *testing.T) {
-	conf := &StatsConfig{}
-	err := configor.Load(conf, "stats.yml")
+	conf := &PushConfig{}
+	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -152,7 +151,6 @@ func TestServer_GetOnlineUserBy24H(t *testing.T) {
 	resp, err := svr.GetOnlineUserBy24H(context.Background(), &proto.GetOnlineUserBy24HReq{
 		PushAgent:  conf.TestApp.PushAgent,
 		BundleId:   conf.TestApp.BundleId,
-		UnixSecond: time.Now().Unix(),
 	})
 	if err != nil {
 		fmt.Println(err)
