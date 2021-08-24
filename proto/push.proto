@@ -81,7 +81,7 @@ message Revoke {
   bool force = 2;
 }
 
-message Message {
+message PushMessage {
   string duration = 1;
   Notification notification = 2;
   string transmission = 3;
@@ -133,23 +133,23 @@ message AndroidChannel {
   Ups ups = 1;
 }
 
-message Channel {
+message PushChannel {
   IosChannel ios = 1;
   AndroidChannel android = 2;
 }
 
-message PushMessage {
-  string request_id = 1;
-  Audience audience = 2;
-  Settings settings = 3;
-  Message message = 4;
-  Channel channel = 5;
-}
-
 message PushToSingleReq {
+  message SingleMessage {
+    string request_id = 1;
+    Audience audience = 2;
+    Settings settings = 3;
+    PushMessage message = 4;
+    PushChannel channel = 5;
+  }
+
   string push_agent = 1;
   string bundle_id = 2;
-  repeated PushMessage message_list = 3;
+  repeated SingleMessage message_list = 3;
   bool is_async = 4;
 }
 
@@ -167,30 +167,100 @@ message PushToSingleResp {
   repeated Receipt receipt_list = 1;
 }
 
-message CreateTaskReq {}
+message CreateTaskReq {
+  message ListMessage {
+    string request_id = 1;
+    string group_name = 2;
+    Settings settings = 3;
+    PushMessage message = 4;
+    PushChannel channel = 5;
+  }
 
-message CreateTaskResp {}
+  string push_agent = 1;
+  string bundle_id = 2;
+  ListMessage message = 3;
+}
 
-message PushToListRep {}
+message CreateTaskResp {
+  string task_id = 1;
+}
 
-message PushToListResp {}
+message PushToListRep {
+  string push_agent = 1;
+  string bundle_id = 2;
+  Audience audience = 3;
+  string task_id = 4;
+  bool is_async = 5;
+}
 
-message PushToAppReq {}
+message PushToListResp {
+  Receipt receipt = 1;
+}
 
-message PushToAppResp {}
+message PushToAppReq {
+  message AppMessage {
+    string request_id = 1;
+    string group_name = 2;
+    Settings settings = 3;
+    PushMessage message = 4;
+    PushChannel channel = 5;
+  }
 
-message StopTaskReq {}
+  string push_agent = 1;
+  string bundle_id = 2;
+  AppMessage message = 3;
+}
 
-message StopTaskResp {}
+message PushToAppResp {
+  string task_id = 1;
+}
 
-message CheckTaskReq {}
+message StopTaskReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string task_id = 3;
+}
 
-message CheckTaskResp {}
+message StopTaskResp {
+  bool success = 1;
+}
 
-message RemoveTaskReq {}
+message CheckTaskReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string task_id = 3;
+}
 
-message RemoveTaskResp {}
+message CheckTaskResp {
+  string task_id = 1;
+  int64 create_time = 2;
+  string status = 3;
+  string transmission_content = 4;
+  int64 push_time = 5;
+}
 
-message ViewDetailReq {}
+message RemoveTaskReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string task_id = 3;
+}
 
-message ViewDetailResp {}
+message RemoveTaskResp {
+  bool success = 1;
+}
+
+message ViewDetailReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string task_id = 3;
+  string cid = 4;
+}
+
+message ViewDetailResp {
+  message Detail {
+    string time = 1;
+    string event = 2;
+  }
+
+  repeated Detail detail_list = 1;
+}
