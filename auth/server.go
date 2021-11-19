@@ -5,18 +5,18 @@ import (
 	"errors"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
-	Dao *AuthDao
+	Dao *core.AuthDao
 	Mgr *AgentMgr
 }
 
-func NewServer(conf *PushConfig) (*Server, error) {
-	dao, err := NewAuthDao(conf)
+func NewServer(conf *core.PushConfig) (*Server, error) {
+	dao, err := core.NewAuthDao(conf)
 	if err != nil {
 		log.Errorf("new auth dao err %+v", err)
 		return nil, err
@@ -29,7 +29,7 @@ func NewServer(conf *PushConfig) (*Server, error) {
 	}
 
 	agent, err := NewGeTuiAgent(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
@@ -39,7 +39,7 @@ func NewServer(conf *PushConfig) (*Server, error) {
 		return nil, err
 	}
 
-	err = mgr.RegisterAgent(UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agent)
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agent)
 	if err != nil {
 		log.Errorf("register getui agent err %+v", err)
 		return nil, err
@@ -59,7 +59,7 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Dao.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("dao get token err %+v", err)
@@ -94,8 +94,8 @@ func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetToken
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	err := s.Dao.SetAuth(uniqueId, &AuthToken{Token: in.Token, ExpireAt: in.ExpireAt})
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	err := s.Dao.SetAuth(uniqueId, &core.AuthToken{Token: in.Token, ExpireAt: in.ExpireAt})
 	if err != nil {
 		log.Errorf("dao set token err %+v", err)
 		return out, err
@@ -112,7 +112,7 @@ func (s *Server) DelToken(ctx context.Context, in *pb.DelTokenReq) (*pb.DelToken
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	err := s.Mgr.DelAuth(uniqueId, in.Token)
 	if err != nil {
 		log.Errorf("mgr del token err %+v", err)

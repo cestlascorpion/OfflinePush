@@ -5,19 +5,19 @@ import (
 	"errors"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
-	Dao  *StatsDao
+	Dao  *core.StatsDao
 	Mgr  *AgentMgr
-	Auth *AuthCache
+	Auth *core.AuthCache
 }
 
-func NewServer(conf *PushConfig) (*Server, error) {
-	dao, err := NewStatsDao(conf)
+func NewServer(conf *core.PushConfig) (*Server, error) {
+	dao, err := core.NewStatsDao(conf)
 	if err != nil {
 		log.Errorf("new stats dao err %+v", err)
 		return nil, err
@@ -30,7 +30,7 @@ func NewServer(conf *PushConfig) (*Server, error) {
 	}
 
 	agent, err := NewGeTuiStats(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
@@ -38,13 +38,13 @@ func NewServer(conf *PushConfig) (*Server, error) {
 		return nil, err
 	}
 
-	err = mgr.RegisterAgent(UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agent)
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agent)
 	if err != nil {
 		log.Errorf("register getui agent err %+v", err)
 		return nil, err
 	}
 
-	auth, err := NewAuthCache()
+	auth, err := core.NewAuthCache()
 	if err != nil {
 		log.Errorf("new auth cache err %+v", err)
 		return nil, err
@@ -71,7 +71,7 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -79,7 +79,7 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 	}
 	resp, err := s.Mgr.GetTasks(uniqueId, in.TaskList, auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)
@@ -116,7 +116,7 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -124,7 +124,7 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 	}
 	resp, err := s.Mgr.GetTaskGroup(uniqueId, in.Group, auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)
@@ -160,7 +160,7 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -168,7 +168,7 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 	}
 	resp, err := s.Mgr.GetPushCount(uniqueId, auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)
@@ -201,7 +201,7 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -209,7 +209,7 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 	}
 	resp, err := s.Mgr.GetPushDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)
@@ -246,7 +246,7 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -254,7 +254,7 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 	}
 	resp, err := s.Mgr.GetUserDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)
@@ -301,7 +301,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 		return out, errors.New("invalid parameter")
 	}
 
-	uniqueId := UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -309,7 +309,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 	}
 	resp, err := s.Mgr.GetOnlineUserBy24H(uniqueId, auth.Token)
 	if err != nil {
-		if err.Error() == InvalidTokenErr {
+		if err.Error() == core.InvalidTokenErr {
 			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
 			if err != nil {
 				log.Errorf("get authx2 err %+v", err)

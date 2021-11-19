@@ -2,14 +2,14 @@ package push
 
 import (
 	"context"
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
 )
 
 type Server struct {
 }
 
-func NewServer(conf *PushConfig) (*Server, error) {
+func NewServer(conf *core.PushConfig) (*Server, error) {
 	return &Server{}, nil
 }
 

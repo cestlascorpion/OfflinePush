@@ -2,3 +2,5 @@
 .vscode
 
 *.yml
+
+vendor

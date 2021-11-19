@@ -5,26 +5,26 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
 )
 
 func TestGeTuiStats_Resp2Tasks(t *testing.T) {
-	conf := &PushConfig{}
+	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
 	agent, err := NewGeTuiStats(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
-	result, err := agent.GetTasks([]string{TestTasks}, TestToken)
+	result, err := agent.GetTasks([]string{core.TestTasks}, core.TestToken)
 	if err != nil {
 		t.Failed()
 	}
@@ -32,21 +32,21 @@ func TestGeTuiStats_Resp2Tasks(t *testing.T) {
 }
 
 func TestGeTuiStats_GetTaskGroup(t *testing.T) {
-	conf := &PushConfig{}
+	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
 	agent, err := NewGeTuiStats(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
-	result, err := agent.GetTaskGroup(TestGroup, TestToken)
+	result, err := agent.GetTaskGroup(core.TestGroup, core.TestToken)
 	if err != nil {
 		t.Failed()
 	}

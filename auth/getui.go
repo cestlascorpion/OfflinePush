@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -27,9 +27,9 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Dur
 	}, nil
 }
 
-func (g *GeTuiAuth) GetAuth() (*AuthToken, error) {
-	sign, tp := Signature(g.AppKey, g.MasterSecret)
-	result, err := POST(g.url("/auth"), "", authReq{
+func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
+	sign, tp := core.Signature(g.AppKey, g.MasterSecret)
+	result, err := core.POST(g.url("/auth"), "", authReq{
 		Sign:      sign,
 		Timestamp: tp,
 		AppKey:    g.AppKey,
@@ -59,14 +59,14 @@ func (g *GeTuiAuth) GetAuth() (*AuthToken, error) {
 		return nil, fmt.Errorf("parseInt failed expire time %s ms", resp.Data.ExpireTime)
 	}
 	log.Debugf("get auth ok token %s expireAtSec %d", token, expireAtMs/1000)
-	return &AuthToken{
+	return &core.AuthToken{
 		Token:    token,
 		ExpireAt: expireAtMs / 1000,
 	}, nil
 }
 
 func (g *GeTuiAuth) DelAuth(token string) error {
-	result, err := DELETE(g.url(fmt.Sprintf("/auth/%s", token)), "", nil, g.Timeout)
+	result, err := core.DELETE(g.url(fmt.Sprintf("/auth/%s", token)), "", nil, g.Timeout)
 	if err != nil {
 		log.Errorf("delete failed err %+v", err)
 		return err

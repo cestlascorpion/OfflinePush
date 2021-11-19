@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
@@ -26,7 +26,7 @@ func NewGeTuiStats(apiUrl, appId string, timeout time.Duration) (*GeTuiStats, er
 }
 
 func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := GET(g.url(fmt.Sprintf("/report/push/task/%s", strings.Join(taskIds, ","))), token, nil, g.Timeout)
+	result, err := core.GET(g.url(fmt.Sprintf("/report/push/task/%s", strings.Join(taskIds, ","))), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -40,7 +40,7 @@ func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
-			return nil, errors.New(InvalidTokenErr)
+			return nil, errors.New(core.InvalidTokenErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -48,7 +48,7 @@ func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto
 }
 
 func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := GET(g.url(fmt.Sprintf("/report/push/task_group/%s", group)), token, nil, g.Timeout)
+	result, err := core.GET(g.url(fmt.Sprintf("/report/push/task_group/%s", group)), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -62,7 +62,7 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
-			return nil, errors.New(InvalidTokenErr)
+			return nil, errors.New(core.InvalidTokenErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -70,7 +70,7 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 }
 
 func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) {
-	result, err := GET(g.url("/report/push/count"), token, nil, g.Timeout)
+	result, err := core.GET(g.url("/report/push/count"), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -84,7 +84,7 @@ func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) 
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
-			return nil, errors.New(InvalidTokenErr)
+			return nil, errors.New(core.InvalidTokenErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -92,7 +92,7 @@ func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) 
 }
 
 func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := GET(g.url(fmt.Sprintf("/report/push/date/%s", date.Format("2006-01-02"))), token, nil, g.Timeout)
+	result, err := core.GET(g.url(fmt.Sprintf("/report/push/date/%s", date.Format("2006-01-02"))), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -106,7 +106,7 @@ func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
-			return nil, errors.New(InvalidTokenErr)
+			return nil, errors.New(core.InvalidTokenErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -114,7 +114,7 @@ func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]
 }
 
 func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]map[string]int32, error) {
-	result, err := GET(g.url(fmt.Sprintf("/report/user/date/%s", date.Format("2006-01-02"))), token, nil, g.Timeout)
+	result, err := core.GET(g.url(fmt.Sprintf("/report/user/date/%s", date.Format("2006-01-02"))), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -128,7 +128,7 @@ func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
-			return nil, errors.New(InvalidTokenErr)
+			return nil, errors.New(core.InvalidTokenErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -136,7 +136,7 @@ func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]
 }
 
 func (g *GeTuiStats) GetOnlineUserBy24H(token string) (map[int64]int32, error) {
-	result, err := GET(g.url("/report/online_user"), token, nil, g.Timeout)
+	result, err := core.GET(g.url("/report/online_user"), token, nil, g.Timeout)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err

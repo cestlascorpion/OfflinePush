@@ -5,19 +5,19 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/cestlascorpion/offlinepush/core"
+	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
 )
 
 func TestGeTuiAuth_GetAuthToken(t *testing.T) {
-	conf := &PushConfig{}
+	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
 	agent, err := NewGeTuiAgent(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
@@ -35,14 +35,14 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 }
 
 func TestGeTuiAuth_DelAuthToken(t *testing.T) {
-	conf := &PushConfig{}
+	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
 	agent, err := NewGeTuiAgent(
-		GTBaseUrl,
+		core.GTBaseUrl,
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
@@ -52,10 +52,10 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 		t.Failed()
 	}
 
-	err = agent.DelAuth(TestAuthToken)
+	err = agent.DelAuth(core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
 	}
-	fmt.Println(TestAuthToken)
+	fmt.Println(core.TestAuthToken)
 }
