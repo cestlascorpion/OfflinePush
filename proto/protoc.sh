@@ -1,3 +1,15 @@
-~/go/bin/protoc -I proto proto/auth.proto --go_out=plugins=grpc:proto
-~/go/bin/protoc -I proto proto/stats.proto --go_out=plugins=grpc:proto
-~/go/bin/protoc -I proto proto/push.proto --go_out=plugins=grpc:proto
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    auth.proto
+
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    user.proto
+
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    stats.proto
+
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    push.proto

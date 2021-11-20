@@ -11,6 +11,7 @@ import (
 )
 
 type Server struct {
+	*pb.UnimplementedAuthServer
 	Dao *core.AuthDao
 	Mgr *AgentMgr
 }

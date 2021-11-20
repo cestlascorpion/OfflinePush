@@ -6,11 +6,12 @@ import (
 	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	"github.com/cestlascorpion/offlinepush/proto"
+	pb "github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
+	*pb.UnimplementedStatsServer
 	Dao  *core.StatsDao
 	Mgr  *AgentMgr
 	Auth *core.AuthCache
@@ -62,8 +63,8 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}, nil
 }
 
-func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.GetTasksResp, error) {
-	out := &proto.GetTasksResp{}
+func (s *Server) GetTasks(ctx context.Context, in *pb.GetTasksReq) (*pb.GetTasksResp, error) {
+	out := &pb.GetTasksResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TaskList) == 0 {
@@ -107,8 +108,8 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 	return out, nil
 }
 
-func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*proto.GetTaskGroupResp, error) {
-	out := &proto.GetTaskGroupResp{}
+func (s *Server) GetTaskGroup(ctx context.Context, in *pb.GetTaskGroupReq) (*pb.GetTaskGroupResp, error) {
+	out := &pb.GetTaskGroupResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.Group) == 0 {
@@ -152,8 +153,8 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 	return out, nil
 }
 
-func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*proto.GetPushCountResp, error) {
-	out := &proto.GetPushCountResp{}
+func (s *Server) GetPushCount(ctx context.Context, in *pb.GetPushCountReq) (*pb.GetPushCountResp, error) {
+	out := &pb.GetPushCountResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
@@ -192,8 +193,8 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 	return out, nil
 }
 
-func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDayReq) (*proto.GetPushDataByDayResp, error) {
-	out := &proto.GetPushDataByDayResp{}
+func (s *Server) GetPushDataByDay(ctx context.Context, in *pb.GetPushDataByDayReq) (*pb.GetPushDataByDayResp, error) {
+	out := &pb.GetPushDataByDayResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		time.Unix(in.UnixSecond, 0).Format("2006-01-02") == time.Now().Format("2006-01-02") {
@@ -237,8 +238,8 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 	return out, nil
 }
 
-func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDayReq) (*proto.GetUserDataByDayResp, error) {
-	out := &proto.GetUserDataByDayResp{}
+func (s *Server) GetUserDataByDay(ctx context.Context, in *pb.GetUserDataByDayReq) (*pb.GetUserDataByDayResp, error) {
+	out := &pb.GetUserDataByDayResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		time.Unix(in.UnixSecond, 0).Format("2006-01-02") == time.Now().Format("2006-01-02") {
@@ -293,8 +294,8 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 	return out, nil
 }
 
-func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUserBy24HReq) (*proto.GetOnlineUserBy24HResp, error) {
-	out := &proto.GetOnlineUserBy24HResp{}
+func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *pb.GetOnlineUserBy24HReq) (*pb.GetOnlineUserBy24HResp, error) {
+	out := &pb.GetOnlineUserBy24HResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
@@ -323,7 +324,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 		}
 	}
 	for timestamp, statics := range resp {
-		out.OnlineList = append(out.OnlineList, &proto.GetOnlineUserBy24HResp_OnlineInfo{
+		out.OnlineList = append(out.OnlineList, &pb.GetOnlineUserBy24HResp_OnlineInfo{
 			UnixMillisecond: timestamp,
 			Online:          statics,
 		})

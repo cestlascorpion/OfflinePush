@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package OfflinePush.User;
+
+option go_package = ".;proto";
+
+service User {
+  // todo
+}

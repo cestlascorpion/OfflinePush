@@ -16,17 +16,17 @@ service Push {
 }
 
 message PushToSingleReq {
-  message SingleMessage {
+  message SingleMsg {
     string request_id = 1;
     Audience audience = 2;
     Settings settings = 3;
-    PushMessage message = 4;
-    PushChannel channel = 5;
+    PushMessage push_message = 4;
+    PushChannel push_channel = 5;
   }
 
   string push_agent = 1;
   string bundle_id = 2;
-  repeated SingleMessage message_list = 3;
+  repeated SingleMsg msg_list = 3;
   bool is_async = 4;
 }
 
@@ -36,7 +36,7 @@ message PushToSingleResp {
       string cid = 1;
       string status = 2;
     }
-  
+
     string task_id = 1;
     repeated Detail detail_list = 2;
   }
@@ -45,17 +45,17 @@ message PushToSingleResp {
 }
 
 message CreateTaskReq {
-  message ListMessage {
+  message ListMsg {
     string request_id = 1;
     string group_name = 2;
     Settings settings = 3;
-    PushMessage message = 4;
-    PushChannel channel = 5;
+    PushMessage push_message = 4;
+    PushChannel push_channel = 5;
   }
 
   string push_agent = 1;
   string bundle_id = 2;
-  ListMessage message = 3;
+  ListMsg msg = 3;
 }
 
 message CreateTaskResp {
@@ -85,13 +85,13 @@ message PushToAppReq {
     string request_id = 1;
     string group_name = 2;
     Settings settings = 3;
-    PushMessage message = 4;
-    PushChannel channel = 5;
+    PushMessage push_message = 4;
+    PushChannel push_channel = 5;
   }
 
   string push_agent = 1;
   string bundle_id = 2;
-  AppMessage message = 3;
+  AppMessage msg = 3;
 }
 
 message PushToAppResp {
@@ -151,7 +151,7 @@ message ViewDetailResp {
 // -------------------------------
 
 message Audience {
-  message PushTag {
+  message Tag {
     enum TagOpt {
       OR = 0;
       AND = 1;
@@ -159,14 +159,14 @@ message Audience {
     }
 
     string key = 1;
-    string value_list = 2;
+    string values = 2;
     TagOpt opt_type = 3;
   }
 
-  repeated string cid_list = 1;
-  repeated string alias_list = 2;
-  repeated PushTag tag_list = 3;
-  string fast_tag = 4;
+  repeated string cid = 1;
+  repeated string alias = 2;
+  repeated Tag tag = 3;
+  string fast_custom_tag = 4;
 }
 
 message Settings {
@@ -180,10 +180,10 @@ message Settings {
     int32 op = 7;
   }
 
-  int64 ttl_millisecond = 1;
+  int64 ttl = 1;
   Strategy strategy = 2;
   int64 speed = 3;
-  int64 scheduled_millisecond = 4;
+  int64 schedule_time = 4;
 }
 
 message Notification {
@@ -203,9 +203,9 @@ message Notification {
   string channel_level = 9;
   string click_type = 10;
   string intent = 11;
-  string jump_url = 12;
+  string url = 12;
   string payload = 13;
-  int64 notifyId = 14;
+  int64 notify_id = 14;
   string ring_name = 15;
   int32 badge_add_num = 16;
   Options options = 17;
@@ -228,22 +228,22 @@ message IosChannel {
     message Alert {
       string title = 1;
       string body = 2;
-      string action_loc_key = 3;
-      string loc_key = 4;
-      repeated string loc_args = 5;
-      string launch_image = 6;
-      string title_loc_key = 7;
-      repeated string title_loc_args = 8;
+      string action_loc_key = 3 [json_name = "action-loc-key"];
+      string loc_key = 4 [json_name = "loc-key"];
+      repeated string loc_args = 5 [json_name = "loc-args"];
+      string launch_image = 6 [json_name = "launch-image"];
+      string title_loc_key = 7 [json_name = "title-loc-key"];
+      repeated string title_loc_args = 8 [json_name = "title-loc-args"];
       string sub_title = 9;
-      string sub_title_loc_key = 10;
-      repeated string sub_title_loc_args = 11;
+      string sub_title_loc_key = 10 [json_name = "subtitle-loc-key"];
+      repeated string sub_title_loc_args = 11 [json_name = "subtitle-loc-args"];
     }
 
     Alert alert = 1;
-    int32 content_available = 2;
+    int32 content_available = 2 [json_name = "content-available"];
     string sound = 3;
     string category = 4;
-    string thread_id = 5;
+    string thread_id = 5 [json_name = "thread-id"];
   }
   message Multimedia {
     string url = 1;
@@ -255,8 +255,8 @@ message IosChannel {
   Aps aps = 2;
   string auto_badge = 3;
   string payload = 4;
-  repeated Multimedia multimedia_list = 5;
-  string apns_collapse_id = 6;
+  repeated Multimedia multimedia = 5;
+  string apns_collapse_id = 6 [json_name = "apns-collapse-id"];
 }
 
 message AndroidChannel {

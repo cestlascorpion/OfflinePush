@@ -6,6 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-resty/resty/v2 v2.6.0
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jinzhu/configor v1.2.1
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/sirupsen/logrus v1.8.1
