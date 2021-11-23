@@ -23,8 +23,8 @@ type PushClient interface {
 	PushToList(ctx context.Context, in *PushToListRep, opts ...grpc.CallOption) (*PushToListResp, error)
 	PushToApp(ctx context.Context, in *PushToAppReq, opts ...grpc.CallOption) (*PushToAppResp, error)
 	StopTask(ctx context.Context, in *StopTaskReq, opts ...grpc.CallOption) (*StopTaskResp, error)
-	CheckTask(ctx context.Context, in *CheckTaskReq, opts ...grpc.CallOption) (*CheckTaskResp, error)
 	RemoveTask(ctx context.Context, in *RemoveTaskReq, opts ...grpc.CallOption) (*RemoveTaskResp, error)
+	CheckTask(ctx context.Context, in *CheckTaskReq, opts ...grpc.CallOption) (*CheckTaskResp, error)
 	ViewDetail(ctx context.Context, in *ViewDetailReq, opts ...grpc.CallOption) (*ViewDetailResp, error)
 }
 
@@ -81,18 +81,18 @@ func (c *pushClient) StopTask(ctx context.Context, in *StopTaskReq, opts ...grpc
 	return out, nil
 }
 
-func (c *pushClient) CheckTask(ctx context.Context, in *CheckTaskReq, opts ...grpc.CallOption) (*CheckTaskResp, error) {
-	out := new(CheckTaskResp)
-	err := c.cc.Invoke(ctx, "/OfflinePush.Push.Push/CheckTask", in, out, opts...)
+func (c *pushClient) RemoveTask(ctx context.Context, in *RemoveTaskReq, opts ...grpc.CallOption) (*RemoveTaskResp, error) {
+	out := new(RemoveTaskResp)
+	err := c.cc.Invoke(ctx, "/OfflinePush.Push.Push/RemoveTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pushClient) RemoveTask(ctx context.Context, in *RemoveTaskReq, opts ...grpc.CallOption) (*RemoveTaskResp, error) {
-	out := new(RemoveTaskResp)
-	err := c.cc.Invoke(ctx, "/OfflinePush.Push.Push/RemoveTask", in, out, opts...)
+func (c *pushClient) CheckTask(ctx context.Context, in *CheckTaskReq, opts ...grpc.CallOption) (*CheckTaskResp, error) {
+	out := new(CheckTaskResp)
+	err := c.cc.Invoke(ctx, "/OfflinePush.Push.Push/CheckTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,8 +117,8 @@ type PushServer interface {
 	PushToList(context.Context, *PushToListRep) (*PushToListResp, error)
 	PushToApp(context.Context, *PushToAppReq) (*PushToAppResp, error)
 	StopTask(context.Context, *StopTaskReq) (*StopTaskResp, error)
-	CheckTask(context.Context, *CheckTaskReq) (*CheckTaskResp, error)
 	RemoveTask(context.Context, *RemoveTaskReq) (*RemoveTaskResp, error)
+	CheckTask(context.Context, *CheckTaskReq) (*CheckTaskResp, error)
 	ViewDetail(context.Context, *ViewDetailReq) (*ViewDetailResp, error)
 	mustEmbedUnimplementedPushServer()
 }
@@ -142,11 +142,11 @@ func (UnimplementedPushServer) PushToApp(context.Context, *PushToAppReq) (*PushT
 func (UnimplementedPushServer) StopTask(context.Context, *StopTaskReq) (*StopTaskResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StopTask not implemented")
 }
-func (UnimplementedPushServer) CheckTask(context.Context, *CheckTaskReq) (*CheckTaskResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CheckTask not implemented")
-}
 func (UnimplementedPushServer) RemoveTask(context.Context, *RemoveTaskReq) (*RemoveTaskResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveTask not implemented")
+}
+func (UnimplementedPushServer) CheckTask(context.Context, *CheckTaskReq) (*CheckTaskResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckTask not implemented")
 }
 func (UnimplementedPushServer) ViewDetail(context.Context, *ViewDetailReq) (*ViewDetailResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewDetail not implemented")
@@ -254,24 +254,6 @@ func _Push_StopTask_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Push_CheckTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckTaskReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PushServer).CheckTask(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/OfflinePush.Push.Push/CheckTask",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PushServer).CheckTask(ctx, req.(*CheckTaskReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Push_RemoveTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RemoveTaskReq)
 	if err := dec(in); err != nil {
@@ -286,6 +268,24 @@ func _Push_RemoveTask_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PushServer).RemoveTask(ctx, req.(*RemoveTaskReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Push_CheckTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckTaskReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PushServer).CheckTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/OfflinePush.Push.Push/CheckTask",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PushServer).CheckTask(ctx, req.(*CheckTaskReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -336,12 +336,12 @@ var Push_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Push_StopTask_Handler,
 		},
 		{
-			MethodName: "CheckTask",
-			Handler:    _Push_CheckTask_Handler,
-		},
-		{
 			MethodName: "RemoveTask",
 			Handler:    _Push_RemoveTask_Handler,
+		},
+		{
+			MethodName: "CheckTask",
+			Handler:    _Push_CheckTask_Handler,
 		},
 		{
 			MethodName: "ViewDetail",

@@ -10,20 +10,12 @@ service Push {
   rpc PushToList (PushToListRep) returns (PushToListResp) {}
   rpc PushToApp (PushToAppReq) returns (PushToAppResp) {}
   rpc StopTask (StopTaskReq) returns (StopTaskResp) {}
-  rpc CheckTask (CheckTaskReq) returns (CheckTaskResp) {}
   rpc RemoveTask (RemoveTaskReq) returns (RemoveTaskResp) {}
+  rpc CheckTask (CheckTaskReq) returns (CheckTaskResp) {}
   rpc ViewDetail (ViewDetailReq) returns (ViewDetailResp) {}
 }
 
 message PushToSingleReq {
-  message SingleMsg {
-    string request_id = 1;
-    Audience audience = 2;
-    Settings settings = 3;
-    PushMessage push_message = 4;
-    PushChannel push_channel = 5;
-  }
-
   string push_agent = 1;
   string bundle_id = 2;
   repeated SingleMsg msg_list = 3;
@@ -35,17 +27,9 @@ message PushToSingleResp {
 }
 
 message CreateTaskReq {
-  message ListMsg {
-    string request_id = 1;
-    string group_name = 2;
-    Settings settings = 3;
-    PushMessage push_message = 4;
-    PushChannel push_channel = 5;
-  }
-
   string push_agent = 1;
   string bundle_id = 2;
-  ListMsg msg = 3;
+  CreateMsg msg = 3;
 }
 
 message CreateTaskResp {
@@ -55,27 +39,18 @@ message CreateTaskResp {
 message PushToListRep {
   string push_agent = 1;
   string bundle_id = 2;
-  Audience audience = 3;
-  string task_id = 4;
-  bool is_async = 5;
+  ListMsg msg = 3;
+  bool is_async = 4;
 }
 
 message PushToListResp {
-  repeated Receipt receipt_list = 1;
+  Receipt receipt = 1;
 }
 
 message PushToAppReq {
-  message AppMessage {
-    string request_id = 1;
-    string group_name = 2;
-    Settings settings = 3;
-    PushMessage push_message = 4;
-    PushChannel push_channel = 5;
-  }
-
   string push_agent = 1;
   string bundle_id = 2;
-  AppMessage msg = 3;
+  AppMsg msg = 3;
 }
 
 message PushToAppResp {
@@ -92,6 +67,16 @@ message StopTaskResp {
   bool success = 1;
 }
 
+message RemoveTaskReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string task_id = 3;
+}
+
+message RemoveTaskResp {
+  bool success = 1;
+}
+
 message CheckTaskReq {
   string push_agent = 1;
   string bundle_id = 2;
@@ -104,16 +89,6 @@ message CheckTaskResp {
   string status = 3;
   string transmission_content = 4;
   int64 push_time = 5;
-}
-
-message RemoveTaskReq {
-  string push_agent = 1;
-  string bundle_id = 2;
-  string task_id = 3;
-}
-
-message RemoveTaskResp {
-  bool success = 1;
 }
 
 message ViewDetailReq {
@@ -258,6 +233,35 @@ message PushChannel {
 }
 
 // -------------------------------
+
+message SingleMsg {
+  string request_id = 1;
+  Audience audience = 2;
+  Settings settings = 3;
+  PushMessage push_message = 4;
+  PushChannel push_channel = 5;
+}
+
+message CreateMsg {
+  string request_id = 1;
+  string group_name = 2;
+  Settings settings = 3;
+  PushMessage push_message = 4;
+  PushChannel push_channel = 5;
+}
+
+message ListMsg {
+  Audience audience = 1;
+  string task_id = 2;
+}
+
+message AppMsg {
+  string request_id = 1;
+  string group_name = 2;
+  Settings settings = 3;
+  PushMessage push_message = 4;
+  PushChannel push_channel = 5;
+}
 
 message Receipt {
   message Detail {
