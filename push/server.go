@@ -2,62 +2,159 @@ package push
 
 import (
 	"context"
+	"errors"
+
 	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
+	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
 	*pb.UnimplementedPushServer
+	Mgr  *AgentMgr
+	Auth *core.AuthCache
 }
 
 func NewServer(conf *core.PushConfig) (*Server, error) {
-	return &Server{}, nil
+	return &Server{
+		// todo
+	}, nil
 }
 
-func (s *Server) PushToSingle(context.Context, *pb.PushToSingleReq) (*pb.PushToSingleResp, error) {
+func (s *Server) PushToSingle(ctx context.Context, in *pb.PushToSingleReq) (*pb.PushToSingleResp, error) {
 	out := &pb.PushToSingleResp{}
 
-	return out, nil
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		len(in.MsgList) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
+	return out, nil // todo 分片
 }
 
-func (s *Server) CreateTask(context.Context, *pb.CreateTaskReq) (*pb.CreateTaskResp, error) {
+func (s *Server) CreateTask(ctx context.Context, in *pb.CreateTaskReq) (*pb.CreateTaskResp, error) {
 	out := &pb.CreateTaskResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		in.Msg == nil {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
 	return out, nil
 }
 
-func (s *Server) PushToList(context.Context, *pb.PushToListRep) (*pb.PushToListResp, error) {
+func (s *Server) PushToList(ctx context.Context, in *pb.PushToListRep) (*pb.PushToListResp, error) {
 	out := &pb.PushToListResp{}
 
-	return out, nil
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		in.Msg == nil {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
+	return out, nil // todo 分片
 }
 
-func (s *Server) PushToApp(context.Context, *pb.PushToAppReq) (*pb.PushToAppResp, error) {
+func (s *Server) PushToApp(ctx context.Context, in *pb.PushToAppReq) (*pb.PushToAppResp, error) {
 	out := &pb.PushToAppResp{}
 
-	return out, nil
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		in.Msg == nil {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
+	return out, nil // todo 分片
 }
 
-func (s *Server) StopTask(context.Context, *pb.StopTaskReq) (*pb.StopTaskResp, error) {
+func (s *Server) StopTask(ctx context.Context, in *pb.StopTaskReq) (*pb.StopTaskResp, error) {
 	out := &pb.StopTaskResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		len(in.TaskId) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
 	return out, nil
 }
 
-func (s *Server) CheckTask(context.Context, *pb.CheckTaskReq) (*pb.CheckTaskResp, error) {
+func (s *Server) CheckTask(ctx context.Context, in *pb.CheckTaskReq) (*pb.CheckTaskResp, error) {
 	out := &pb.CheckTaskResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		len(in.TaskId) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
 	return out, nil
 }
 
-func (s *Server) RemoveTask(context.Context, *pb.RemoveTaskReq) (*pb.RemoveTaskResp, error) {
+func (s *Server) RemoveTask(ctx context.Context, in *pb.RemoveTaskReq) (*pb.RemoveTaskResp, error) {
 	out := &pb.RemoveTaskResp{}
 
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		len(in.TaskId) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	// todo
+
 	return out, nil
 }
 
-func (s *Server) ViewDetail(context.Context, *pb.ViewDetailReq) (*pb.ViewDetailResp, error) {
+func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error) {
 	out := &pb.ViewDetailResp{}
+
+	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		len(in.TaskId) == 0 || len(in.Cid) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	auth, err := s.Auth.GetAuth(uniqueId, "")
+	if err != nil {
+		log.Errorf("get auth err %+v", err)
+		return out, err
+	}
+	resp, err := s.Mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
+	if err != nil {
+		if err.Error() == core.InvalidTokenErr {
+			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
+			if err != nil {
+				log.Errorf("get authx2 err %+v", err)
+				return out, err
+			}
+			resp, err = s.Mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
+		}
+		if err != nil {
+			log.Errorf("get tasks err %+v", err)
+			return out, err
+		}
+	}
+	for i := range resp {
+		out.DetailList = append(out.DetailList, &pb.ViewDetailResp_Detail{
+			Time:  resp[i][0],
+			Event: resp[i][1],
+		})
+	}
 
 	return out, nil
 }
