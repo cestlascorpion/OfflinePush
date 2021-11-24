@@ -145,37 +145,32 @@ message Settings {
   int64 schedule_time = 4;
 }
 
-message Notification {
-  message Options {
-    string constraint = 1;
-    string key = 2;
-    string value = 3;
-  }
-  string title = 1;
-  string body = 2;
-  string big_text = 3;
-  string big_image = 4;
-  string logo = 5;
-  string logo_url = 6;
-  string channel_id = 7;
-  string channel_name = 8;
-  string channel_level = 9;
-  string click_type = 10;
-  string intent = 11;
-  string url = 12;
-  string payload = 13;
-  int64 notify_id = 14;
-  string ring_name = 15;
-  int32 badge_add_num = 16;
-  Options options = 17;
-}
-
-message Revoke {
-  string old_task_id = 1;
-  bool force = 2;
-}
-
 message PushMessage {
+  message Notification {
+    string title = 1;
+    string body = 2;
+    string big_text = 3;
+    string big_image = 4;
+    string logo = 5;
+    string logo_url = 6;
+    string channel_id = 7;
+    string channel_name = 8;
+    string channel_level = 9;
+    string click_type = 10;
+    string intent = 11;
+    string url = 12;
+    string payload = 13;
+    int64 notify_id = 14;
+    string ring_name = 15;
+    int32 badge_add_num = 16;
+    string thread_id = 17;
+  }
+
+  message Revoke {
+    string old_task_id = 1;
+    bool force = 2;
+  }
+
   string duration = 1;
   Notification notification = 2;
   string transmission = 3;
@@ -220,8 +215,27 @@ message IosChannel {
 
 message AndroidChannel {
   message Ups {
+    message Notification {
+      string title = 1;
+      string body = 2;
+      string click_type = 3;
+      string intent = 4;
+      string url = 5;
+      int64 notify_id = 6;
+    }
+    message Revoke {
+      string old_task_id = 1;
+    }
+    message Options {
+      string constraint = 1;
+      string key = 2;
+      string value = 3;
+    }
+
     Notification notification = 1;
     string transmission = 2;
+    Revoke revoke = 3;
+    Options options = 4;
   }
 
   Ups ups = 1;
