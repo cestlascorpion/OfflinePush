@@ -3,6 +3,7 @@ package push
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
@@ -16,8 +17,41 @@ type Server struct {
 }
 
 func NewServer(conf *core.PushConfig) (*Server, error) {
+	mgr, err := NewAgentMgr()
+	if err != nil {
+		log.Errorf("new stats mgr err %+v", err)
+		return nil, err
+	}
+
+	agent, err := NewGeTuiPush(
+		core.GTBaseUrl,
+		conf.TestApp.AppId,
+		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+	if err != nil {
+		log.Errorf("new getui agent err %+v", err)
+		return nil, err
+	}
+
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agent)
+	if err != nil {
+		log.Errorf("register getui agent err %+v", err)
+		return nil, err
+	}
+
+	auth, err := core.NewAuthCache()
+	if err != nil {
+		log.Errorf("new auth cache err %+v", err)
+		return nil, err
+	}
+	err = auth.Start(context.Background())
+	if err != nil {
+		log.Errorf("start auth cache err %+v", err)
+		return nil, err
+	}
+
 	return &Server{
-		// todo
+		Mgr:  mgr,
+		Auth: auth,
 	}, nil
 }
 
@@ -155,8 +189,9 @@ func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.View
 			Event: resp[i][1],
 		})
 	}
-
 	return out, nil
 }
 
-func (s *Server) Close() {}
+func (s *Server) Close() {
+	// do nothing
+}

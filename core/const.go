@@ -21,7 +21,8 @@ const (
 )
 
 const (
-	TestTasks = ""
-	TestGroup = ""
-	TestToken = ""
+	TestTasks  = ""
+	TestGroup  = ""
+	TestToken  = ""
+	TestTaskId = ""
 )
