@@ -24,5 +24,6 @@ const (
 	TestTasks  = ""
 	TestGroup  = ""
 	TestToken  = ""
+	TestAlias  = ""
 	TestTaskId = ""
 )

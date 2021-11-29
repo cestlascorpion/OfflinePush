@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PushClient interface {
 	PushToSingle(ctx context.Context, in *PushToSingleReq, opts ...grpc.CallOption) (*PushToSingleResp, error)
 	CreateTask(ctx context.Context, in *CreateTaskReq, opts ...grpc.CallOption) (*CreateTaskResp, error)
-	PushToList(ctx context.Context, in *PushToListRep, opts ...grpc.CallOption) (*PushToListResp, error)
+	PushToList(ctx context.Context, in *PushToListReq, opts ...grpc.CallOption) (*PushToListResp, error)
 	PushToApp(ctx context.Context, in *PushToAppReq, opts ...grpc.CallOption) (*PushToAppResp, error)
 	StopTask(ctx context.Context, in *StopTaskReq, opts ...grpc.CallOption) (*StopTaskResp, error)
 	RemoveTask(ctx context.Context, in *RemoveTaskReq, opts ...grpc.CallOption) (*RemoveTaskResp, error)
@@ -54,7 +54,7 @@ func (c *pushClient) CreateTask(ctx context.Context, in *CreateTaskReq, opts ...
 	return out, nil
 }
 
-func (c *pushClient) PushToList(ctx context.Context, in *PushToListRep, opts ...grpc.CallOption) (*PushToListResp, error) {
+func (c *pushClient) PushToList(ctx context.Context, in *PushToListReq, opts ...grpc.CallOption) (*PushToListResp, error) {
 	out := new(PushToListResp)
 	err := c.cc.Invoke(ctx, "/OfflinePush.Push.Push/PushToList", in, out, opts...)
 	if err != nil {
@@ -114,7 +114,7 @@ func (c *pushClient) ViewDetail(ctx context.Context, in *ViewDetailReq, opts ...
 type PushServer interface {
 	PushToSingle(context.Context, *PushToSingleReq) (*PushToSingleResp, error)
 	CreateTask(context.Context, *CreateTaskReq) (*CreateTaskResp, error)
-	PushToList(context.Context, *PushToListRep) (*PushToListResp, error)
+	PushToList(context.Context, *PushToListReq) (*PushToListResp, error)
 	PushToApp(context.Context, *PushToAppReq) (*PushToAppResp, error)
 	StopTask(context.Context, *StopTaskReq) (*StopTaskResp, error)
 	RemoveTask(context.Context, *RemoveTaskReq) (*RemoveTaskResp, error)
@@ -133,7 +133,7 @@ func (UnimplementedPushServer) PushToSingle(context.Context, *PushToSingleReq) (
 func (UnimplementedPushServer) CreateTask(context.Context, *CreateTaskReq) (*CreateTaskResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTask not implemented")
 }
-func (UnimplementedPushServer) PushToList(context.Context, *PushToListRep) (*PushToListResp, error) {
+func (UnimplementedPushServer) PushToList(context.Context, *PushToListReq) (*PushToListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PushToList not implemented")
 }
 func (UnimplementedPushServer) PushToApp(context.Context, *PushToAppReq) (*PushToAppResp, error) {
@@ -201,7 +201,7 @@ func _Push_CreateTask_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _Push_PushToList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PushToListRep)
+	in := new(PushToListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func _Push_PushToList_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/OfflinePush.Push.Push/PushToList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PushServer).PushToList(ctx, req.(*PushToListRep))
+		return srv.(PushServer).PushToList(ctx, req.(*PushToListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

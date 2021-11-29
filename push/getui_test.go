@@ -2,10 +2,12 @@ package push
 
 import (
 	"fmt"
+	pb "github.com/cestlascorpion/offlinepush/proto"
 	"testing"
 	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
+	"github.com/globalsign/mgo/bson"
 	"github.com/jinzhu/configor"
 )
 
@@ -25,8 +27,30 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushSingleReq{
-		// todo
+	request := &SingleReq{
+		RequestId: bson.NewObjectId().Hex(),
+		Audience: &pb.Audience{
+			Cid: []string{core.TestToken},
+		},
+		Settings: nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushSingleByCid(request, core.TestAuthToken)
 	if err != nil {
@@ -51,8 +75,30 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushSingleReq{
-		// todo
+	request := &SingleReq{
+		RequestId: bson.NewObjectId().Hex(),
+		Audience: &pb.Audience{
+			Alias: []string{core.TestAlias},
+		},
+		Settings: nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushSingleByAlias(request, core.TestAuthToken)
 	if err != nil {
@@ -77,8 +123,35 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushBatchReq{
-		// todo
+	request := &BatchReq{
+		IsAsync: false,
+		MsgList: []*SingleReq{
+			{
+				RequestId: bson.NewObjectId().Hex(),
+				Audience: &pb.Audience{
+					Cid: []string{core.TestToken},
+				},
+				Settings: nil,
+				PushMessage: &pb.PushMessage{
+					Notification: &pb.PushMessage_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+				PushChannel: &pb.PushChannel{
+					Android: &pb.AndroidChannel{
+						Ups: &pb.AndroidChannel_Ups{
+							Notification: &pb.AndroidChannel_Ups_Notification{
+								Title:     "title",
+								Body:      "body",
+								ClickType: "startapp",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushBatchByCid(request, core.TestAuthToken)
 	if err != nil {
@@ -103,8 +176,35 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushBatchReq{
-		// todo
+	request := &BatchReq{
+		IsAsync: false,
+		MsgList: []*SingleReq{
+			{
+				RequestId: bson.NewObjectId().Hex(),
+				Audience: &pb.Audience{
+					Alias: []string{core.TestAlias},
+				},
+				Settings: nil,
+				PushMessage: &pb.PushMessage{
+					Notification: &pb.PushMessage_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+				PushChannel: &pb.PushChannel{
+					Android: &pb.AndroidChannel{
+						Ups: &pb.AndroidChannel_Ups{
+							Notification: &pb.AndroidChannel_Ups_Notification{
+								Title:     "title",
+								Body:      "body",
+								ClickType: "startapp",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushBatchByAlias(request, core.TestAuthToken)
 	if err != nil {
@@ -129,8 +229,28 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 		t.Failed()
 	}
 
-	create := &CreateMsgReq{
-		// todo
+	create := &CreateReq{
+		RequestId: bson.NewObjectId().Hex(),
+		GroupName: core.TestGroup,
+		Settings:  nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
 	if err != nil {
@@ -138,8 +258,12 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	}
 	fmt.Println(taskId)
 
-	request := &PushListReq{
-		// todo
+	request := &ListReq{
+		Audience: &pb.Audience{
+			Cid: []string{core.TestToken},
+		},
+		IsAsync: false,
+		TaskId:  taskId,
 	}
 	result, err := agent.PushListByCid(request, core.TestAuthToken)
 	if err != nil {
@@ -164,8 +288,28 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 		t.Failed()
 	}
 
-	create := &CreateMsgReq{
-		// todo
+	create := &CreateReq{
+		RequestId: bson.NewObjectId().Hex(),
+		GroupName: core.TestGroup,
+		Settings:  nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
 	if err != nil {
@@ -173,8 +317,12 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	}
 	fmt.Println(taskId)
 
-	request := &PushListReq{
-		// todo
+	request := &ListReq{
+		Audience: &pb.Audience{
+			Alias: []string{core.TestAlias},
+		},
+		IsAsync: false,
+		TaskId:  taskId,
 	}
 	result, err := agent.PushListByAlias(request, core.TestAuthToken)
 	if err != nil {
@@ -199,8 +347,29 @@ func TestGetuiPush_PushAll(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushAllReq{
-		// todo
+	request := &AllReq{
+		RequestId: bson.NewObjectId().Hex(),
+		GroupName: core.TestGroup,
+		Audience:  "all",
+		Settings:  nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushAll(request, core.TestAuthToken)
 	if err != nil {
@@ -225,8 +394,42 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushByTagReq{
-		// todo
+	request := &ByTagReq{
+		RequestId: bson.NewObjectId().Hex(),
+		GroupName: core.TestGroup,
+		Audience: &pb.Audience{
+			Tag: []*pb.Audience_Tag{
+				{
+					Key:     "phone_type",
+					Values:  "android",
+					OptType: pb.Audience_Tag_AND,
+				},
+				{
+					Key:     "region",
+					Values:  "11000000",
+					OptType: pb.Audience_Tag_AND,
+				},
+			},
+		},
+		Settings: nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushByTag(request, core.TestAuthToken)
 	if err != nil {
@@ -251,8 +454,31 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 		t.Failed()
 	}
 
-	request := &PushByFastCustomTagReq{
-		// todo
+	request := &ByTagReq{
+		RequestId: bson.NewObjectId().Hex(),
+		GroupName: core.TestGroup,
+		Audience: &pb.Audience{
+			FastCustomTag: "group_manager",
+		},
+		Settings: nil,
+		PushMessage: &pb.PushMessage{
+			Notification: &pb.PushMessage_Notification{
+				Title:     "title",
+				Body:      "body",
+				ClickType: "startapp",
+			},
+		},
+		PushChannel: &pb.PushChannel{
+			Android: &pb.AndroidChannel{
+				Ups: &pb.AndroidChannel_Ups{
+					Notification: &pb.AndroidChannel_Ups_Notification{
+						Title:     "title",
+						Body:      "body",
+						ClickType: "startapp",
+					},
+				},
+			},
+		},
 	}
 	result, err := agent.PushByFastCustomTag(request, core.TestAuthToken)
 	if err != nil {

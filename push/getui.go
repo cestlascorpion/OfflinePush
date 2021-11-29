@@ -22,7 +22,7 @@ func NewGeTuiPush(apiUrl, appId string, timeout time.Duration) (*GetuiPush, erro
 	}, nil
 }
 
-func (g *GetuiPush) PushSingleByCid(request *PushSingleReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushSingleByCid(request *SingleReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/single/cid"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushSingleByCid() POST err %+v", err)
@@ -45,7 +45,7 @@ func (g *GetuiPush) PushSingleByCid(request *PushSingleReq, token string) (map[s
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) PushSingleByAlias(request *PushSingleReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushSingleByAlias(request *SingleReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/single/alias"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushSingleByAlias() POST err %+v", err)
@@ -68,7 +68,7 @@ func (g *GetuiPush) PushSingleByAlias(request *PushSingleReq, token string) (map
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) PushBatchByCid(request *PushBatchReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushBatchByCid(request *BatchReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/single/batch/cid"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushBatchByCid() POST err %+v", err)
@@ -91,7 +91,7 @@ func (g *GetuiPush) PushBatchByCid(request *PushBatchReq, token string) (map[str
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) PushBatchByAlias(request *PushBatchReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushBatchByAlias(request *BatchReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/single/batch/alias"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushBatchByAlias() POST err %+v", err)
@@ -114,7 +114,7 @@ func (g *GetuiPush) PushBatchByAlias(request *PushBatchReq, token string) (map[s
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) CreateMsg(request *CreateMsgReq, token string) (string, error) {
+func (g *GetuiPush) CreateMsg(request *CreateReq, token string) (string, error) {
 	result, err := core.POST(g.url("/push/list/message"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("CreateMsg() POST err %+v", err)
@@ -137,7 +137,7 @@ func (g *GetuiPush) CreateMsg(request *CreateMsgReq, token string) (string, erro
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GetuiPush) PushListByCid(request *PushListReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushListByCid(request *ListReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/list/cid"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushListByCid() POST err %+v", err)
@@ -160,7 +160,7 @@ func (g *GetuiPush) PushListByCid(request *PushListReq, token string) (map[strin
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) PushListByAlias(request *PushListReq, token string) (map[string]map[string]string, error) {
+func (g *GetuiPush) PushListByAlias(request *ListReq, token string) (map[string]map[string]string, error) {
 	result, err := core.POST(g.url("/push/list/alias"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushListByAlias() POST err %+v", err)
@@ -183,7 +183,7 @@ func (g *GetuiPush) PushListByAlias(request *PushListReq, token string) (map[str
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GetuiPush) PushAll(request *PushAllReq, token string) (string, error) {
+func (g *GetuiPush) PushAll(request *AllReq, token string) (string, error) {
 	result, err := core.POST(g.url("/push/all"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushAll() POST err %+v", err)
@@ -206,7 +206,7 @@ func (g *GetuiPush) PushAll(request *PushAllReq, token string) (string, error) {
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GetuiPush) PushByTag(request *PushByTagReq, token string) (string, error) {
+func (g *GetuiPush) PushByTag(request *ByTagReq, token string) (string, error) {
 	result, err := core.POST(g.url("/push/tag"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushByTag() POST err %+v", err)
@@ -229,7 +229,7 @@ func (g *GetuiPush) PushByTag(request *PushByTagReq, token string) (string, erro
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GetuiPush) PushByFastCustomTag(request *PushByFastCustomTagReq, token string) (string, error) {
+func (g *GetuiPush) PushByFastCustomTag(request *ByTagReq, token string) (string, error) {
 	result, err := core.POST(g.url("/push/fast_custom_tag"), token, request, g.timeout)
 	if err != nil {
 		log.Errorf("PushByFastCustomTag() POST err %+v", err)

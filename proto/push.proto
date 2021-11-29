@@ -7,7 +7,7 @@ option go_package = ".;proto";
 service Push {
   rpc PushToSingle (PushToSingleReq) returns (PushToSingleResp) {}
   rpc CreateTask (CreateTaskReq) returns (CreateTaskResp) {}
-  rpc PushToList (PushToListRep) returns (PushToListResp) {}
+  rpc PushToList (PushToListReq) returns (PushToListResp) {}
   rpc PushToApp (PushToAppReq) returns (PushToAppResp) {}
   rpc StopTask (StopTaskReq) returns (StopTaskResp) {}
   rpc RemoveTask (RemoveTaskReq) returns (RemoveTaskResp) {}
@@ -36,7 +36,7 @@ message CreateTaskResp {
   string task_id = 1;
 }
 
-message PushToListRep {
+message PushToListReq {
   string push_agent = 1;
   string bundle_id = 2;
   ListMsg msg = 3;
@@ -84,11 +84,10 @@ message CheckTaskReq {
 }
 
 message CheckTaskResp {
-  string task_id = 1;
-  int64 create_time = 2;
-  string status = 3;
-  string transmission_content = 4;
-  int64 push_time = 5;
+  int64 create_time = 1;
+  string status = 2;
+  string transmission_content = 3;
+  int64 push_time = 4;
 }
 
 message ViewDetailReq {
@@ -182,21 +181,31 @@ message IosChannel {
     message Alert {
       string title = 1;
       string body = 2;
+      // @gotags: json:"action-loc-key,omitempty"
       string action_loc_key = 3 [json_name = "action-loc-key"];
+      // @gotags: json:"loc-key,omitempty"
       string loc_key = 4 [json_name = "loc-key"];
+      // @gotags: json:"loc-args,omitempty"
       repeated string loc_args = 5 [json_name = "loc-args"];
+      // @gotags: json:"launch-image,omitempty"
       string launch_image = 6 [json_name = "launch-image"];
+      // @gotags: json:"title-loc-key,omitempty"
       string title_loc_key = 7 [json_name = "title-loc-key"];
+      // @gotags: json:"title-loc-args,omitempty"
       repeated string title_loc_args = 8 [json_name = "title-loc-args"];
-      string sub_title = 9;
+      string subtitle = 9;
+      // @gotags: json:"subtitle-loc-key,omitempty"
       string sub_title_loc_key = 10 [json_name = "subtitle-loc-key"];
+      // @gotags: json:"subtitle-loc-args,omitempty"
       repeated string sub_title_loc_args = 11 [json_name = "subtitle-loc-args"];
     }
 
     Alert alert = 1;
+    // @gotags: json:"content-available,omitempty"
     int32 content_available = 2 [json_name = "content-available"];
     string sound = 3;
     string category = 4;
+    // @gotags: json:"thread-id,omitempty"
     string thread_id = 5 [json_name = "thread-id"];
   }
   message Multimedia {
@@ -210,6 +219,7 @@ message IosChannel {
   string auto_badge = 3;
   string payload = 4;
   repeated Multimedia multimedia = 5;
+  // @gotags: json:"apns-collapse-id,omitempty"
   string apns_collapse_id = 6 [json_name = "apns-collapse-id"];
 }
 
@@ -227,9 +237,52 @@ message AndroidChannel {
       string old_task_id = 1;
     }
     message Options {
-      string constraint = 1;
-      string key = 2;
-      string value = 3;
+      message HW {
+        // @gotags: json:"/message/android/notification/badge/class,omitempty"
+        string class = 1 [json_name = "/message/android/notification/badge/class"];
+        // @gotags: json:"/message/android/notification/badge/add_num,omitempty"
+        int32  add_num = 2 [json_name = "/message/android/notification/badge/add_num"];
+        // @gotags: json:"/message/android/notification/badge/set_num,omitempty"
+        int32  set_num = 3 [json_name = "/message/android/notification/badge/set_num"];
+        // @gotags: json:"/message/android/notification/badge/image,omitempty"
+        string image = 4 [json_name = "/message/android/notification/image"];
+        // @gotags: json:"/message/android/notification/badge/style,omitempty"
+        int32 style = 5 [json_name = "/message/android/notification/style"];
+        // @gotags: json:"/message/android/notification/big_title,omitempty"
+        string big_title = 6 [json_name = "/message/android/notification/big_title"];
+        // @gotags: json:"/message/android/notification/big_body,omitempty"
+        string big_body = 7 [json_name = "/message/android/notification/big_body"];
+        // @gotags: json:"/message/android/notification/importance,omitempty"
+        string importance = 8 [json_name = "/message/android/notification/importance"];
+        // @gotags: json:"/message/android/notification/default_sound,omitempty"
+        bool default_sound = 9 [json_name = "/message/android/notification/default_sound"];
+        // @gotags: json:"/message/android/notification/sound,omitempty"
+        string channel_id = 10 [json_name = "/message/android/notification/sound"];
+        // @gotags: json:"/message/android/notification/importance,omitempty"
+        string sound = 11 [json_name = "/message/android/notification/importance"];
+      }
+      message XM {
+        string channel = 1;
+        string notification_large_icon_uri = 2;
+        string notification_style_type = 3;
+        string notification_bigTxt = 4;
+        string notification_bigPic_uri = 5;
+        string sound_uri = 6;
+      }
+      message OP {
+        string channel = 1;
+        string small_picture_id = 2;
+        int32 style = 3;
+        string big_picture_id = 4;
+      }
+      message VV {
+        int32 classification = 1;
+      }
+
+      HW hw = 1;
+      XM xm = 2;
+      OP op = 3;
+      VV vv = 4;
     }
 
     Notification notification = 1;
@@ -272,9 +325,10 @@ message ListMsg {
 message AppMsg {
   string request_id = 1;
   string group_name = 2;
-  Settings settings = 3;
-  PushMessage push_message = 4;
-  PushChannel push_channel = 5;
+  Audience audience = 3;
+  Settings settings = 4;
+  PushMessage push_message = 5;
+  PushChannel push_channel = 6;
 }
 
 message Receipt {
