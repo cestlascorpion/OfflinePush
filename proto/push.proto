@@ -279,10 +279,14 @@ message AndroidChannel {
         int32 classification = 1;
       }
 
-      HW hw = 1;
-      XM xm = 2;
-      OP op = 3;
-      VV vv = 4;
+      // @gotags: json:"HW,omitempty"
+      HW hw = 1 [json_name = "HW"];
+      // @gotags: json:"XM,omitempty"
+      XM xm = 2 [json_name = "XM"];
+      // @gotags: json:"OP,omitempty"
+      OP op = 3 [json_name = "OP"];
+      // @gotags: json:"VV,omitempty"
+      VV vv = 4 [json_name = "VV"];
     }
 
     Notification notification = 1;
