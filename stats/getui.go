@@ -64,6 +64,9 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
+		if resp.Code == 20001 {
+			return nil, errors.New(core.InvalidTargetErr)
+		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Group(resp.Data)

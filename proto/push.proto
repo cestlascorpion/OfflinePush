@@ -110,15 +110,9 @@ message ViewDetailResp {
 
 message Audience {
   message Tag {
-    enum TagOpt {
-      OR = 0;
-      AND = 1;
-      NOT = 2;
-    }
-
     string key = 1;
-    string values = 2;
-    TagOpt opt_type = 3;
+    repeated string values = 2;
+    string opt_type = 3;
   }
 
   repeated string cid = 1;

@@ -269,6 +269,9 @@ func (g *GetuiPush) StopPush(taskId, token string) (bool, error) {
 		if resp.Code == 10001 {
 			return false, errors.New(core.InvalidTokenErr)
 		}
+		if resp.Code == 20001 {
+			return false, errors.New(core.InvalidTargetErr)
+		}
 		return false, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
 	return true, nil
@@ -290,6 +293,9 @@ func (g *GetuiPush) DeleteScheduleTask(taskId, token string) (bool, error) {
 		log.Errorf("DeleteScheduleTask() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
 			return false, errors.New(core.InvalidTokenErr)
+		}
+		if resp.Code == 20001 {
+			return false, errors.New(core.InvalidTargetErr)
 		}
 		return false, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
@@ -313,6 +319,9 @@ func (g *GetuiPush) QueryScheduleTask(taskId, token string) (map[string]string, 
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
+		if resp.Code == 20001 {
+			return nil, errors.New(core.InvalidTargetErr)
+		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Schedule(resp.Data)
@@ -334,6 +343,9 @@ func (g *GetuiPush) QueryDetail(taskId, cId, token string) ([][2]string, error) 
 		log.Errorf("QueryDetail() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
+		}
+		if resp.Code == 20001 {
+			return nil, errors.New(core.InvalidTargetErr)
 		}
 		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
 	}

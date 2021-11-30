@@ -2,11 +2,11 @@ package push
 
 import (
 	"fmt"
-	pb "github.com/cestlascorpion/offlinepush/proto"
 	"testing"
 	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
+	pb "github.com/cestlascorpion/offlinepush/proto"
 	"github.com/globalsign/mgo/bson"
 	"github.com/jinzhu/configor"
 )
@@ -401,13 +401,13 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 			Tag: []*pb.Audience_Tag{
 				{
 					Key:     "phone_type",
-					Values:  "android",
-					OptType: pb.Audience_Tag_AND,
+					Values:  []string{"android", "ios"},
+					OptType: "or",
 				},
 				{
 					Key:     "region",
-					Values:  "11000000",
-					OptType: pb.Audience_Tag_AND,
+					Values:  []string{"11000000"},
+					OptType: "and",
 				},
 			},
 		},
