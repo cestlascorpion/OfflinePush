@@ -5,5 +5,236 @@ package OfflinePush.User;
 option go_package = ".;proto";
 
 service User {
-  // todo
+  rpc BindAlias(BindAliasReq) returns (BindAliasResp) {}
+  rpc QueryAliasByCid(QueryAliasReq) returns (QueryAliasResp) {}
+  rpc QueryCidByAlias(QueryCidReq) returns (QueryCidResp) {}
+  rpc UnbindAlias(UnbindAliasReq) returns (UnbindAliasResp) {}
+  rpc RevokeAlias(RevokeAliasReq) returns (RevokeAliasResp) {}
+  rpc BindUserWithTag(BindUserWithTagReq) returns (BindUserWithTagResp) {}
+  rpc BindTagWithUser(BindTagWithUserReq) returns (BindTagWithUserResp) {}
+  rpc UnbindTagFromUser(UnbindTagFromUserReq) returns (UnbindTagFromUserResp) {}
+  rpc QueryUserTag(QueryUserTagReq) returns (QueryUserTagResp) {}
+  rpc AddBlackList(AddBlackListReq) returns (AddBlackListResp) {}
+  rpc DelBlackList(DelBlackListReq) returns (DelBlackListResp) {}
+  rpc QueryUserStatus(QueryUserStatusReq) returns (QueryUserStatusResp) {}
+  rpc QueryDeviceStatus(QueryDeviceStatusReq) returns (QueryDeviceStatusResp) {}
+  rpc QueryUserInfo(QueryUserInfoReq) returns (QueryUserInfoResp) {}
+  rpc SetPushBadge(SetPushBadgeReq) returns (SetPushBadgeResp) {}
+  rpc QueryUserCount(QueryUserCountReq) returns (QueryUserCountResp) {}
+}
+
+message BindAliasReq {
+  message Data {
+    string cid = 1;
+    string alias = 2;
+  }
+
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated Data data_list = 3;
+}
+
+message BindAliasResp {
+  // nothing
+}
+
+message QueryAliasReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string c_id = 3;
+}
+
+message QueryAliasResp {
+  string alias = 1;
+}
+
+message QueryCidReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string alias = 3;
+}
+
+message QueryCidResp {
+  repeated string c_id_list = 1;
+}
+
+message UnbindAliasReq {
+  message Data {
+    string cid = 1;
+    string alias = 2;
+  }
+
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated Data data_list = 3;
+}
+
+message UnbindAliasResp {
+  // nothing
+}
+
+message RevokeAliasReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string alias = 3;
+}
+
+message RevokeAliasResp {
+  // nothing
+}
+
+message BindUserWithTagReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string c_id = 3;
+  repeated string tag_list = 4;
+}
+
+message BindUserWithTagResp {
+  // nothing
+}
+
+message BindTagWithUserReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string tag = 3;
+  repeated string c_id_list = 4;
+}
+
+message BindTagWithUserResp {
+  message Result {
+    string c_id = 1;
+    bool success = 2;
+  }
+
+  repeated Result result_list = 1;
+}
+
+message UnbindTagFromUserReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string tag = 3;
+  repeated string c_id_list = 4;
+}
+
+message UnbindTagFromUserResp {
+  message Result {
+    string c_id = 1;
+    bool success = 2;
+  }
+
+  repeated Result result_list = 1;
+}
+
+message QueryUserTagReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string c_id = 3;
+}
+
+message QueryUserTagResp {
+  repeated string tag_list = 1;
+}
+
+message AddBlackListReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+}
+
+message AddBlackListResp {
+  // nothing
+}
+
+message DelBlackListReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+}
+
+message DelBlackListResp {
+  // nothing
+}
+
+message QueryUserStatusReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+}
+
+message QueryUserStatusResp {
+  message UserStatus {
+    string c_id = 1;
+    string last_login_time = 2;
+    string status = 3;
+  }
+
+  repeated UserStatus status_list = 1;
+}
+
+message QueryDeviceStatusReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+}
+
+message QueryDeviceStatusResp {
+  message DeviceStatus {
+    string c_id = 1;
+    bool availiable = 2;
+    string c_id_status = 3;
+    string device_status = 4;
+  }
+
+  repeated DeviceStatus status_list = 1;
+}
+
+message QueryUserInfoReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+}
+
+message QueryUserInfoResp {
+  message UserInfo {
+    string c_id = 1;
+    string client_app_id = 2;
+    string package_name = 3;
+    string device_token = 4;
+    int32 phone_type = 5;
+    string phone_model = 6;
+    bool notification_switch = 7;
+    string create_time = 8;
+    int32 login_freq = 9;
+  }
+
+  repeated string invalid_list = 1;
+  repeated UserInfo user_info_list = 2;
+}
+
+message SetPushBadgeReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated string c_id_list = 3;
+  string operation = 4;
+}
+
+message SetPushBadgeResp {
+  // nothing
+}
+
+message QueryUserCountReq {
+  message Tag {
+    string key = 1;
+    repeated string values = 2;
+    string opt_type = 3;
+  }
+
+  string push_agent = 1;
+  string bundle_id = 2;
+  repeated Tag tag_list = 3;
+}
+
+message QueryUserCountResp {
+  int32 count = 1;
 }

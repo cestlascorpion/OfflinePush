@@ -41,6 +41,23 @@ func POST(url, token string, body interface{}, timeout time.Duration) ([]byte, e
 	return resp.Body(), nil
 }
 
+func PUT(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
+	client := resty.New().SetTimeout(timeout).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json")
+	if len(token) > 0 {
+		client.SetHeader("token", token)
+	}
+	log.Debugf("put url %s", url)
+	resp, err := client.R().SetBody(body).Put(url)
+	if err != nil {
+		log.Errorf("resty put err %+v", err)
+		return nil, err
+	}
+	log.Debugf("%+v", resp.Request.TraceInfo())
+	return resp.Body(), nil
+}
+
 func DELETE(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
 	client := resty.New().SetTimeout(timeout).EnableTrace().
 		SetHeader("Content-Type", "application/json;charset=utf-8").

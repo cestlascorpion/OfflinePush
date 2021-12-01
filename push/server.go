@@ -279,7 +279,7 @@ func (s *Server) RemoveTask(ctx context.Context, in *pb.RemoveTaskReq) (*pb.Remo
 	return out, nil
 }
 
-func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error) {
+func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error)  {
 	out := &pb.ViewDetailResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||

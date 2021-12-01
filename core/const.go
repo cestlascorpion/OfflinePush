@@ -5,7 +5,7 @@ const (
 )
 
 const (
-	InvalidTokenErr = "invalid auth token"
+	InvalidTokenErr  = "invalid auth token"
 	InvalidTargetErr = "invalid target"
 )
 
@@ -27,4 +27,5 @@ const (
 	TestToken  = ""
 	TestAlias  = ""
 	TestTaskId = ""
+	TestTag    = ""
 )
