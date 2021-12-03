@@ -39,7 +39,7 @@ func (g *GetuiPush) PushSingleByCid(request *SingleReq, token string) (map[strin
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushSingleByCid data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -62,7 +62,7 @@ func (g *GetuiPush) PushSingleByAlias(request *SingleReq, token string) (map[str
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushSingleByAlias data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -85,7 +85,7 @@ func (g *GetuiPush) PushBatchByCid(request *BatchReq, token string) (map[string]
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushBatchByCid data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -108,7 +108,7 @@ func (g *GetuiPush) PushBatchByAlias(request *BatchReq, token string) (map[strin
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushBatchByAlias data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -131,7 +131,7 @@ func (g *GetuiPush) CreateMsg(request *CreateReq, token string) (string, error) 
 		if resp.Code == 10001 {
 			return "", errors.New(core.InvalidTokenErr)
 		}
-		return "", fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return "", fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("CreateMsg data %+v", resp.Data)
 	return g.resp2PushTaskId(resp.Data)
@@ -154,7 +154,7 @@ func (g *GetuiPush) PushListByCid(request *ListReq, token string) (map[string]ma
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushListByCid data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -177,7 +177,7 @@ func (g *GetuiPush) PushListByAlias(request *ListReq, token string) (map[string]
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushListByAlias data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -200,7 +200,7 @@ func (g *GetuiPush) PushAll(request *AllReq, token string) (string, error) {
 		if resp.Code == 10001 {
 			return "", errors.New(core.InvalidTokenErr)
 		}
-		return "", fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return "", fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushAll data %+v", resp.Data)
 	return g.resp2PushTaskId(resp.Data)
@@ -223,7 +223,7 @@ func (g *GetuiPush) PushByTag(request *ByTagReq, token string) (string, error) {
 		if resp.Code == 10001 {
 			return "", errors.New(core.InvalidTokenErr)
 		}
-		return "", fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return "", fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushByTag data %+v", resp.Data)
 	return g.resp2PushTaskId(resp.Data)
@@ -246,7 +246,7 @@ func (g *GetuiPush) PushByFastCustomTag(request *ByTagReq, token string) (string
 		if resp.Code == 10001 {
 			return "", errors.New(core.InvalidTokenErr)
 		}
-		return "", fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return "", fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushByFastCustomTag data %+v", resp.Data)
 	return g.resp2PushTaskId(resp.Data)
@@ -269,10 +269,7 @@ func (g *GetuiPush) StopPush(taskId, token string) (bool, error) {
 		if resp.Code == 10001 {
 			return false, errors.New(core.InvalidTokenErr)
 		}
-		if resp.Code == 20001 {
-			return false, errors.New(core.InvalidTargetErr)
-		}
-		return false, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return false, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return true, nil
 }
@@ -294,10 +291,7 @@ func (g *GetuiPush) DeleteScheduleTask(taskId, token string) (bool, error) {
 		if resp.Code == 10001 {
 			return false, errors.New(core.InvalidTokenErr)
 		}
-		if resp.Code == 20001 {
-			return false, errors.New(core.InvalidTargetErr)
-		}
-		return false, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return false, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return true, nil
 }
@@ -319,10 +313,7 @@ func (g *GetuiPush) QueryScheduleTask(taskId, token string) (map[string]string, 
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		if resp.Code == 20001 {
-			return nil, errors.New(core.InvalidTargetErr)
-		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Schedule(resp.Data)
 }
@@ -344,10 +335,7 @@ func (g *GetuiPush) QueryDetail(taskId, cId, token string) ([][2]string, error) 
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		if resp.Code == 20001 {
-			return nil, errors.New(core.InvalidTargetErr)
-		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Detail(resp.Data)
 }

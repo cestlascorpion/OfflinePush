@@ -46,7 +46,7 @@ func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	if resp.Data == nil {
 		log.Errorf("resp.Data is nil")
@@ -79,7 +79,7 @@ func (g *GeTuiAuth) DelAuth(token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("del auth ok token %s", token)
 	return nil

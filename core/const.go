@@ -6,7 +6,6 @@ const (
 
 const (
 	InvalidTokenErr  = "invalid auth token"
-	InvalidTargetErr = "invalid target"
 )
 
 const (

@@ -123,7 +123,7 @@ func (s *Server) QueryAliasByCid(ctx context.Context, in *pb.QueryAliasReq) (*pb
 			}
 			alias, err = s.mgr.QueryAliasByCid(uniqueId, in.CId, auth.Token)
 		}
-		if err != nil && err.Error() != core.InvalidTargetErr {
+		if err != nil {
 			log.Errorf("query alias err %+v", err)
 			return out, err
 		}
@@ -157,7 +157,7 @@ func (s *Server) QueryCidByAlias(ctx context.Context, in *pb.QueryCidReq) (*pb.Q
 			}
 			cidList, err = s.mgr.QueryCidByAlias(uniqueId, in.Alias, auth.Token)
 		}
-		if err != nil && err.Error() != core.InvalidTargetErr {
+		if err != nil {
 			log.Errorf("query cid err %+v", err)
 			return out, err
 		}

@@ -61,7 +61,7 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 
 	resp, err := agent.QueryAliasByCid(core.TestToken, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr && err.Error() != core.InvalidTargetErr {
+		if err.Error() != core.InvalidTokenErr {
 			t.FailNow()
 		} else {
 			fmt.Println(err)
@@ -89,7 +89,7 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 
 	resp, err := agent.QueryCidByAlias(core.TestAlias, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr && err.Error() != core.InvalidTargetErr {
+		if err.Error() != core.InvalidTokenErr {
 			t.FailNow()
 		} else {
 			fmt.Println(err)
@@ -150,7 +150,7 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 
 	err = agent.RevokeAlias(core.TestAlias, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr && err.Error() != core.InvalidTargetErr {
+		if err.Error() != core.InvalidTokenErr {
 			t.FailNow()
 		} else {
 			fmt.Println(err)
@@ -179,7 +179,7 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 		TagList: []string{core.TestTag},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr && err.Error() != core.InvalidTargetErr {
+		if err.Error() != core.InvalidTokenErr {
 			t.FailNow()
 		} else {
 			fmt.Println(err)

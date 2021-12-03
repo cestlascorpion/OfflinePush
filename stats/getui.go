@@ -42,7 +42,7 @@ func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Tasks(resp.Data)
 }
@@ -64,10 +64,7 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		if resp.Code == 20001 {
-			return nil, errors.New(core.InvalidTargetErr)
-		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Group(resp.Data)
 }
@@ -89,7 +86,7 @@ func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) 
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Count(resp.Data)
 }
@@ -111,7 +108,7 @@ func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2PushByDay(resp.Data)
 }
@@ -133,7 +130,7 @@ func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]
 		if resp.Code == 10001 {
 			return nil, errors.New(core.InvalidTokenErr)
 		}
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2UserByDay(resp.Data)
 }
@@ -152,7 +149,7 @@ func (g *GeTuiStats) GetOnlineUserBy24H(token string) (map[int64]int32, error) {
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d reps.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2OnlineBy24H(resp.Data)
 }
