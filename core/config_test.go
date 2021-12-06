@@ -12,7 +12,7 @@ func TestConfig(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	fmt.Println(conf.Mongo.Name)

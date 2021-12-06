@@ -14,7 +14,7 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiAgent(
 		core.GTBaseUrl,
@@ -24,12 +24,12 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	auth, err := agent.GetAuth()
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(auth)
 }
@@ -39,7 +39,7 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiAgent(
 		core.GTBaseUrl,
@@ -49,13 +49,13 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	err = agent.DelAuth(core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(core.TestAuthToken)
 }

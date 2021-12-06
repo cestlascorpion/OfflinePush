@@ -15,19 +15,19 @@ func TestAuthCache_Start(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	cache, err := NewAuthCache()
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	err = cache.Start(context.Background())
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	var wg sync.WaitGroup

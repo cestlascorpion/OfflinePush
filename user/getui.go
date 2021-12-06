@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -13,19 +14,34 @@ import (
 )
 
 type GeTuiUser struct {
-	apiUrl  string
-	timeout time.Duration
+	apiUrl string
+	client *core.RestyClient
 }
 
 func NewGeTuiUser(apiUrl, appId string, timeout time.Duration) (*GeTuiUser, error) {
+	client, err := core.NewRestyClient(timeout)
+	if err != nil {
+		return nil, err
+	}
 	return &GeTuiUser{
-		apiUrl:  fmt.Sprintf(apiUrl, appId),
-		timeout: timeout,
+		apiUrl: fmt.Sprintf(apiUrl, appId),
+		client: client,
+	}, nil
+}
+
+func NewGeTuiUserWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GeTuiUser, error) {
+	client, err := core.NewRestyClientWithClient(hc, timeout)
+	if err != nil {
+		return nil, err
+	}
+	return &GeTuiUser{
+		apiUrl: fmt.Sprintf(apiUrl, appId),
+		client: client,
 	}, nil
 }
 
 func (g *GeTuiUser) BindAlias(list *AliasList, token string) error {
-	result, err := core.POST(g.url("/user/alias"), token, list, g.timeout)
+	result, err := g.client.POST(g.url("/user/alias"), token, list)
 	if err != nil {
 		log.Errorf("BindAlias() POST err %+v", err)
 		return err
@@ -48,7 +64,7 @@ func (g *GeTuiUser) BindAlias(list *AliasList, token string) error {
 }
 
 func (g *GeTuiUser) QueryAliasByCid(cid string, token string) (string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/alias/cid/%s", cid)), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/alias/cid/%s", cid)), token, nil)
 	if err != nil {
 		log.Errorf("QueryAliasByCid() GET err %+v", err)
 		return "", err
@@ -80,7 +96,7 @@ func (g *GeTuiUser) QueryAliasByCid(cid string, token string) (string, error) {
 }
 
 func (g *GeTuiUser) QueryCidByAlias(alias string, token string) ([]string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/cid/alias/%s", alias)), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/cid/alias/%s", alias)), token, nil)
 	if err != nil {
 		log.Errorf("QueryCidByAlias() GET err %+v", err)
 		return nil, err
@@ -119,7 +135,7 @@ func (g *GeTuiUser) QueryCidByAlias(alias string, token string) ([]string, error
 }
 
 func (g *GeTuiUser) UnbindAlias(list *AliasList, token string) error {
-	result, err := core.DELETE(g.url("/user/alias"), token, list, g.timeout)
+	result, err := g.client.DELETE(g.url("/user/alias"), token, list)
 	if err != nil {
 		log.Errorf("UnbindAlias() DELETE err %+v", err)
 		return err
@@ -142,7 +158,7 @@ func (g *GeTuiUser) UnbindAlias(list *AliasList, token string) error {
 }
 
 func (g *GeTuiUser) RevokeAlias(alias string, token string) error {
-	result, err := core.DELETE(g.url(fmt.Sprintf("/user/alias/%s", alias)), token, nil, g.timeout)
+	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/alias/%s", alias)), token, nil)
 	if err != nil {
 		log.Errorf("RevokeAlias() DELETE err %+v", err)
 		return err
@@ -165,7 +181,7 @@ func (g *GeTuiUser) RevokeAlias(alias string, token string) error {
 }
 
 func (g *GeTuiUser) BindUserWithTag(cid string, list *CustomTagList, token string) error {
-	result, err := core.POST(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, list, g.timeout)
+	result, err := g.client.POST(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, list)
 	if err != nil {
 		log.Errorf("BindUserWithTag() POST err %+v", err)
 		return err
@@ -188,7 +204,7 @@ func (g *GeTuiUser) BindUserWithTag(cid string, list *CustomTagList, token strin
 }
 
 func (g *GeTuiUser) BindTagWithUser(tag string, list *CidList, token string) (map[string]bool, error) {
-	result, err := core.PUT(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list, g.timeout)
+	result, err := g.client.PUT(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
 	if err != nil {
 		log.Errorf("BindTagWithUser() PUT err %+v", err)
 		return nil, err
@@ -225,7 +241,7 @@ func (g *GeTuiUser) BindTagWithUser(tag string, list *CidList, token string) (ma
 }
 
 func (g *GeTuiUser) UnbindTagFromUser(tag string, list *CidList, token string) (map[string]bool, error) {
-	result, err := core.DELETE(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list, g.timeout)
+	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
 	if err != nil {
 		log.Errorf("UnbindTagFromUser() DELETE err %+v", err)
 		return nil, err
@@ -262,7 +278,7 @@ func (g *GeTuiUser) UnbindTagFromUser(tag string, list *CidList, token string) (
 }
 
 func (g *GeTuiUser) QueryUserTag(cid string, token string) ([]string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserTag() GET err %+v", err)
 		return nil, err
@@ -301,7 +317,7 @@ func (g *GeTuiUser) QueryUserTag(cid string, token string) ([]string, error) {
 }
 
 func (g *GeTuiUser) AddBlackList(cidList []string, token string) error {
-	result, err := core.POST(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil, g.timeout)
+	result, err := g.client.POST(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("AddBlackList() POST err %+v", err)
 		return err
@@ -324,7 +340,7 @@ func (g *GeTuiUser) AddBlackList(cidList []string, token string) error {
 }
 
 func (g *GeTuiUser) DelBlackList(cidList []string, token string) error {
-	result, err := core.DELETE(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil, g.timeout)
+	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("DelBlackList() DELETE err %+v", err)
 		return err
@@ -347,7 +363,7 @@ func (g *GeTuiUser) DelBlackList(cidList []string, token string) error {
 }
 
 func (g *GeTuiUser) QueryUserStatus(cidList []string, token string) (map[string]map[string]string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/status/%s", strings.Join(cidList, ","))), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/status/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserStatus() GET err %+v", err)
 		return nil, err
@@ -391,7 +407,7 @@ func (g *GeTuiUser) QueryUserStatus(cidList []string, token string) (map[string]
 }
 
 func (g *GeTuiUser) QueryDeviceStatus(cidList []string, token string) (map[string]map[string]string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/deviceStatus/%s", strings.Join(cidList, ","))), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/deviceStatus/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryDeviceStatus() GET err %+v", err)
 		return nil, err
@@ -424,7 +440,7 @@ func (g *GeTuiUser) QueryDeviceStatus(cidList []string, token string) (map[strin
 }
 
 func (g *GeTuiUser) QueryUserInfo(cidList []string, token string) ([]string, map[string]map[string]string, error) {
-	result, err := core.GET(g.url(fmt.Sprintf("/user/detail/%s", strings.Join(cidList, ","))), token, nil, g.timeout)
+	result, err := g.client.GET(g.url(fmt.Sprintf("/user/detail/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserInfo() GET err %+v", err)
 		return nil, nil, err
@@ -538,7 +554,7 @@ func (g *GeTuiUser) QueryUserInfo(cidList []string, token string) ([]string, map
 }
 
 func (g *GeTuiUser) SetPushBadge(cidList []string, op *Operation, token string) error {
-	result, err := core.POST(g.url(fmt.Sprintf("/user/badge/%s", strings.Join(cidList, ","))), token, op, g.timeout)
+	result, err := g.client.POST(g.url(fmt.Sprintf("/user/badge/%s", strings.Join(cidList, ","))), token, op)
 	if err != nil {
 		log.Errorf("SetPushBadge() POST err %+v", err)
 		return err
@@ -561,7 +577,7 @@ func (g *GeTuiUser) SetPushBadge(cidList []string, op *Operation, token string) 
 }
 
 func (g *GeTuiUser) QueryUserCount(list *ComplexTagList, token string) (int, error) {
-	result, err := core.POST(g.url("/user/count"), token, list, g.timeout)
+	result, err := g.client.POST(g.url("/user/count"), token, list)
 	if err != nil {
 		log.Errorf("QueryUserCount() POST err %+v", err)
 		return 0, err

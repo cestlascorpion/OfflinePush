@@ -16,7 +16,7 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -24,7 +24,7 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &SingleReq{
@@ -54,7 +54,7 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 	}
 	result, err := agent.PushSingleByCid(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -64,7 +64,7 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -72,7 +72,7 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &SingleReq{
@@ -102,7 +102,7 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 	}
 	result, err := agent.PushSingleByAlias(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -112,7 +112,7 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -120,7 +120,7 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &BatchReq{
@@ -155,7 +155,7 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 	}
 	result, err := agent.PushBatchByCid(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -165,7 +165,7 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -173,7 +173,7 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &BatchReq{
@@ -208,7 +208,7 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 	}
 	result, err := agent.PushBatchByAlias(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -218,7 +218,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -226,7 +226,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	create := &CreateReq{
@@ -254,7 +254,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	}
 	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(taskId)
 
@@ -267,7 +267,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	}
 	result, err := agent.PushListByCid(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -277,7 +277,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -285,7 +285,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	create := &CreateReq{
@@ -313,7 +313,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	}
 	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(taskId)
 
@@ -326,7 +326,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	}
 	result, err := agent.PushListByAlias(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -336,7 +336,7 @@ func TestGetuiPush_PushAll(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -344,7 +344,7 @@ func TestGetuiPush_PushAll(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &AllReq{
@@ -373,7 +373,7 @@ func TestGetuiPush_PushAll(t *testing.T) {
 	}
 	result, err := agent.PushAll(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -383,7 +383,7 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -391,7 +391,7 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &ByTagReq{
@@ -433,7 +433,7 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 	}
 	result, err := agent.PushByTag(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -443,7 +443,7 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -451,7 +451,7 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	request := &ByTagReq{
@@ -482,7 +482,7 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 	}
 	result, err := agent.PushByFastCustomTag(request, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -492,7 +492,7 @@ func TestGetuiPush_StopPush(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -500,12 +500,12 @@ func TestGetuiPush_StopPush(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	result, err := agent.StopPush(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -515,7 +515,7 @@ func TestGetuiPush_DeleteScheduleTask(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -523,12 +523,12 @@ func TestGetuiPush_DeleteScheduleTask(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	result, err := agent.DeleteScheduleTask(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -538,7 +538,7 @@ func TestGetuiPush_QueryScheduleTask(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -546,12 +546,12 @@ func TestGetuiPush_QueryScheduleTask(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	result, err := agent.QueryScheduleTask(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -561,7 +561,7 @@ func TestGetuiPush_QueryDetail(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
@@ -569,12 +569,12 @@ func TestGetuiPush_QueryDetail(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 
 	result, err := agent.QueryDetail(core.TestTaskId, core.TestToken, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }

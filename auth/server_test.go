@@ -16,12 +16,12 @@ func TestServer_GetToken(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	conn, err := grpc.Dial(core.AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.GetToken(context.Background(), &proto.GetTokenReq{
@@ -29,7 +29,7 @@ func TestServer_GetToken(t *testing.T) {
 		BundleId:  conf.TestApp.BundleId})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -39,12 +39,12 @@ func TestServer_GetToken2(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	conn, err := grpc.Dial(core.AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.GetToken(context.Background(), &proto.GetTokenReq{
@@ -53,7 +53,7 @@ func TestServer_GetToken2(t *testing.T) {
 		OldToken:  core.TestAuthToken})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -63,12 +63,12 @@ func TestServer_SetToken(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	conn, err := grpc.Dial(core.AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.SetToken(context.Background(), &proto.SetTokenReq{
@@ -78,7 +78,7 @@ func TestServer_SetToken(t *testing.T) {
 		ExpireAt:  core.TestAuthExpireAt})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -88,12 +88,12 @@ func TestServer_DelToken(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	conn, err := grpc.Dial(core.AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.DelToken(context.Background(), &proto.DelTokenReq{
@@ -102,7 +102,7 @@ func TestServer_DelToken(t *testing.T) {
 		Token:     core.TestAuthToken})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }

@@ -16,12 +16,12 @@ func TestServer_GetTasks(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetTasks(context.Background(), &proto.GetTasksReq{
@@ -31,7 +31,7 @@ func TestServer_GetTasks(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -41,12 +41,12 @@ func TestServer_GetTaskGroup(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetTaskGroup(context.Background(), &proto.GetTaskGroupReq{
@@ -56,7 +56,7 @@ func TestServer_GetTaskGroup(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -66,12 +66,12 @@ func TestServer_GetPushCount(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetPushCount(context.Background(), &proto.GetPushCountReq{
@@ -80,7 +80,7 @@ func TestServer_GetPushCount(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -90,12 +90,12 @@ func TestServer_GetPushDataByDay(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetPushDataByDay(context.Background(), &proto.GetPushDataByDayReq{
@@ -105,7 +105,7 @@ func TestServer_GetPushDataByDay(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -115,12 +115,12 @@ func TestServer_GetUserDataByDay(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetUserDataByDay(context.Background(), &proto.GetUserDataByDayReq{
@@ -130,7 +130,7 @@ func TestServer_GetUserDataByDay(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -140,12 +140,12 @@ func TestServer_GetOnlineUserBy24H(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	svr, err := NewServer(conf)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	defer svr.Close()
 	resp, err := svr.GetOnlineUserBy24H(context.Background(), &proto.GetOnlineUserBy24HReq{
@@ -154,7 +154,7 @@ func TestServer_GetOnlineUserBy24H(t *testing.T) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }

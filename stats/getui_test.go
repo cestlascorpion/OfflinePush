@@ -14,7 +14,7 @@ func TestGeTuiStats_Resp2Tasks(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -22,11 +22,11 @@ func TestGeTuiStats_Resp2Tasks(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetTasks([]string{core.TestTasks}, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -36,7 +36,7 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -44,11 +44,11 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetTaskGroup(core.TestGroup, core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -58,7 +58,7 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -66,11 +66,11 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetPushCount(core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -80,7 +80,7 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -88,11 +88,11 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetPushDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -102,7 +102,7 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -110,11 +110,11 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetUserDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }
@@ -124,7 +124,7 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
@@ -132,11 +132,11 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		t.Failed()
+		t.FailNow()
 	}
 	result, err := agent.GetOnlineUserBy24H(core.TestAuthToken)
 	if err != nil {
-		t.Failed()
+		t.FailNow()
 	}
 	fmt.Println(result)
 }

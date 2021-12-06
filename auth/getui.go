@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -15,25 +16,42 @@ type GeTuiAuth struct {
 	ApiUrl       string
 	AppKey       string
 	MasterSecret string
-	Timeout      time.Duration
+	client       *core.RestyClient
 }
 
 func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Duration) (*GeTuiAuth, error) {
+	client, err := core.NewRestyClient(timeout)
+	if err != nil {
+		return nil, err
+	}
 	return &GeTuiAuth{
 		ApiUrl:       fmt.Sprintf(baseUrl, appId),
 		AppKey:       appKey,
 		MasterSecret: masterSecret,
-		Timeout:      timeout,
+		client:       client,
+	}, nil
+}
+
+func NewGeTuiAgentWithClient(baseUrl, appId, appKey, masterSecret string, hc *http.Client, timeout time.Duration) (*GeTuiAuth, error) {
+	client, err := core.NewRestyClientWithClient(hc, timeout)
+	if err != nil {
+		return nil, err
+	}
+	return &GeTuiAuth{
+		ApiUrl:       fmt.Sprintf(baseUrl, appId),
+		AppKey:       appKey,
+		MasterSecret: masterSecret,
+		client:       client,
 	}, nil
 }
 
 func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
 	sign, tp := core.Signature(g.AppKey, g.MasterSecret)
-	result, err := core.POST(g.url("/auth"), "", authReq{
+	result, err := g.client.POST(g.url("/auth"), "", authReq{
 		Sign:      sign,
 		Timestamp: tp,
 		AppKey:    g.AppKey,
-	}, g.Timeout)
+	})
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -66,7 +84,7 @@ func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
 }
 
 func (g *GeTuiAuth) DelAuth(token string) error {
-	result, err := core.DELETE(g.url(fmt.Sprintf("/auth/%s", token)), "", nil, g.Timeout)
+	result, err := g.client.DELETE(g.url(fmt.Sprintf("/auth/%s", token)), "", nil)
 	if err != nil {
 		log.Errorf("delete failed err %+v", err)
 		return err
