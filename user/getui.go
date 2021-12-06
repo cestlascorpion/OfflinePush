@@ -19,7 +19,7 @@ type GeTuiUser struct {
 }
 
 func NewGeTuiUser(apiUrl, appId string, timeout time.Duration) (*GeTuiUser, error) {
-	client, err := core.NewRestyClient(timeout)
+	client, err := core.NewRestyClient(http.DefaultClient, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func NewGeTuiUser(apiUrl, appId string, timeout time.Duration) (*GeTuiUser, erro
 }
 
 func NewGeTuiUserWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GeTuiUser, error) {
-	client, err := core.NewRestyClientWithClient(hc, timeout)
+	client, err := core.NewRestyClient(hc, timeout)
 	if err != nil {
 		return nil, err
 	}

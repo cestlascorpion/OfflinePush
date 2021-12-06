@@ -20,7 +20,7 @@ type GeTuiStats struct {
 }
 
 func NewGeTuiStats(apiUrl, appId string, timeout time.Duration) (*GeTuiStats, error) {
-	client, err := core.NewRestyClient(timeout)
+	client, err := core.NewRestyClient(http.DefaultClient, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func NewGeTuiStats(apiUrl, appId string, timeout time.Duration) (*GeTuiStats, er
 }
 
 func NewGeTuiStatsWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GeTuiStats, error) {
-	client, err := core.NewRestyClientWithClient(hc, timeout)
+	client, err := core.NewRestyClient(hc, timeout)
 	if err != nil {
 		return nil, err
 	}

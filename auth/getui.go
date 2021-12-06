@@ -20,7 +20,7 @@ type GeTuiAuth struct {
 }
 
 func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Duration) (*GeTuiAuth, error) {
-	client, err := core.NewRestyClient(timeout)
+	client, err := core.NewRestyClient(http.DefaultClient, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Dur
 }
 
 func NewGeTuiAgentWithClient(baseUrl, appId, appKey, masterSecret string, hc *http.Client, timeout time.Duration) (*GeTuiAuth, error) {
-	client, err := core.NewRestyClientWithClient(hc, timeout)
+	client, err := core.NewRestyClient(hc, timeout)
 	if err != nil {
 		return nil, err
 	}

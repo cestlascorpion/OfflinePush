@@ -2,12 +2,13 @@ package core
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 )
 
 func TestGET(t *testing.T) {
-	client, err := NewRestyClient(time.Second * 3)
+	client, err := NewRestyClient(http.DefaultClient, time.Second*3)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -21,7 +22,7 @@ func TestGET(t *testing.T) {
 }
 
 func TestGET2(t *testing.T) {
-	client, err := NewRestyClient(time.Second * 3)
+	client, err := NewRestyClient(http.DefaultClient, time.Second*3)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

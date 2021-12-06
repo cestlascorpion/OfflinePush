@@ -17,7 +17,7 @@ type GetuiPush struct {
 }
 
 func NewGeTuiPush(apiUrl, appId string, timeout time.Duration) (*GetuiPush, error) {
-	client, err := core.NewRestyClient(timeout)
+	client, err := core.NewRestyClient(http.DefaultClient, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func NewGeTuiPush(apiUrl, appId string, timeout time.Duration) (*GetuiPush, erro
 }
 
 func NewGeTuiPushWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GetuiPush, error) {
-	client, err := core.NewRestyClientWithClient(hc, timeout)
+	client, err := core.NewRestyClient(hc, timeout)
 	if err != nil {
 		return nil, err
 	}
