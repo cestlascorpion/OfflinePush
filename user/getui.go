@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
@@ -18,19 +17,8 @@ type GeTuiUser struct {
 	client *core.RestyClient
 }
 
-func NewGeTuiUser(apiUrl, appId string, timeout time.Duration) (*GeTuiUser, error) {
-	client, err := core.NewRestyClient(http.DefaultClient, timeout)
-	if err != nil {
-		return nil, err
-	}
-	return &GeTuiUser{
-		apiUrl: fmt.Sprintf(apiUrl, appId),
-		client: client,
-	}, nil
-}
-
-func NewGeTuiUserWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GeTuiUser, error) {
-	client, err := core.NewRestyClient(hc, timeout)
+func NewGeTuiUser(apiUrl, appId string, hc *http.Client) (*GeTuiUser, error) {
+	client, err := core.NewRestyClient(hc)
 	if err != nil {
 		return nil, err
 	}

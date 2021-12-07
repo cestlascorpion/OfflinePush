@@ -2,8 +2,8 @@ package push
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
@@ -21,7 +21,7 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -69,7 +69,7 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -117,7 +117,7 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -170,7 +170,7 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -223,7 +223,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -282,7 +282,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -341,7 +341,7 @@ func TestGetuiPush_PushAll(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -388,7 +388,7 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -448,7 +448,7 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -497,7 +497,7 @@ func TestGetuiPush_StopPush(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -520,7 +520,7 @@ func TestGetuiPush_DeleteScheduleTask(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -543,7 +543,7 @@ func TestGetuiPush_QueryScheduleTask(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -566,7 +566,7 @@ func TestGetuiPush_QueryDetail(t *testing.T) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

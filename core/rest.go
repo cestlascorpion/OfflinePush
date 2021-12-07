@@ -10,29 +10,27 @@ import (
 )
 
 type RestyClient struct {
-	client *http.Client
-	timeout time.Duration
+	hc *http.Client
 }
 
-func NewRestyClient(client *http.Client, timeout time.Duration) (*RestyClient, error) {
+func NewRestyClient(client *http.Client) (*RestyClient, error) {
 	if client == nil {
-		return nil, errors.New("invalid parameter")
+		return nil, errors.New("invalid paramter")
 	}
 	return &RestyClient{
-		client: client,
-		timeout: timeout,
+		hc: client,
 	}, nil
 }
 
 func (r *RestyClient) GET(url, token string, body interface{}) ([]byte, error) {
-	rest := resty.NewWithClient(r.client).SetTimeout(r.timeout).EnableTrace().
-	SetHeader("Content-Type", "application/json;charset=utf-8").
-	SetHeader("Accept", "application/json")
+	client := resty.NewWithClient(r.hc).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json")
 	if len(token) > 0 {
-		rest.SetHeader("token", token)
+		client.SetHeader("token", token)
 	}
 	log.Debugf("get url %s", url)
-	resp, err := rest.R().SetBody(body).Get(url)
+	resp, err := client.R().SetBody(body).Get(url)
 	if err != nil {
 		log.Errorf("resty get err %+v", err)
 		return nil, err
@@ -42,14 +40,14 @@ func (r *RestyClient) GET(url, token string, body interface{}) ([]byte, error) {
 }
 
 func (r *RestyClient) POST(url, token string, body interface{}) ([]byte, error) {
-	rest := resty.NewWithClient(r.client).SetTimeout(r.timeout).EnableTrace().
-	SetHeader("Content-Type", "application/json;charset=utf-8").
-	SetHeader("Accept", "application/json")
+	client := resty.NewWithClient(r.hc).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json")
 	if len(token) > 0 {
-		rest.SetHeader("token", token)
+		client.SetHeader("token", token)
 	}
 	log.Debugf("post url %s", url)
-	resp, err := rest.R().SetBody(body).Post(url)
+	resp, err := client.R().SetBody(body).Post(url)
 	if err != nil {
 		log.Errorf("resty post err %+v", err)
 		return nil, err
@@ -59,14 +57,14 @@ func (r *RestyClient) POST(url, token string, body interface{}) ([]byte, error) 
 }
 
 func (r *RestyClient) PUT(url, token string, body interface{}) ([]byte, error) {
-	rest := resty.NewWithClient(r.client).SetTimeout(r.timeout).EnableTrace().
-	SetHeader("Content-Type", "application/json;charset=utf-8").
-	SetHeader("Accept", "application/json")
+	client := resty.NewWithClient(r.hc).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json")
 	if len(token) > 0 {
-		rest.SetHeader("token", token)
+		client.SetHeader("token", token)
 	}
 	log.Debugf("put url %s", url)
-	resp, err := rest.R().SetBody(body).Put(url)
+	resp, err := client.R().SetBody(body).Put(url)
 	if err != nil {
 		log.Errorf("resty put err %+v", err)
 		return nil, err
@@ -76,14 +74,82 @@ func (r *RestyClient) PUT(url, token string, body interface{}) ([]byte, error) {
 }
 
 func (r *RestyClient) DELETE(url, token string, body interface{}) ([]byte, error) {
-	rest := resty.NewWithClient(r.client).SetTimeout(r.timeout).EnableTrace().
-	SetHeader("Content-Type", "application/json;charset=utf-8").
-	SetHeader("Accept", "application/json")
+	client := resty.NewWithClient(r.hc).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json")
 	if len(token) > 0 {
-		rest.SetHeader("token", token)
+		client.SetHeader("token", token)
 	}
 	log.Debugf("del url %s", url)
-	resp, err := rest.R().SetBody(body).Delete(url)
+	resp, err := client.R().SetBody(body).Delete(url)
+	if err != nil {
+		log.Errorf("resty Delete err %+v", err)
+		return nil, err
+	}
+	log.Debugf("%+v", resp.Request.TraceInfo())
+	return resp.Body(), nil
+}
+
+func GET(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
+	client := resty.New().SetTimeout(timeout).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json").SetCloseConnection(true)
+	if len(token) > 0 {
+		client.SetHeader("token", token)
+	}
+	log.Debugf("get url %s", url)
+	resp, err := client.R().SetBody(body).Get(url)
+	if err != nil {
+		log.Errorf("resty get err %+v", err)
+		return nil, err
+	}
+	log.Debugf("%+v", resp.Request.TraceInfo())
+	return resp.Body(), nil
+}
+
+func POST(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
+	client := resty.New().SetTimeout(timeout).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json").SetCloseConnection(true)
+	if len(token) > 0 {
+		client.SetHeader("token", token)
+	}
+	log.Debugf("post url %s", url)
+	resp, err := client.R().SetBody(body).Post(url)
+	if err != nil {
+		log.Errorf("resty post err %+v", err)
+		return nil, err
+	}
+	log.Debugf("%+v", resp.Request.TraceInfo())
+	return resp.Body(), nil
+}
+
+func PUT(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
+	client := resty.New().SetTimeout(timeout).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json").SetCloseConnection(true)
+	if len(token) > 0 {
+		client.SetHeader("token", token)
+	}
+	log.Debugf("put url %s", url)
+	resp, err := client.R().SetBody(body).Put(url)
+	if err != nil {
+		log.Errorf("resty put err %+v", err)
+		return nil, err
+	}
+	log.Debugf("%+v", resp.Request.TraceInfo())
+	return resp.Body(), nil
+}
+
+func DELETE(url, token string, body interface{}, timeout time.Duration) ([]byte, error) {
+	client := resty.New().SetTimeout(timeout).EnableTrace().
+		SetHeader("Content-Type", "application/json;charset=utf-8").
+		SetHeader("Accept", "application/json").SetCloseConnection(true)
+	if len(token) > 0 {
+		client.SetHeader("token", token)
+	}
+	log.Debugf("del url %s", url)
+	resp, err := client.R().SetBody(body).Delete(url)
 	if err != nil {
 		log.Errorf("resty Delete err %+v", err)
 		return nil, err

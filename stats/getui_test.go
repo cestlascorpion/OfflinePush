@@ -2,6 +2,7 @@ package stats
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 	"github.com/jinzhu/configor"
 )
 
-func TestGeTuiStats_Resp2Tasks(t *testing.T) {
+func TestGeTuiStats_GetTasks(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -19,7 +20,7 @@ func TestGeTuiStats_Resp2Tasks(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -41,7 +42,7 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -63,7 +64,7 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -85,7 +86,7 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -107,7 +108,7 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -129,7 +130,7 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

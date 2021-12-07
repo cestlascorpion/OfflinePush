@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
@@ -19,21 +18,8 @@ type GeTuiAuth struct {
 	client       *core.RestyClient
 }
 
-func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, timeout time.Duration) (*GeTuiAuth, error) {
-	client, err := core.NewRestyClient(http.DefaultClient, timeout)
-	if err != nil {
-		return nil, err
-	}
-	return &GeTuiAuth{
-		ApiUrl:       fmt.Sprintf(baseUrl, appId),
-		AppKey:       appKey,
-		MasterSecret: masterSecret,
-		client:       client,
-	}, nil
-}
-
-func NewGeTuiAgentWithClient(baseUrl, appId, appKey, masterSecret string, hc *http.Client, timeout time.Duration) (*GeTuiAuth, error) {
-	client, err := core.NewRestyClient(hc, timeout)
+func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, hc *http.Client) (*GeTuiAuth, error) {
+	client, err := core.NewRestyClient(hc)
 	if err != nil {
 		return nil, err
 	}

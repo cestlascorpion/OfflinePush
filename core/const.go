@@ -5,7 +5,7 @@ const (
 )
 
 const (
-	InvalidTokenErr  = "invalid auth token"
+	InvalidTokenErr = "invalid auth token"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 
 const (
 	TestAuthToken    = ""
-	TestAuthExpireAt = 1
+	TestAuthExpireAt = 0
 )
 
 const (
