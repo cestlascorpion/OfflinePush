@@ -3,17 +3,12 @@ package push
 import (
 	"context"
 	"errors"
+	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
-)
-
-const (
-	MaxBatchTarget = 200
-	MaxListTarget  = 1000
 )
 
 type Server struct {
@@ -32,7 +27,7 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		log.Errorf("new getui agent err %+v", err)
 		return nil, err
@@ -65,7 +60,7 @@ func (s *Server) PushToSingle(ctx context.Context, in *pb.PushToSingleReq) (*pb.
 	out := &pb.PushToSingleResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
-		len(in.MsgList) == 0 || len(in.MsgList) > MaxBatchTarget {
+		len(in.MsgList) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
 	}
@@ -110,7 +105,7 @@ func (s *Server) PushToList(ctx context.Context, in *pb.PushToListReq) (*pb.Push
 	out := &pb.PushToListResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
-		in.Msg == nil || len(in.Msg.Audience.Cid) > MaxListTarget || len(in.Msg.Audience.Alias) > MaxListTarget {
+		in.Msg == nil {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
 	}
@@ -279,7 +274,7 @@ func (s *Server) RemoveTask(ctx context.Context, in *pb.RemoveTaskReq) (*pb.Remo
 	return out, nil
 }
 
-func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error)  {
+func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error) {
 	out := &pb.ViewDetailResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||

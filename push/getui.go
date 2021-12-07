@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
@@ -16,19 +15,8 @@ type GetuiPush struct {
 	client *core.RestyClient
 }
 
-func NewGeTuiPush(apiUrl, appId string, timeout time.Duration) (*GetuiPush, error) {
-	client, err := core.NewRestyClient(http.DefaultClient, timeout)
-	if err != nil {
-		return nil, err
-	}
-	return &GetuiPush{
-		apiUrl: fmt.Sprintf(apiUrl, appId),
-		client: client,
-	}, nil
-}
-
-func NewGeTuiPushWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GetuiPush, error) {
-	client, err := core.NewRestyClient(hc, timeout)
+func NewGeTuiPush(apiUrl, appId string, hc *http.Client) (*GetuiPush, error) {
+	client, err := core.NewRestyClient(hc)
 	if err != nil {
 		return nil, err
 	}

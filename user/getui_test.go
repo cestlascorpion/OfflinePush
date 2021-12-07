@@ -2,8 +2,8 @@ package user
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
@@ -19,7 +19,7 @@ func TestGeTuiUser_BindAlias(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -53,7 +53,7 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -81,7 +81,7 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -109,7 +109,7 @@ func TestGeTuiUser_UnbindAlias(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -142,7 +142,7 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -169,7 +169,7 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -198,7 +198,7 @@ func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -228,7 +228,7 @@ func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -258,7 +258,7 @@ func TestGeTuiUser_QueryUserTag(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -286,7 +286,7 @@ func TestGeTuiUser_AddBlackList(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -313,7 +313,7 @@ func TestGeTuiUser_DelBlackList(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -340,7 +340,7 @@ func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -368,7 +368,7 @@ func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -396,7 +396,7 @@ func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -425,7 +425,7 @@ func TestGeTuiUser_SetPushBadge(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -454,7 +454,7 @@ func TestGeTuiUser_QueryUserCount(t *testing.T) {
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

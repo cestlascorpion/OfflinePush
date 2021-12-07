@@ -19,19 +19,8 @@ type GeTuiStats struct {
 	client *core.RestyClient
 }
 
-func NewGeTuiStats(apiUrl, appId string, timeout time.Duration) (*GeTuiStats, error) {
-	client, err := core.NewRestyClient(http.DefaultClient, timeout)
-	if err != nil {
-		return nil, err
-	}
-	return &GeTuiStats{
-		ApiUrl: fmt.Sprintf(apiUrl, appId),
-		client: client,
-	}, nil
-}
-
-func NewGeTuiStatsWithClient(apiUrl, appId string, hc *http.Client, timeout time.Duration) (*GeTuiStats, error) {
-	client, err := core.NewRestyClient(hc, timeout)
+func NewGeTuiStats(apiUrl, appId string, hc *http.Client) (*GeTuiStats, error) {
+	client, err := core.NewRestyClient(hc)
 	if err != nil {
 		return nil, err
 	}

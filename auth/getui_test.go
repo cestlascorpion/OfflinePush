@@ -2,8 +2,8 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
@@ -21,7 +21,7 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -46,7 +46,7 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

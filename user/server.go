@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 	"errors"
+	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	pb "github.com/cestlascorpion/offlinepush/proto"
@@ -27,7 +27,7 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	agt, err := NewGeTuiUser(
 		core.GTBaseUrl,
 		conf.TestApp.AppId,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		log.Errorf("new getui agent err %+v", err)
 		return nil, err

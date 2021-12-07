@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"errors"
+	"net/http"
 	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
@@ -34,7 +35,7 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		conf.TestApp.AppId,
 		conf.TestApp.AppKey,
 		conf.TestApp.MasterSecret,
-		time.Duration(conf.TestApp.TimeoutSec)*time.Second)
+		http.DefaultClient)
 	if err != nil {
 		log.Errorf("new getui agent err %+v", err)
 		return nil, err
