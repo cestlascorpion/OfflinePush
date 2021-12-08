@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	log "github.com/sirupsen/logrus"
@@ -32,7 +34,7 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, hc *http.Client)
 }
 
 func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
-	sign, tp := core.Signature(g.AppKey, g.MasterSecret)
+	sign, tp := g.signature(g.AppKey, g.MasterSecret)
 	result, err := g.client.POST(g.url("/auth"), "", authReq{
 		Sign:      sign,
 		Timestamp: tp,
@@ -106,4 +108,15 @@ type authResp struct {
 
 func (g *GeTuiAuth) url(path string) string {
 	return g.ApiUrl + path
+}
+
+func (g *GeTuiAuth) signature(appKey string, masterSecret string) (signature string, timestamp string) {
+	timestamp = strconv.FormatInt(time.Now().UnixNano()/1000000, 10)
+	original := appKey + timestamp + masterSecret
+
+	hash := sha256.New()
+	hash.Write([]byte(original))
+	sum := hash.Sum(nil)
+
+	return fmt.Sprintf("%x", sum), timestamp
 }

@@ -2,10 +2,11 @@ package core
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 func init() {
