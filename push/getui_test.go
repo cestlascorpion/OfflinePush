@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	pb "github.com/cestlascorpion/offlinepush/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 	"github.com/globalsign/mgo/bson"
 	"github.com/jinzhu/configor"
 )
@@ -29,21 +29,21 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 
 	request := &SingleReq{
 		RequestId: bson.NewObjectId().Hex(),
-		Audience: &pb.Audience{
+		Audience: &proto.Audience{
 			Cid: []string{core.TestToken},
 		},
 		Settings: nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -77,21 +77,21 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 
 	request := &SingleReq{
 		RequestId: bson.NewObjectId().Hex(),
-		Audience: &pb.Audience{
+		Audience: &proto.Audience{
 			Alias: []string{core.TestAlias},
 		},
 		Settings: nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -128,21 +128,21 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 		MsgList: []*SingleReq{
 			{
 				RequestId: bson.NewObjectId().Hex(),
-				Audience: &pb.Audience{
+				Audience: &proto.Audience{
 					Cid: []string{core.TestToken},
 				},
 				Settings: nil,
-				PushMessage: &pb.PushMessage{
-					Notification: &pb.PushMessage_Notification{
+				PushMessage: &proto.PushMessage{
+					Notification: &proto.PushMessage_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
 					},
 				},
-				PushChannel: &pb.PushChannel{
-					Android: &pb.AndroidChannel{
-						Ups: &pb.AndroidChannel_Ups{
-							Notification: &pb.AndroidChannel_Ups_Notification{
+				PushChannel: &proto.PushChannel{
+					Android: &proto.AndroidChannel{
+						Ups: &proto.AndroidChannel_Ups{
+							Notification: &proto.AndroidChannel_Ups_Notification{
 								Title:     "title",
 								Body:      "body",
 								ClickType: "startapp",
@@ -181,21 +181,21 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 		MsgList: []*SingleReq{
 			{
 				RequestId: bson.NewObjectId().Hex(),
-				Audience: &pb.Audience{
+				Audience: &proto.Audience{
 					Alias: []string{core.TestAlias},
 				},
 				Settings: nil,
-				PushMessage: &pb.PushMessage{
-					Notification: &pb.PushMessage_Notification{
+				PushMessage: &proto.PushMessage{
+					Notification: &proto.PushMessage_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
 					},
 				},
-				PushChannel: &pb.PushChannel{
-					Android: &pb.AndroidChannel{
-						Ups: &pb.AndroidChannel_Ups{
-							Notification: &pb.AndroidChannel_Ups_Notification{
+				PushChannel: &proto.PushChannel{
+					Android: &proto.AndroidChannel{
+						Ups: &proto.AndroidChannel_Ups{
+							Notification: &proto.AndroidChannel_Ups_Notification{
 								Title:     "title",
 								Body:      "body",
 								ClickType: "startapp",
@@ -233,17 +233,17 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 		RequestId: bson.NewObjectId().Hex(),
 		GroupName: core.TestGroup,
 		Settings:  nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -259,7 +259,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	fmt.Println(taskId)
 
 	request := &ListReq{
-		Audience: &pb.Audience{
+		Audience: &proto.Audience{
 			Cid: []string{core.TestToken},
 		},
 		IsAsync: false,
@@ -292,17 +292,17 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 		RequestId: bson.NewObjectId().Hex(),
 		GroupName: core.TestGroup,
 		Settings:  nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -318,7 +318,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	fmt.Println(taskId)
 
 	request := &ListReq{
-		Audience: &pb.Audience{
+		Audience: &proto.Audience{
 			Alias: []string{core.TestAlias},
 		},
 		IsAsync: false,
@@ -352,17 +352,17 @@ func TestGetuiPush_PushAll(t *testing.T) {
 		GroupName: core.TestGroup,
 		Audience:  "all",
 		Settings:  nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -397,8 +397,8 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 	request := &ByTagReq{
 		RequestId: bson.NewObjectId().Hex(),
 		GroupName: core.TestGroup,
-		Audience: &pb.Audience{
-			Tag: []*pb.Audience_Tag{
+		Audience: &proto.Audience{
+			Tag: []*proto.Audience_Tag{
 				{
 					Key:     "phone_type",
 					Values:  []string{"android", "ios"},
@@ -412,17 +412,17 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 			},
 		},
 		Settings: nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",
@@ -457,21 +457,21 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 	request := &ByTagReq{
 		RequestId: bson.NewObjectId().Hex(),
 		GroupName: core.TestGroup,
-		Audience: &pb.Audience{
+		Audience: &proto.Audience{
 			FastCustomTag: "group_manager",
 		},
 		Settings: nil,
-		PushMessage: &pb.PushMessage{
-			Notification: &pb.PushMessage_Notification{
+		PushMessage: &proto.PushMessage{
+			Notification: &proto.PushMessage_Notification{
 				Title:     "title",
 				Body:      "body",
 				ClickType: "startapp",
 			},
 		},
-		PushChannel: &pb.PushChannel{
-			Android: &pb.AndroidChannel{
-				Ups: &pb.AndroidChannel_Ups{
-					Notification: &pb.AndroidChannel_Ups_Notification{
+		PushChannel: &proto.PushChannel{
+			Android: &proto.AndroidChannel{
+				Ups: &proto.AndroidChannel_Ups{
+					Notification: &proto.AndroidChannel_Ups_Notification{
 						Title:     "title",
 						Body:      "body",
 						ClickType: "startapp",

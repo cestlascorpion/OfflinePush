@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 	"time"
-	
+
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/cestlascorpion/offlinepush/proto"
 	"github.com/jinzhu/configor"

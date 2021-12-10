@@ -7,12 +7,12 @@ import (
 	"strconv"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	pb "github.com/cestlascorpion/offlinepush/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
-	*pb.UnimplementedUserServer
+	*proto.UnimplementedUserServer
 	mgr  *Mgr
 	auth *core.AuthCache
 }
@@ -55,8 +55,8 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}, nil
 }
 
-func (s *Server) BindAlias(ctx context.Context, in *pb.BindAliasReq) (*pb.BindAliasResp, error) {
-	out := &pb.BindAliasResp{}
+func (s *Server) BindAlias(ctx context.Context, in *proto.BindAliasReq) (*proto.BindAliasResp, error) {
+	out := &proto.BindAliasResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.DataList) == 0 {
@@ -98,8 +98,8 @@ func (s *Server) BindAlias(ctx context.Context, in *pb.BindAliasReq) (*pb.BindAl
 	return out, nil
 }
 
-func (s *Server) QueryAliasByCid(ctx context.Context, in *pb.QueryAliasReq) (*pb.QueryAliasResp, error) {
-	out := &pb.QueryAliasResp{}
+func (s *Server) QueryAliasByCid(ctx context.Context, in *proto.QueryAliasReq) (*proto.QueryAliasResp, error) {
+	out := &proto.QueryAliasResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CId) == 0 {
@@ -132,8 +132,8 @@ func (s *Server) QueryAliasByCid(ctx context.Context, in *pb.QueryAliasReq) (*pb
 	return out, nil
 }
 
-func (s *Server) QueryCidByAlias(ctx context.Context, in *pb.QueryCidReq) (*pb.QueryCidResp, error) {
-	out := &pb.QueryCidResp{}
+func (s *Server) QueryCidByAlias(ctx context.Context, in *proto.QueryCidReq) (*proto.QueryCidResp, error) {
+	out := &proto.QueryCidResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.Alias) == 0 {
@@ -166,8 +166,8 @@ func (s *Server) QueryCidByAlias(ctx context.Context, in *pb.QueryCidReq) (*pb.Q
 	return out, nil
 }
 
-func (s *Server) UnbindAlias(ctx context.Context, in *pb.UnbindAliasReq) (*pb.UnbindAliasResp, error) {
-	out := &pb.UnbindAliasResp{}
+func (s *Server) UnbindAlias(ctx context.Context, in *proto.UnbindAliasReq) (*proto.UnbindAliasResp, error) {
+	out := &proto.UnbindAliasResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.DataList) == 0 {
@@ -209,8 +209,8 @@ func (s *Server) UnbindAlias(ctx context.Context, in *pb.UnbindAliasReq) (*pb.Un
 	return out, nil
 }
 
-func (s *Server) RevokeAlias(ctx context.Context, in *pb.RevokeAliasReq) (*pb.RevokeAliasResp, error) {
-	out := &pb.RevokeAliasResp{}
+func (s *Server) RevokeAlias(ctx context.Context, in *proto.RevokeAliasReq) (*proto.RevokeAliasResp, error) {
+	out := &proto.RevokeAliasResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.Alias) == 0 {
@@ -242,8 +242,8 @@ func (s *Server) RevokeAlias(ctx context.Context, in *pb.RevokeAliasReq) (*pb.Re
 	return out, nil
 }
 
-func (s *Server) BindUserWithTag(ctx context.Context, in *pb.BindUserWithTagReq) (*pb.BindUserWithTagResp, error) {
-	out := &pb.BindUserWithTagResp{}
+func (s *Server) BindUserWithTag(ctx context.Context, in *proto.BindUserWithTagReq) (*proto.BindUserWithTagResp, error) {
+	out := &proto.BindUserWithTagResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CId) == 0 || len(in.TagList) == 0 {
@@ -279,8 +279,8 @@ func (s *Server) BindUserWithTag(ctx context.Context, in *pb.BindUserWithTagReq)
 	return out, nil
 }
 
-func (s *Server) BindTagWithUser(ctx context.Context, in *pb.BindTagWithUserReq) (*pb.BindTagWithUserResp, error) {
-	out := &pb.BindTagWithUserResp{}
+func (s *Server) BindTagWithUser(ctx context.Context, in *proto.BindTagWithUserReq) (*proto.BindTagWithUserResp, error) {
+	out := &proto.BindTagWithUserResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.Tag) == 0 || len(in.CIdList) == 0 {
@@ -313,9 +313,9 @@ func (s *Server) BindTagWithUser(ctx context.Context, in *pb.BindTagWithUserReq)
 			return out, err
 		}
 	}
-	out.ResultList = make([]*pb.BindTagWithUserResp_Result, 0)
+	out.ResultList = make([]*proto.BindTagWithUserResp_Result, 0)
 	for cid, success := range resp {
-		out.ResultList = append(out.ResultList, &pb.BindTagWithUserResp_Result{
+		out.ResultList = append(out.ResultList, &proto.BindTagWithUserResp_Result{
 			CId:     cid,
 			Success: success,
 		})
@@ -323,8 +323,8 @@ func (s *Server) BindTagWithUser(ctx context.Context, in *pb.BindTagWithUserReq)
 	return out, nil
 }
 
-func (s *Server) UnbindTagFromUser(ctx context.Context, in *pb.UnbindTagFromUserReq) (*pb.UnbindTagFromUserResp, error) {
-	out := &pb.UnbindTagFromUserResp{}
+func (s *Server) UnbindTagFromUser(ctx context.Context, in *proto.UnbindTagFromUserReq) (*proto.UnbindTagFromUserResp, error) {
+	out := &proto.UnbindTagFromUserResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.Tag) == 0 || len(in.CIdList) == 0 {
@@ -357,9 +357,9 @@ func (s *Server) UnbindTagFromUser(ctx context.Context, in *pb.UnbindTagFromUser
 			return out, err
 		}
 	}
-	out.ResultList = make([]*pb.UnbindTagFromUserResp_Result, 0)
+	out.ResultList = make([]*proto.UnbindTagFromUserResp_Result, 0)
 	for cid, success := range resp {
-		out.ResultList = append(out.ResultList, &pb.UnbindTagFromUserResp_Result{
+		out.ResultList = append(out.ResultList, &proto.UnbindTagFromUserResp_Result{
 			CId:     cid,
 			Success: success,
 		})
@@ -367,8 +367,8 @@ func (s *Server) UnbindTagFromUser(ctx context.Context, in *pb.UnbindTagFromUser
 	return out, nil
 }
 
-func (s *Server) QueryUserTag(ctx context.Context, in *pb.QueryUserTagReq) (*pb.QueryUserTagResp, error) {
-	out := &pb.QueryUserTagResp{}
+func (s *Server) QueryUserTag(ctx context.Context, in *proto.QueryUserTagReq) (*proto.QueryUserTagResp, error) {
+	out := &proto.QueryUserTagResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CId) == 0 {
@@ -401,8 +401,8 @@ func (s *Server) QueryUserTag(ctx context.Context, in *pb.QueryUserTagReq) (*pb.
 	return out, nil
 }
 
-func (s *Server) AddBlackList(ctx context.Context, in *pb.AddBlackListReq) (*pb.AddBlackListResp, error) {
-	out := &pb.AddBlackListResp{}
+func (s *Server) AddBlackList(ctx context.Context, in *proto.AddBlackListReq) (*proto.AddBlackListResp, error) {
+	out := &proto.AddBlackListResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 {
@@ -434,8 +434,8 @@ func (s *Server) AddBlackList(ctx context.Context, in *pb.AddBlackListReq) (*pb.
 	return out, nil
 }
 
-func (s *Server) DelBlackList(ctx context.Context, in *pb.DelBlackListReq) (*pb.DelBlackListResp, error) {
-	out := &pb.DelBlackListResp{}
+func (s *Server) DelBlackList(ctx context.Context, in *proto.DelBlackListReq) (*proto.DelBlackListResp, error) {
+	out := &proto.DelBlackListResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 {
@@ -467,8 +467,8 @@ func (s *Server) DelBlackList(ctx context.Context, in *pb.DelBlackListReq) (*pb.
 	return out, nil
 }
 
-func (s *Server) QueryUserStatus(ctx context.Context, in *pb.QueryUserStatusReq) (*pb.QueryUserStatusResp, error) {
-	out := &pb.QueryUserStatusResp{}
+func (s *Server) QueryUserStatus(ctx context.Context, in *proto.QueryUserStatusReq) (*proto.QueryUserStatusResp, error) {
+	out := &proto.QueryUserStatusResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 {
@@ -497,9 +497,9 @@ func (s *Server) QueryUserStatus(ctx context.Context, in *pb.QueryUserStatusReq)
 			return out, err
 		}
 	}
-	out.StatusList = make([]*pb.QueryUserStatusResp_UserStatus, 0)
+	out.StatusList = make([]*proto.QueryUserStatusResp_UserStatus, 0)
 	for cid, detail := range resp {
-		out.StatusList = append(out.StatusList, &pb.QueryUserStatusResp_UserStatus{
+		out.StatusList = append(out.StatusList, &proto.QueryUserStatusResp_UserStatus{
 			CId:           cid,
 			LastLoginTime: detail["last_login_time"],
 			Status:        detail["status"],
@@ -508,8 +508,8 @@ func (s *Server) QueryUserStatus(ctx context.Context, in *pb.QueryUserStatusReq)
 	return out, nil
 }
 
-func (s *Server) QueryDeviceStatus(ctx context.Context, in *pb.QueryDeviceStatusReq) (*pb.QueryDeviceStatusResp, error) {
-	out := &pb.QueryDeviceStatusResp{}
+func (s *Server) QueryDeviceStatus(ctx context.Context, in *proto.QueryDeviceStatusReq) (*proto.QueryDeviceStatusResp, error) {
+	out := &proto.QueryDeviceStatusResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 {
@@ -538,9 +538,9 @@ func (s *Server) QueryDeviceStatus(ctx context.Context, in *pb.QueryDeviceStatus
 			return out, err
 		}
 	}
-	out.StatusList = make([]*pb.QueryDeviceStatusResp_DeviceStatus, 0)
+	out.StatusList = make([]*proto.QueryDeviceStatusResp_DeviceStatus, 0)
 	for cid, detail := range resp {
-		out.StatusList = append(out.StatusList, &pb.QueryDeviceStatusResp_DeviceStatus{
+		out.StatusList = append(out.StatusList, &proto.QueryDeviceStatusResp_DeviceStatus{
 			CId:          cid,
 			Availiable:   detail["available"] == "true",
 			CIdStatus:    detail["cid_status"],
@@ -550,8 +550,8 @@ func (s *Server) QueryDeviceStatus(ctx context.Context, in *pb.QueryDeviceStatus
 	return out, nil
 }
 
-func (s *Server) QueryUserInfo(ctx context.Context, in *pb.QueryUserInfoReq) (*pb.QueryUserInfoResp, error) {
-	out := &pb.QueryUserInfoResp{}
+func (s *Server) QueryUserInfo(ctx context.Context, in *proto.QueryUserInfoReq) (*proto.QueryUserInfoResp, error) {
+	out := &proto.QueryUserInfoResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 {
@@ -581,7 +581,7 @@ func (s *Server) QueryUserInfo(ctx context.Context, in *pb.QueryUserInfoReq) (*p
 		}
 	}
 	out.InvalidList = invalid
-	out.UserInfoList = make([]*pb.QueryUserInfoResp_UserInfo, 0)
+	out.UserInfoList = make([]*proto.QueryUserInfoResp_UserInfo, 0)
 	for cid, detail := range validDetail {
 		phoneType, notificationSwitch, loginFreq := int64(-1), false, int64(-1)
 		if val, ok := detail["phone_type"]; ok {
@@ -602,7 +602,7 @@ func (s *Server) QueryUserInfo(ctx context.Context, in *pb.QueryUserInfoReq) (*p
 				loginFreq = v
 			}
 		}
-		out.UserInfoList = append(out.UserInfoList, &pb.QueryUserInfoResp_UserInfo{
+		out.UserInfoList = append(out.UserInfoList, &proto.QueryUserInfoResp_UserInfo{
 			CId:                cid,
 			ClientAppId:        detail["client_app_id"],
 			PackageName:        detail["package_name"],
@@ -617,8 +617,8 @@ func (s *Server) QueryUserInfo(ctx context.Context, in *pb.QueryUserInfoReq) (*p
 	return out, nil
 }
 
-func (s *Server) SetPushBadge(ctx context.Context, in *pb.SetPushBadgeReq) (*pb.SetPushBadgeResp, error) {
-	out := &pb.SetPushBadgeResp{}
+func (s *Server) SetPushBadge(ctx context.Context, in *proto.SetPushBadgeReq) (*proto.SetPushBadgeResp, error) {
+	out := &proto.SetPushBadgeResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.CIdList) == 0 || len(in.Operation) == 0 {
@@ -653,8 +653,8 @@ func (s *Server) SetPushBadge(ctx context.Context, in *pb.SetPushBadgeReq) (*pb.
 	return out, nil
 }
 
-func (s *Server) QueryUserCount(ctx context.Context, in *pb.QueryUserCountReq) (*pb.QueryUserCountResp, error) {
-	out := &pb.QueryUserCountResp{}
+func (s *Server) QueryUserCount(ctx context.Context, in *proto.QueryUserCountReq) (*proto.QueryUserCountResp, error) {
+	out := &proto.QueryUserCountResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TagList) == 0 {

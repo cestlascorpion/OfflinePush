@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	pb "github.com/cestlascorpion/offlinepush/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 )
 
 type Agent interface {
@@ -132,11 +132,11 @@ func (m *AgentMgr) QueryDetail(uniqueId core.UniqueId, taskId, cId, token string
 }
 
 type SingleReq struct {
-	RequestId   string          `json:"request_id"`             // 必须字段，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
-	Audience    *pb.Audience    `json:"audience"`               // 必须字段，cid数组，只能填一个cid
-	Settings    *pb.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
-	PushMessage *pb.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
-	PushChannel *pb.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
+	RequestId   string             `json:"request_id"`             // 必须字段，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
+	Audience    *proto.Audience    `json:"audience"`               // 必须字段，cid数组，只能填一个cid
+	Settings    *proto.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
+	PushMessage *proto.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
+	PushChannel *proto.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
 }
 
 type BatchReq struct {
@@ -145,33 +145,33 @@ type BatchReq struct {
 }
 
 type CreateReq struct {
-	RequestId   string          `json:"request_id,omitempty"`   // 非必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
-	GroupName   string          `json:"group_name,omitempty"`   // 非必须，任务组名
-	Settings    *pb.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
-	PushMessage *pb.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
-	PushChannel *pb.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
+	RequestId   string             `json:"request_id,omitempty"`   // 非必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
+	GroupName   string             `json:"group_name,omitempty"`   // 非必须，任务组名
+	Settings    *proto.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
+	PushMessage *proto.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
+	PushChannel *proto.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
 }
 
 type ListReq struct {
-	Audience *pb.Audience `json:"audience"`           // 必须字段，用cid数组，多个cid，注意这里！！数组长度不大于200
-	IsAsync  bool         `json:"is_async,omitempty"` // 非必须，默认值：false，是否异步推送，异步推送不会返回data，is_async为false时返回data
-	TaskId   string       `json:"taskid"`             // 必须字段，默认值：无，使用创建消息接口返回的taskId，可以多次使用
+	Audience *proto.Audience `json:"audience"`           // 必须字段，用cid数组，多个cid，注意这里！！数组长度不大于200
+	IsAsync  bool            `json:"is_async,omitempty"` // 非必须，默认值：false，是否异步推送，异步推送不会返回data，is_async为false时返回data
+	TaskId   string          `json:"taskid"`             // 必须字段，默认值：无，使用创建消息接口返回的taskId，可以多次使用
 }
 
 type AllReq struct {
-	RequestId   string          `json:"request_id"`             // 必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
-	GroupName   string          `json:"group_name,omitempty"`   // 非必须，任务组名
-	Audience    string          `json:"audience"`               // 必须字段，必须为all
-	Settings    *pb.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
-	PushMessage *pb.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
-	PushChannel *pb.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
+	RequestId   string             `json:"request_id"`             // 必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
+	GroupName   string             `json:"group_name,omitempty"`   // 非必须，任务组名
+	Audience    string             `json:"audience"`               // 必须字段，必须为all
+	Settings    *proto.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
+	PushMessage *proto.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
+	PushChannel *proto.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
 }
 
 type ByTagReq struct {
-	RequestId   string          `json:"request_id"`             // 必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
-	GroupName   string          `json:"group_name,omitempty"`   // 非必须，任务组名
-	Settings    *pb.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
-	Audience    *pb.Audience    `json:"audience"`               // 必须字段，tag数组
-	PushMessage *pb.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
-	PushChannel *pb.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
+	RequestId   string             `json:"request_id"`             // 必须，请求唯一标识号，10-32位之间；如果request_id重复，会导致消息丢失
+	GroupName   string             `json:"group_name,omitempty"`   // 非必须，任务组名
+	Settings    *proto.Settings    `json:"settings,omitempty"`     // 非必须，推送条件设置
+	Audience    *proto.Audience    `json:"audience"`               // 必须字段，tag数组
+	PushMessage *proto.PushMessage `json:"push_message"`           // 必须字段，个推推送消息参数
+	PushChannel *proto.PushChannel `json:"push_channel,omitempty"` // 非必须，厂商推送消息参数，包含ios消息参数，android厂商消息参数
 }

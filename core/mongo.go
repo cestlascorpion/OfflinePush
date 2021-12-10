@@ -2,10 +2,11 @@ package core
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 func init() {
@@ -100,10 +101,10 @@ func NewStatsDao(conf *PushConfig) (*StatsDao, error) {
 
 	err = session.DB(conf.Mongo.DataBase).C(conf.Mongo.StatsCollection).EnsureIndex(
 		mgo.Index{
-			Key:         []string{"push_agent", "bundle_id", "describe", "time"},
-			Unique:      true,
-			Background:  false,
-			Sparse:      true,
+			Key:        []string{"push_agent", "bundle_id", "describe", "time"},
+			Unique:     true,
+			Background: false,
+			Sparse:     true,
 		})
 	if err != nil {
 		log.Errorf("mgo ensure index err %+v", err)

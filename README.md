@@ -1,3 +1,3 @@
 # OfflinePush
 
-Offline Push Using APNs and GeTui.
+Offline Push Using GeTui Rest API v2.

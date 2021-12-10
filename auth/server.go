@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	pb "github.com/cestlascorpion/offlinepush/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
-	*pb.UnimplementedAuthServer
+	*proto.UnimplementedAuthServer
 	Dao *core.AuthDao
 	Mgr *AgentMgr
 }
@@ -53,8 +53,8 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}, nil
 }
 
-func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetTokenResp, error) {
-	out := &pb.GetTokenResp{}
+func (s *Server) GetToken(ctx context.Context, in *proto.GetTokenReq) (*proto.GetTokenResp, error) {
+	out := &proto.GetTokenResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
@@ -88,8 +88,8 @@ func (s *Server) GetToken(ctx context.Context, in *pb.GetTokenReq) (*pb.GetToken
 	return out, nil
 }
 
-func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetTokenResp, error) {
-	out := &pb.SetTokenResp{}
+func (s *Server) SetToken(ctx context.Context, in *proto.SetTokenReq) (*proto.SetTokenResp, error) {
+	out := &proto.SetTokenResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 || len(in.Token) == 0 || in.ExpireAt < time.Now().Unix() {
 		log.Errorf("invalid parameter in %+v", in)
@@ -106,8 +106,8 @@ func (s *Server) SetToken(ctx context.Context, in *pb.SetTokenReq) (*pb.SetToken
 	return out, nil
 }
 
-func (s *Server) DelToken(ctx context.Context, in *pb.DelTokenReq) (*pb.DelTokenResp, error) {
-	out := &pb.DelTokenResp{}
+func (s *Server) DelToken(ctx context.Context, in *proto.DelTokenReq) (*proto.DelTokenResp, error) {
+	out := &proto.DelTokenResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 || len(in.Token) == 0 {
 		log.Errorf("invalid parameter in %+v", in)

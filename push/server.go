@@ -7,12 +7,12 @@ import (
 	"strconv"
 
 	"github.com/cestlascorpion/offlinepush/core"
-	pb "github.com/cestlascorpion/offlinepush/proto"
+	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
-	*pb.UnimplementedPushServer
+	*proto.UnimplementedPushServer
 	Mgr  *AgentMgr
 	Auth *core.AuthCache
 }
@@ -56,8 +56,8 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}, nil
 }
 
-func (s *Server) PushToSingle(ctx context.Context, in *pb.PushToSingleReq) (*pb.PushToSingleResp, error) {
-	out := &pb.PushToSingleResp{}
+func (s *Server) PushToSingle(ctx context.Context, in *proto.PushToSingleReq) (*proto.PushToSingleResp, error) {
+	out := &proto.PushToSingleResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.MsgList) == 0 {
@@ -83,8 +83,8 @@ func (s *Server) PushToSingle(ctx context.Context, in *pb.PushToSingleReq) (*pb.
 	return out, nil
 }
 
-func (s *Server) CreateTask(ctx context.Context, in *pb.CreateTaskReq) (*pb.CreateTaskResp, error) {
-	out := &pb.CreateTaskResp{}
+func (s *Server) CreateTask(ctx context.Context, in *proto.CreateTaskReq) (*proto.CreateTaskResp, error) {
+	out := &proto.CreateTaskResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		in.Msg == nil {
@@ -101,8 +101,8 @@ func (s *Server) CreateTask(ctx context.Context, in *pb.CreateTaskReq) (*pb.Crea
 	return out, nil
 }
 
-func (s *Server) PushToList(ctx context.Context, in *pb.PushToListReq) (*pb.PushToListResp, error) {
-	out := &pb.PushToListResp{}
+func (s *Server) PushToList(ctx context.Context, in *proto.PushToListReq) (*proto.PushToListResp, error) {
+	out := &proto.PushToListResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		in.Msg == nil {
@@ -119,8 +119,8 @@ func (s *Server) PushToList(ctx context.Context, in *pb.PushToListReq) (*pb.Push
 	return out, nil
 }
 
-func (s *Server) PushToApp(ctx context.Context, in *pb.PushToAppReq) (*pb.PushToAppResp, error) {
-	out := &pb.PushToAppResp{}
+func (s *Server) PushToApp(ctx context.Context, in *proto.PushToAppReq) (*proto.PushToAppResp, error) {
+	out := &proto.PushToAppResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		in.Msg == nil {
@@ -145,8 +145,8 @@ func (s *Server) PushToApp(ctx context.Context, in *pb.PushToAppReq) (*pb.PushTo
 	return out, nil
 }
 
-func (s *Server) StopTask(ctx context.Context, in *pb.StopTaskReq) (*pb.StopTaskResp, error) {
-	out := &pb.StopTaskResp{}
+func (s *Server) StopTask(ctx context.Context, in *proto.StopTaskReq) (*proto.StopTaskResp, error) {
+	out := &proto.StopTaskResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TaskId) == 0 {
@@ -182,8 +182,8 @@ func (s *Server) StopTask(ctx context.Context, in *pb.StopTaskReq) (*pb.StopTask
 	return out, nil
 }
 
-func (s *Server) CheckTask(ctx context.Context, in *pb.CheckTaskReq) (*pb.CheckTaskResp, error) {
-	out := &pb.CheckTaskResp{}
+func (s *Server) CheckTask(ctx context.Context, in *proto.CheckTaskReq) (*proto.CheckTaskResp, error) {
+	out := &proto.CheckTaskResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TaskId) == 0 {
@@ -237,8 +237,8 @@ func (s *Server) CheckTask(ctx context.Context, in *pb.CheckTaskReq) (*pb.CheckT
 	return out, nil
 }
 
-func (s *Server) RemoveTask(ctx context.Context, in *pb.RemoveTaskReq) (*pb.RemoveTaskResp, error) {
-	out := &pb.RemoveTaskResp{}
+func (s *Server) RemoveTask(ctx context.Context, in *proto.RemoveTaskReq) (*proto.RemoveTaskResp, error) {
+	out := &proto.RemoveTaskResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TaskId) == 0 {
@@ -274,8 +274,8 @@ func (s *Server) RemoveTask(ctx context.Context, in *pb.RemoveTaskReq) (*pb.Remo
 	return out, nil
 }
 
-func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.ViewDetailResp, error) {
-	out := &pb.ViewDetailResp{}
+func (s *Server) ViewDetail(ctx context.Context, in *proto.ViewDetailReq) (*proto.ViewDetailResp, error) {
+	out := &proto.ViewDetailResp{}
 
 	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.TaskId) == 0 || len(in.Cid) == 0 {
@@ -305,7 +305,7 @@ func (s *Server) ViewDetail(ctx context.Context, in *pb.ViewDetailReq) (*pb.View
 		}
 	}
 	for i := range resp {
-		out.DetailList = append(out.DetailList, &pb.ViewDetailResp_Detail{
+		out.DetailList = append(out.DetailList, &proto.ViewDetailResp_Detail{
 			Time:  resp[i][0],
 			Event: resp[i][1],
 		})
@@ -317,7 +317,7 @@ func (s *Server) Close() {
 	// do nothing
 }
 
-func (s *Server) pushSingle(uniqueId core.UniqueId, in *pb.PushToSingleReq, out *pb.PushToSingleResp) error {
+func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -352,19 +352,19 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *pb.PushToSingleReq, out 
 		return errors.New("invalid push single resp")
 	}
 
-	out.ReceiptList = make([]*pb.Receipt, 0)
+	out.ReceiptList = make([]*proto.Receipt, 0)
 	for taskId, detail := range resp {
 		if len(detail) == 0 {
 			continue
 		}
-		detailList := make([]*pb.Receipt_Detail, 0)
+		detailList := make([]*proto.Receipt_Detail, 0)
 		for cid, status := range detail {
-			detailList = append(detailList, &pb.Receipt_Detail{
+			detailList = append(detailList, &proto.Receipt_Detail{
 				Cid:    cid,
 				Status: status,
 			})
 		}
-		out.ReceiptList = append(out.ReceiptList, &pb.Receipt{
+		out.ReceiptList = append(out.ReceiptList, &proto.Receipt{
 			TaskId:     taskId,
 			DetailList: detailList,
 		})
@@ -372,7 +372,7 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *pb.PushToSingleReq, out 
 	return nil
 }
 
-func (s *Server) pushBatch(uniqueId core.UniqueId, in *pb.PushToSingleReq, out *pb.PushToSingleResp) error {
+func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -408,19 +408,19 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *pb.PushToSingleReq, out *
 		}
 	}
 
-	out.ReceiptList = make([]*pb.Receipt, 0)
+	out.ReceiptList = make([]*proto.Receipt, 0)
 	for taskId, detail := range resp {
 		if len(detail) == 0 {
 			continue
 		}
-		detailList := make([]*pb.Receipt_Detail, 0)
+		detailList := make([]*proto.Receipt_Detail, 0)
 		for cid, status := range detail {
-			detailList = append(detailList, &pb.Receipt_Detail{
+			detailList = append(detailList, &proto.Receipt_Detail{
 				Cid:    cid,
 				Status: status,
 			})
 		}
-		out.ReceiptList = append(out.ReceiptList, &pb.Receipt{
+		out.ReceiptList = append(out.ReceiptList, &proto.Receipt{
 			TaskId:     taskId,
 			DetailList: detailList,
 		})
@@ -428,7 +428,7 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *pb.PushToSingleReq, out *
 	return nil
 }
 
-func (s *Server) createTask(uniqueId core.UniqueId, in *pb.CreateTaskReq, out *pb.CreateTaskResp) error {
+func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out *proto.CreateTaskResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -461,7 +461,7 @@ func (s *Server) createTask(uniqueId core.UniqueId, in *pb.CreateTaskReq, out *p
 	return nil
 }
 
-func (s *Server) pushList(uniqueId core.UniqueId, in *pb.PushToListReq, out *pb.PushToListResp) error {
+func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *proto.PushToListResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -498,14 +498,14 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *pb.PushToListReq, out *pb.
 		if len(detail) == 0 {
 			continue
 		}
-		detailList := make([]*pb.Receipt_Detail, 0)
+		detailList := make([]*proto.Receipt_Detail, 0)
 		for cid, status := range detail {
-			detailList = append(detailList, &pb.Receipt_Detail{
+			detailList = append(detailList, &proto.Receipt_Detail{
 				Cid:    cid,
 				Status: status,
 			})
 		}
-		out.Receipt = &pb.Receipt{
+		out.Receipt = &proto.Receipt{
 			TaskId:     taskId,
 			DetailList: detailList,
 		}
@@ -513,7 +513,7 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *pb.PushToListReq, out *pb.
 	return nil
 }
 
-func (s *Server) pushAll(uniqueId core.UniqueId, in *pb.PushToAppReq, out *pb.PushToAppResp) error {
+func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -547,7 +547,7 @@ func (s *Server) pushAll(uniqueId core.UniqueId, in *pb.PushToAppReq, out *pb.Pu
 	return nil
 }
 
-func (s *Server) pushByTag(uniqueId core.UniqueId, in *pb.PushToAppReq, out *pb.PushToAppResp) error {
+func (s *Server) pushByTag(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
 	auth, err := s.Auth.GetAuth(uniqueId, "")
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
