@@ -14,9 +14,9 @@ func init() {
 }
 
 type AuthDao struct {
-	DataBase   string
-	Collection string
-	Session    *mgo.Session
+	database   string
+	collection string
+	session    *mgo.Session
 }
 
 func NewAuthDao(conf *PushConfig) (*AuthDao, error) {
@@ -40,18 +40,18 @@ func NewAuthDao(conf *PushConfig) (*AuthDao, error) {
 	}
 
 	return &AuthDao{
-		DataBase:   conf.Mongo.DataBase,
-		Collection: conf.Mongo.AuthCollection,
-		Session:    session,
+		database:   conf.Mongo.DataBase,
+		collection: conf.Mongo.AuthCollection,
+		session:    session,
 	}, nil
 }
 
 func (d *AuthDao) GetAuth(id UniqueId) (*AuthToken, error) {
-	s := d.Session.Clone()
+	s := d.session.Clone()
 	defer s.Close()
 
 	auth := &AuthToken{}
-	err := s.DB(d.DataBase).C(d.Collection).Find(
+	err := s.DB(d.database).C(d.collection).Find(
 		bson.M{"push_agent": id.PushAgent, "bundle_id": id.BundleId}).One(auth)
 	if err == mgo.ErrNotFound {
 		log.Infof("mgo not found push agent %s bundle id %s", id.PushAgent, id.BundleId)
@@ -66,10 +66,10 @@ func (d *AuthDao) GetAuth(id UniqueId) (*AuthToken, error) {
 }
 
 func (d *AuthDao) SetAuth(id UniqueId, auth *AuthToken) error {
-	s := d.Session.Clone()
+	s := d.session.Clone()
 	defer s.Close()
 
-	_, err := s.DB(d.DataBase).C(d.Collection).Upsert(
+	_, err := s.DB(d.database).C(d.collection).Upsert(
 		bson.M{"push_agent": id.PushAgent, "bundle_id": id.BundleId},
 		bson.M{"$set": bson.M{"token": auth.Token, "expire_at": auth.ExpireAt}},
 	)
@@ -82,13 +82,13 @@ func (d *AuthDao) SetAuth(id UniqueId, auth *AuthToken) error {
 }
 
 func (d *AuthDao) Close() {
-	d.Session.Close()
+	d.session.Close()
 }
 
 type StatsDao struct {
-	DataBase   string
-	Collection string
-	Session    *mgo.Session
+	database   string
+	collection string
+	session    *mgo.Session
 }
 
 func NewStatsDao(conf *PushConfig) (*StatsDao, error) {
@@ -112,17 +112,17 @@ func NewStatsDao(conf *PushConfig) (*StatsDao, error) {
 	}
 
 	return &StatsDao{
-		DataBase:   conf.Mongo.DataBase,
-		Collection: conf.Mongo.StatsCollection,
-		Session:    session,
+		database:   conf.Mongo.DataBase,
+		collection: conf.Mongo.StatsCollection,
+		session:    session,
 	}, nil
 }
 
 func (d *StatsDao) SetStats(id UniqueId, describe string, time time.Time, content interface{}) error {
-	s := d.Session.Clone()
+	s := d.session.Clone()
 	defer s.Close()
 
-	_, err := s.DB(d.DataBase).C(d.Collection).Upsert(
+	_, err := s.DB(d.database).C(d.collection).Upsert(
 		bson.M{"push_agent": id.PushAgent,
 			"bundle_id": id.BundleId,
 			"describe":  describe,
@@ -138,5 +138,5 @@ func (d *StatsDao) SetStats(id UniqueId, describe string, time time.Time, conten
 }
 
 func (d *StatsDao) Close() {
-	d.Session.Close()
+	d.session.Close()
 }

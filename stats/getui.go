@@ -2,7 +2,6 @@ package stats
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -15,7 +14,7 @@ import (
 )
 
 type GeTuiStats struct {
-	ApiUrl string
+	apiUrl string
 	client *core.RestyClient
 }
 
@@ -25,7 +24,7 @@ func NewGeTuiStats(apiUrl, appId string, hc *http.Client) (*GeTuiStats, error) {
 		return nil, err
 	}
 	return &GeTuiStats{
-		ApiUrl: fmt.Sprintf(apiUrl, appId),
+		apiUrl: fmt.Sprintf(apiUrl, appId),
 		client: client,
 	}, nil
 }
@@ -44,9 +43,6 @@ func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Tasks(resp.Data)
@@ -66,9 +62,6 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Group(resp.Data)
@@ -88,9 +81,6 @@ func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) 
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2Count(resp.Data)
@@ -110,9 +100,6 @@ func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2PushByDay(resp.Data)
@@ -132,9 +119,6 @@ func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]
 	}
 	if resp.Code != 0 {
 		log.Errorf("resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	return g.resp2UserByDay(resp.Data)
@@ -375,7 +359,7 @@ func (g *GeTuiStats) resp2OnlineBy24H(data map[string]interface{}) (map[int64]in
 }
 
 func (g *GeTuiStats) url(path string) string {
-	return g.ApiUrl + path
+	return g.apiUrl + path
 }
 
 func (g *GeTuiStats) data2BaseStatics(data map[string]interface{}) (*proto.BaseStatics, error) {

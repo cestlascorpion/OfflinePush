@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -42,9 +41,6 @@ func (g *GeTuiUser) BindAlias(list *AliasList, token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("BindAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("BindAlias data %+v", resp.Data)
@@ -65,9 +61,6 @@ func (g *GeTuiUser) QueryAliasByCid(cid string, token string) (string, error) {
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryAliasByCid() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return "", errors.New(core.InvalidTokenErr)
-		}
 		return "", fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryAliasByCid data %+v", resp.Data)
@@ -97,9 +90,6 @@ func (g *GeTuiUser) QueryCidByAlias(alias string, token string) ([]string, error
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryCidByAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryCidByAlias data %+v", resp.Data)
@@ -136,9 +126,6 @@ func (g *GeTuiUser) UnbindAlias(list *AliasList, token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("UnbindAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("UnbindAlias data %+v", resp.Data)
@@ -159,9 +146,6 @@ func (g *GeTuiUser) RevokeAlias(alias string, token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("RevokeAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("RevokeAlias data %+v", resp.Data)
@@ -182,9 +166,6 @@ func (g *GeTuiUser) BindUserWithTag(cid string, list *CustomTagList, token strin
 	}
 	if resp.Code != 0 {
 		log.Errorf("BindUserWithTag() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("BindUserWithTag data %+v", resp.Data)
@@ -205,9 +186,6 @@ func (g *GeTuiUser) BindTagWithUser(tag string, list *CidList, token string) (ma
 	}
 	if resp.Code != 0 {
 		log.Errorf("BindTagWithUser() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("BindTagWithUser data %+v", resp.Data)
@@ -242,9 +220,6 @@ func (g *GeTuiUser) UnbindTagFromUser(tag string, list *CidList, token string) (
 	}
 	if resp.Code != 0 {
 		log.Errorf("UnbindTagFromUser() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("UnbindTagFromUser data %+v", resp.Data)
@@ -279,9 +254,6 @@ func (g *GeTuiUser) QueryUserTag(cid string, token string) ([]string, error) {
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryUserTag() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryUserTag data %+v", resp.Data)
@@ -318,9 +290,6 @@ func (g *GeTuiUser) AddBlackList(cidList []string, token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("AddBlackList() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("AddBlackList data %+v", resp.Data)
@@ -341,9 +310,6 @@ func (g *GeTuiUser) DelBlackList(cidList []string, token string) error {
 	}
 	if resp.Code != 0 {
 		log.Errorf("DelBlackList() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("DelBlackList data %+v", resp.Data)
@@ -364,9 +330,6 @@ func (g *GeTuiUser) QueryUserStatus(cidList []string, token string) (map[string]
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryUserStatus() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryUserStatus data %+v", resp.Data)
@@ -408,9 +371,6 @@ func (g *GeTuiUser) QueryDeviceStatus(cidList []string, token string) (map[strin
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryDeviceStatus() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryDeviceStatus data %+v", resp.Data)
@@ -441,9 +401,6 @@ func (g *GeTuiUser) QueryUserInfo(cidList []string, token string) ([]string, map
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryUserInfo() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return nil, nil, errors.New(core.InvalidTokenErr)
-		}
 		return nil, nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryUserInfo data %+v", resp.Data)
@@ -555,9 +512,6 @@ func (g *GeTuiUser) SetPushBadge(cidList []string, op *Operation, token string) 
 	}
 	if resp.Code != 0 {
 		log.Errorf("SetPushBadge() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return errors.New(core.InvalidTokenErr)
-		}
 		return fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("SetPushBadge data %+v", resp.Data)
@@ -578,9 +532,6 @@ func (g *GeTuiUser) QueryUserCount(list *ComplexTagList, token string) (int, err
 	}
 	if resp.Code != 0 {
 		log.Errorf("QueryUserCount() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		if resp.Code == 10001 {
-			return 0, errors.New(core.InvalidTokenErr)
-		}
 		return 0, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("QueryUserCount data %+v", resp.Data)

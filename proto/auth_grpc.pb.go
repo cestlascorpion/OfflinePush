@@ -14,12 +14,11 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// AuthClient is the client API for Auth service.
+// AuthClient is the client API for auth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
 	GetToken(ctx context.Context, in *GetTokenReq, opts ...grpc.CallOption) (*GetTokenResp, error)
-	SetToken(ctx context.Context, in *SetTokenReq, opts ...grpc.CallOption) (*SetTokenResp, error)
 	DelToken(ctx context.Context, in *DelTokenReq, opts ...grpc.CallOption) (*DelTokenResp, error)
 }
 
@@ -33,16 +32,7 @@ func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 
 func (c *authClient) GetToken(ctx context.Context, in *GetTokenReq, opts ...grpc.CallOption) (*GetTokenResp, error) {
 	out := new(GetTokenResp)
-	err := c.cc.Invoke(ctx, "/OfflinePush.Auth.Auth/GetToken", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authClient) SetToken(ctx context.Context, in *SetTokenReq, opts ...grpc.CallOption) (*SetTokenResp, error) {
-	out := new(SetTokenResp)
-	err := c.cc.Invoke(ctx, "/OfflinePush.Auth.Auth/SetToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/OfflinePush.auth.auth/GetToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,19 +41,18 @@ func (c *authClient) SetToken(ctx context.Context, in *SetTokenReq, opts ...grpc
 
 func (c *authClient) DelToken(ctx context.Context, in *DelTokenReq, opts ...grpc.CallOption) (*DelTokenResp, error) {
 	out := new(DelTokenResp)
-	err := c.cc.Invoke(ctx, "/OfflinePush.Auth.Auth/DelToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/OfflinePush.auth.auth/DelToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServer is the server API for Auth service.
+// AuthServer is the server API for auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility
 type AuthServer interface {
 	GetToken(context.Context, *GetTokenReq) (*GetTokenResp, error)
-	SetToken(context.Context, *SetTokenReq) (*SetTokenResp, error)
 	DelToken(context.Context, *DelTokenReq) (*DelTokenResp, error)
 	mustEmbedUnimplementedAuthServer()
 }
@@ -74,9 +63,6 @@ type UnimplementedAuthServer struct {
 
 func (UnimplementedAuthServer) GetToken(context.Context, *GetTokenReq) (*GetTokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetToken not implemented")
-}
-func (UnimplementedAuthServer) SetToken(context.Context, *SetTokenReq) (*SetTokenResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetToken not implemented")
 }
 func (UnimplementedAuthServer) DelToken(context.Context, *DelTokenReq) (*DelTokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelToken not implemented")
@@ -104,28 +90,10 @@ func _Auth_GetToken_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/OfflinePush.Auth.Auth/GetToken",
+		FullMethod: "/OfflinePush.auth.auth/GetToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServer).GetToken(ctx, req.(*GetTokenReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Auth_SetToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetTokenReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).SetToken(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/OfflinePush.Auth.Auth/SetToken",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).SetToken(ctx, req.(*SetTokenReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -140,7 +108,7 @@ func _Auth_DelToken_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/OfflinePush.Auth.Auth/DelToken",
+		FullMethod: "/OfflinePush.auth.auth/DelToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServer).DelToken(ctx, req.(*DelTokenReq))
@@ -148,20 +116,16 @@ func _Auth_DelToken_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-// Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
+// Auth_ServiceDesc is the grpc.ServiceDesc for auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Auth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "OfflinePush.Auth.Auth",
+	ServiceName: "OfflinePush.auth.auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetToken",
 			Handler:    _Auth_GetToken_Handler,
-		},
-		{
-			MethodName: "SetToken",
-			Handler:    _Auth_SetToken_Handler,
 		},
 		{
 			MethodName: "DelToken",

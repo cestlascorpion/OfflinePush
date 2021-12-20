@@ -75,25 +75,15 @@ func (s *Server) BindAlias(ctx context.Context, in *proto.BindAliasReq) (*proto.
 		})
 	}
 
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.BindAlias(uniqueId, aliasList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.BindAlias(uniqueId, aliasList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("bind alias err %+v", err)
-			return out, err
-		}
+		log.Errorf("bind alias err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -108,25 +98,15 @@ func (s *Server) QueryAliasByCid(ctx context.Context, in *proto.QueryAliasReq) (
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	alias, err := s.mgr.QueryAliasByCid(uniqueId, in.CId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			alias, err = s.mgr.QueryAliasByCid(uniqueId, in.CId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query alias err %+v", err)
-			return out, err
-		}
+		log.Errorf("query alias err %+v", err)
+		return out, err
 	}
 	out.Alias = alias
 	return out, nil
@@ -142,25 +122,15 @@ func (s *Server) QueryCidByAlias(ctx context.Context, in *proto.QueryCidReq) (*p
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	cidList, err := s.mgr.QueryCidByAlias(uniqueId, in.Alias, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			cidList, err = s.mgr.QueryCidByAlias(uniqueId, in.Alias, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query cid err %+v", err)
-			return out, err
-		}
+		log.Errorf("query cid err %+v", err)
+		return out, err
 	}
 	out.CIdList = cidList
 	return out, nil
@@ -186,25 +156,15 @@ func (s *Server) UnbindAlias(ctx context.Context, in *proto.UnbindAliasReq) (*pr
 		})
 	}
 
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.UnbindAlias(uniqueId, aliasList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.UnbindAlias(uniqueId, aliasList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("unbind alias err %+v", err)
-			return out, err
-		}
+		log.Errorf("unbind alias err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -219,25 +179,15 @@ func (s *Server) RevokeAlias(ctx context.Context, in *proto.RevokeAliasReq) (*pr
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.RevokeAlias(uniqueId, in.Alias, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.RevokeAlias(uniqueId, in.Alias, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("revoke alias err %+v", err)
-			return out, err
-		}
+		log.Errorf("revoke alias err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -256,25 +206,15 @@ func (s *Server) BindUserWithTag(ctx context.Context, in *proto.BindUserWithTagR
 		TagList: in.TagList,
 	}
 
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.BindUserWithTag(uniqueId, in.CId, tagList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.BindUserWithTag(uniqueId, in.CId, tagList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("bind user with tag err %+v", err)
-			return out, err
-		}
+		log.Errorf("bind user with tag err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -293,25 +233,15 @@ func (s *Server) BindTagWithUser(ctx context.Context, in *proto.BindTagWithUserR
 		CidList: in.CIdList,
 	}
 
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	resp, err := s.mgr.BindTagWithUser(uniqueId, in.Tag, cidList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			resp, err = s.mgr.BindTagWithUser(uniqueId, in.Tag, cidList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("bind tag with user err %+v", err)
-			return out, err
-		}
+		log.Errorf("bind tag with user err %+v", err)
+		return out, err
 	}
 	out.ResultList = make([]*proto.BindTagWithUserResp_Result, 0)
 	for cid, success := range resp {
@@ -337,25 +267,15 @@ func (s *Server) UnbindTagFromUser(ctx context.Context, in *proto.UnbindTagFromU
 		CidList: in.CIdList,
 	}
 
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	resp, err := s.mgr.UnbindTagFromUser(uniqueId, in.Tag, cidList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			resp, err = s.mgr.UnbindTagFromUser(uniqueId, in.Tag, cidList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("unbind tag from user err %+v", err)
-			return out, err
-		}
+		log.Errorf("unbind tag from user err %+v", err)
+		return out, err
 	}
 	out.ResultList = make([]*proto.UnbindTagFromUserResp_Result, 0)
 	for cid, success := range resp {
@@ -377,25 +297,15 @@ func (s *Server) QueryUserTag(ctx context.Context, in *proto.QueryUserTagReq) (*
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	resp, err := s.mgr.QueryUserTag(uniqueId, in.CId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			resp, err = s.mgr.QueryUserTag(uniqueId, in.CId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query user tag err %+v", err)
-			return out, err
-		}
+		log.Errorf("query user tag err %+v", err)
+		return out, err
 	}
 	out.TagList = resp
 	return out, nil
@@ -411,25 +321,15 @@ func (s *Server) AddBlackList(ctx context.Context, in *proto.AddBlackListReq) (*
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.AddBlackList(uniqueId, in.CIdList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.AddBlackList(uniqueId, in.CIdList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("add black list err %+v", err)
-			return out, err
-		}
+		log.Errorf("add black list err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -444,25 +344,15 @@ func (s *Server) DelBlackList(ctx context.Context, in *proto.DelBlackListReq) (*
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.DelBlackList(uniqueId, in.CIdList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.DelBlackList(uniqueId, in.CIdList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("del black list err %+v", err)
-			return out, err
-		}
+		log.Errorf("del black list err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -477,25 +367,15 @@ func (s *Server) QueryUserStatus(ctx context.Context, in *proto.QueryUserStatusR
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	resp, err := s.mgr.QueryUserStatus(uniqueId, in.CIdList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			resp, err = s.mgr.QueryUserStatus(uniqueId, in.CIdList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query user status err %+v", err)
-			return out, err
-		}
+		log.Errorf("query user status err %+v", err)
+		return out, err
 	}
 	out.StatusList = make([]*proto.QueryUserStatusResp_UserStatus, 0)
 	for cid, detail := range resp {
@@ -518,25 +398,15 @@ func (s *Server) QueryDeviceStatus(ctx context.Context, in *proto.QueryDeviceSta
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	resp, err := s.mgr.QueryDeviceStatus(uniqueId, in.CIdList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			resp, err = s.mgr.QueryDeviceStatus(uniqueId, in.CIdList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query device status err %+v", err)
-			return out, err
-		}
+		log.Errorf("query device status err %+v", err)
+		return out, err
 	}
 	out.StatusList = make([]*proto.QueryDeviceStatusResp_DeviceStatus, 0)
 	for cid, detail := range resp {
@@ -560,25 +430,15 @@ func (s *Server) QueryUserInfo(ctx context.Context, in *proto.QueryUserInfoReq) 
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	invalid, validDetail, err := s.mgr.QueryUserInfo(uniqueId, in.CIdList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			invalid, validDetail, err = s.mgr.QueryUserInfo(uniqueId, in.CIdList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query user info err %+v", err)
-			return out, err
-		}
+		log.Errorf("query user info err %+v", err)
+		return out, err
 	}
 	out.InvalidList = invalid
 	out.UserInfoList = make([]*proto.QueryUserInfoResp_UserInfo, 0)
@@ -630,25 +490,15 @@ func (s *Server) SetPushBadge(ctx context.Context, in *proto.SetPushBadgeReq) (*
 	operation := &Operation{
 		Badge: in.Operation,
 	}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	err = s.mgr.SetPushBadge(uniqueId, in.CIdList, operation, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			err = s.mgr.SetPushBadge(uniqueId, in.CIdList, operation, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("set push badge err %+v", err)
-			return out, err
-		}
+		log.Errorf("set push badge err %+v", err)
+		return out, err
 	}
 	return out, nil
 }
@@ -673,25 +523,15 @@ func (s *Server) QueryUserCount(ctx context.Context, in *proto.QueryUserCountReq
 			OptType: in.TagList[i].OptType,
 		})
 	}
-	auth, err := s.auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
 	count, err := s.mgr.QueryUserCount(uniqueId, tagList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err err %+v", err)
-				return out, err
-			}
-			count, err = s.mgr.QueryUserCount(uniqueId, tagList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query push count err %+v", err)
-			return out, err
-		}
+		log.Errorf("query push count err %+v", err)
+		return out, err
 	}
 	out.Count = int32(count)
 	return out, nil

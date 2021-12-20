@@ -12,22 +12,22 @@ type Agent interface {
 }
 
 type AgentMgr struct {
-	Agents map[core.UniqueId]Agent
+	agents map[core.UniqueId]Agent
 }
 
 func NewAgentMgr() (*AgentMgr, error) {
 	return &AgentMgr{
-		Agents: make(map[core.UniqueId]Agent),
+		agents: make(map[core.UniqueId]Agent),
 	}, nil
 }
 
 func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
-	m.Agents[uniqueId] = agent
+	m.agents[uniqueId] = agent
 	return nil
 }
 
 func (m *AgentMgr) GetAuth(uniqueId core.UniqueId) (*core.AuthToken, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -35,7 +35,7 @@ func (m *AgentMgr) GetAuth(uniqueId core.UniqueId) (*core.AuthToken, error) {
 }
 
 func (m *AgentMgr) DelAuth(uniqueId core.UniqueId, token string) error {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}

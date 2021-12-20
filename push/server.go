@@ -13,8 +13,8 @@ import (
 
 type Server struct {
 	*proto.UnimplementedPushServer
-	Mgr  *AgentMgr
-	Auth *core.AuthCache
+	mgr  *AgentMgr
+	auth *core.AuthCache
 }
 
 func NewServer(conf *core.PushConfig) (*Server, error) {
@@ -51,8 +51,8 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}
 
 	return &Server{
-		Mgr:  mgr,
-		Auth: auth,
+		mgr:  mgr,
+		auth: auth,
 	}, nil
 }
 
@@ -155,25 +155,15 @@ func (s *Server) StopTask(ctx context.Context, in *proto.StopTaskReq) (*proto.St
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	success, err := s.Mgr.StopPush(uniqueId, in.TaskId, auth.Token)
+	success, err := s.mgr.StopPush(uniqueId, in.TaskId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			success, err = s.Mgr.StopPush(uniqueId, in.TaskId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("stop push err %+v", err)
-			return out, err
-		}
+		log.Errorf("stop push err %+v", err)
+		return out, err
 	}
 	out.Success = success
 	if !success {
@@ -192,25 +182,15 @@ func (s *Server) CheckTask(ctx context.Context, in *proto.CheckTaskReq) (*proto.
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.QueryScheduleTask(uniqueId, in.TaskId, auth.Token)
+	resp, err := s.mgr.QueryScheduleTask(uniqueId, in.TaskId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.QueryScheduleTask(uniqueId, in.TaskId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query shcedule task err %+v", err)
-			return out, err
-		}
+		log.Errorf("query shcedule task err %+v", err)
+		return out, err
 	}
 	for k, v := range resp {
 		switch k {
@@ -247,25 +227,15 @@ func (s *Server) RemoveTask(ctx context.Context, in *proto.RemoveTaskReq) (*prot
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	success, err := s.Mgr.DeleteScheduleTask(uniqueId, in.TaskId, auth.Token)
+	success, err := s.mgr.DeleteScheduleTask(uniqueId, in.TaskId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			success, err = s.Mgr.DeleteScheduleTask(uniqueId, in.TaskId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("delete schedule task err %+v", err)
-			return out, err
-		}
+		log.Errorf("delete schedule task err %+v", err)
+		return out, err
 	}
 	out.Success = success
 	if !success {
@@ -284,25 +254,15 @@ func (s *Server) ViewDetail(ctx context.Context, in *proto.ViewDetailReq) (*prot
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
+	resp, err := s.mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("query task detail err %+v", err)
-			return out, err
-		}
+		log.Errorf("query task detail err %+v", err)
+		return out, err
 	}
 	for i := range resp {
 		out.DetailList = append(out.DetailList, &proto.ViewDetailResp_Detail{
@@ -318,7 +278,7 @@ func (s *Server) Close() {
 }
 
 func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -331,20 +291,10 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, o
 		PushChannel: in.MsgList[0].PushChannel,
 	}
 
-	resp, err := s.Mgr.PushSingle(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushSingle(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			resp, err = s.Mgr.PushSingle(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("push single err %+v", err)
-			return err
-		}
+		log.Errorf("push single err %+v", err)
+		return err
 	}
 
 	if len(resp) != 1 {
@@ -373,7 +323,7 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, o
 }
 
 func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -392,20 +342,10 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, ou
 		})
 	}
 
-	resp, err := s.Mgr.PushBatch(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushBatch(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			resp, err = s.Mgr.PushBatch(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("push batch err %+v", err)
-			return err
-		}
+		log.Errorf("push batch err %+v", err)
+		return err
 	}
 
 	out.ReceiptList = make([]*proto.Receipt, 0)
@@ -429,7 +369,7 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, ou
 }
 
 func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out *proto.CreateTaskResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -442,27 +382,17 @@ func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.Mgr.CreateMsg(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.CreateMsg(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			taskId, err = s.Mgr.CreateMsg(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("create msg err %+v", err)
-			return err
-		}
+		log.Errorf("create msg err %+v", err)
+		return err
 	}
 	out.TaskId = taskId
 	return nil
 }
 
 func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *proto.PushToListResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -473,20 +403,10 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *
 		TaskId:   in.Msg.TaskId,
 	}
 
-	resp, err := s.Mgr.PushList(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushList(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			resp, err = s.Mgr.PushList(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("push list err %+v", err)
-			return err
-		}
+		log.Errorf("push list err %+v", err)
+		return err
 	}
 
 	if len(resp) != 1 {
@@ -514,7 +434,7 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *
 }
 
 func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -528,27 +448,17 @@ func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *pr
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.Mgr.PushAll(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.PushAll(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			taskId, err = s.Mgr.PushAll(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("push all err %+v", err)
-			return err
-		}
+		log.Errorf("push all err %+v", err)
+		return err
 	}
 	out.TaskId = taskId
 	return nil
 }
 
 func (s *Server) pushByTag(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return err
@@ -562,20 +472,10 @@ func (s *Server) pushByTag(uniqueId core.UniqueId, in *proto.PushToAppReq, out *
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.Mgr.PushByTag(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.PushByTag(uniqueId, req, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return err
-			}
-			taskId, err = s.Mgr.PushByTag(uniqueId, req, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("push by tag err %+v", err)
-			return err
-		}
+		log.Errorf("push by tag err %+v", err)
+		return err
 	}
 	out.TaskId = taskId
 	return nil

@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/configor"
 )
 
-func TestGetuiPush_PushSingleByCid(t *testing.T) {
+func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -59,7 +59,7 @@ func TestGetuiPush_PushSingleByCid(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushSingleByAlias(t *testing.T) {
+func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -107,7 +107,7 @@ func TestGetuiPush_PushSingleByAlias(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushBatchByCid(t *testing.T) {
+func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -160,7 +160,7 @@ func TestGetuiPush_PushBatchByCid(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushBatchByAlias(t *testing.T) {
+func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -213,7 +213,7 @@ func TestGetuiPush_PushBatchByAlias(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushListByCid(t *testing.T) {
+func TestGeTuiPush_PushListByCid(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -272,7 +272,7 @@ func TestGetuiPush_PushListByCid(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushListByAlias(t *testing.T) {
+func TestGeTuiPush_PushListByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -331,7 +331,7 @@ func TestGetuiPush_PushListByAlias(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushAll(t *testing.T) {
+func TestGeTuiPush_PushAll(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -378,7 +378,7 @@ func TestGetuiPush_PushAll(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushByTag(t *testing.T) {
+func TestGeTuiPush_PushByTag(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -438,7 +438,7 @@ func TestGetuiPush_PushByTag(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
+func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -487,7 +487,7 @@ func TestGetuiPush_PushByFastCustomTag(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_StopPush(t *testing.T) {
+func TestGeTuiPush_StopPush(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -510,7 +510,7 @@ func TestGetuiPush_StopPush(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_DeleteScheduleTask(t *testing.T) {
+func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -533,7 +533,7 @@ func TestGetuiPush_DeleteScheduleTask(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_QueryScheduleTask(t *testing.T) {
+func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
@@ -556,7 +556,7 @@ func TestGetuiPush_QueryScheduleTask(t *testing.T) {
 	fmt.Println(result)
 }
 
-func TestGetuiPush_QueryDetail(t *testing.T) {
+func TestGeTuiPush_QueryDetail(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {

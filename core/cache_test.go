@@ -39,7 +39,7 @@ func TestAuthCache_Start(t *testing.T) {
 			for j := 0; j < 100; j++ {
 				time.Sleep(time.Second * 10)
 				uniqueId := UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}
-				resp, err := cache.GetAuth(uniqueId, "")
+				resp, err := cache.GetAuth(uniqueId)
 				if err != nil {
 					fmt.Printf("%d-%d get auth failed, %s %+v\n", id, j, uniqueId, err)
 					continue

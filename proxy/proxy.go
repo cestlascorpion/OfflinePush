@@ -17,8 +17,8 @@ type MsgConverter interface {
 }
 
 type PushProxy struct {
-	msgConv MsgConverter
-	client  proto.PushClient
+	conv   MsgConverter
+	client proto.PushClient
 }
 
 func NewPushProxy(msgConv MsgConverter) (*PushProxy, error) {
@@ -32,13 +32,13 @@ func NewPushProxy(msgConv MsgConverter) (*PushProxy, error) {
 		return nil, err
 	}
 	return &PushProxy{
-		msgConv: msgConv,
-		client:  proto.NewPushClient(conn),
+		conv:   msgConv,
+		client: proto.NewPushClient(conn),
 	}, nil
 }
 
-func (p *PushProxy) Unicast(app, msg interface{}) error {
-	reqList, err := p.msgConv.ToUnicast(msg)
+func (p *PushProxy) Unicast(msg interface{}) error {
+	reqList, err := p.conv.ToUnicast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err
@@ -54,8 +54,8 @@ func (p *PushProxy) Unicast(app, msg interface{}) error {
 	return nil
 }
 
-func (p *PushProxy) Multicast(app, msg interface{}) error {
-	req1, req2List, err := p.msgConv.ToMulticast(msg)
+func (p *PushProxy) Multicast(msg interface{}) error {
+	req1, req2List, err := p.conv.ToMulticast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err
@@ -77,8 +77,8 @@ func (p *PushProxy) Multicast(app, msg interface{}) error {
 	return nil
 }
 
-func (p *PushProxy) Broadcast(app, msg interface{}) error {
-	req, err := p.msgConv.ToBroadcast(msg)
+func (p *PushProxy) Broadcast(msg interface{}) error {
+	req, err := p.conv.ToBroadcast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err

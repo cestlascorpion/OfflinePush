@@ -34,12 +34,8 @@ func TestGeTuiUser_BindAlias(t *testing.T) {
 		},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -61,12 +57,8 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 
 	resp, err := agent.QueryAliasByCid(core.TestToken, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -89,12 +81,8 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 
 	resp, err := agent.QueryCidByAlias(core.TestAlias, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -123,12 +111,8 @@ func TestGeTuiUser_UnbindAlias(t *testing.T) {
 		},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -150,12 +134,8 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 
 	err = agent.RevokeAlias(core.TestAlias, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -179,12 +159,8 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 		TagList: []string{core.TestTag},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -208,12 +184,8 @@ func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 		CidList: []string{core.TestToken},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -238,12 +210,8 @@ func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 		CidList: []string{core.TestToken},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -266,12 +234,8 @@ func TestGeTuiUser_QueryUserTag(t *testing.T) {
 
 	resp, err := agent.QueryUserTag(core.TestToken, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -294,12 +258,8 @@ func TestGeTuiUser_AddBlackList(t *testing.T) {
 
 	err = agent.AddBlackList([]string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -321,12 +281,8 @@ func TestGeTuiUser_DelBlackList(t *testing.T) {
 
 	err = agent.DelBlackList([]string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -348,12 +304,8 @@ func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 
 	resp, err := agent.QueryUserStatus([]string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -376,12 +328,8 @@ func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 
 	resp, err := agent.QueryDeviceStatus([]string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }
@@ -404,12 +352,8 @@ func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 
 	invalid, validDetail, err := agent.QueryUserInfo([]string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(invalid)
 	fmt.Println(validDetail)
@@ -435,12 +379,8 @@ func TestGeTuiUser_SetPushBadge(t *testing.T) {
 		Badge: "1",
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
@@ -470,12 +410,8 @@ func TestGeTuiUser_QueryUserCount(t *testing.T) {
 		},
 	}, core.TestAuthToken)
 	if err != nil {
-		if err.Error() != core.InvalidTokenErr {
-			t.FailNow()
-		} else {
-			fmt.Println(err)
-			return
-		}
+		fmt.Println(err)
+		t.FailNow()
 	}
 	fmt.Println(resp)
 }

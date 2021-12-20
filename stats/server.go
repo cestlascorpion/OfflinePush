@@ -13,9 +13,9 @@ import (
 
 type Server struct {
 	*proto.UnimplementedStatsServer
-	Dao  *core.StatsDao
-	Mgr  *AgentMgr
-	Auth *core.AuthCache
+	dao  *core.StatsDao
+	mgr  *AgentMgr
+	auth *core.AuthCache
 }
 
 func NewServer(conf *core.PushConfig) (*Server, error) {
@@ -58,9 +58,9 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	}
 
 	return &Server{
-		Dao:  dao,
-		Mgr:  mgr,
-		Auth: auth,
+		dao:  dao,
+		mgr:  mgr,
+		auth: auth,
 	}, nil
 }
 
@@ -74,25 +74,15 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetTasks(uniqueId, in.TaskList, auth.Token)
+	resp, err := s.mgr.GetTasks(uniqueId, in.TaskList, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetTasks(uniqueId, in.TaskList, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get tasks err %+v", err)
-			return out, err
-		}
+		log.Errorf("get tasks err %+v", err)
+		return out, err
 	}
 	if len(resp) != len(in.TaskList) {
 		log.Warnf("some task is missing")
@@ -102,7 +92,7 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 		out.StaticsList = append(out.StaticsList, statics)
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetTasks", time.Now(), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetTasks", time.Now(), resp) != nil {
 		log.Errorf("save tasks err %+v", err)
 	}
 
@@ -119,25 +109,15 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetTaskGroup(uniqueId, in.Group, auth.Token)
+	resp, err := s.mgr.GetTaskGroup(uniqueId, in.Group, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetTaskGroup(uniqueId, in.Group, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get task group err %+v", err)
-			return out, err
-		}
+		log.Errorf("get task group err %+v", err)
+		return out, err
 	}
 	if len(resp) != 1 {
 		log.Warnf("some group is missing")
@@ -147,7 +127,7 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 		out.Statics = statics
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetTaskGroup", time.Now(), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetTaskGroup", time.Now(), resp) != nil {
 		log.Errorf("save task group err %+v", err)
 	}
 
@@ -163,31 +143,21 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetPushCount(uniqueId, auth.Token)
+	resp, err := s.mgr.GetPushCount(uniqueId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetPushCount(uniqueId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get push count err %+v", err)
-			return out, err
-		}
+		log.Errorf("get push count err %+v", err)
+		return out, err
 	}
 	for i := range resp {
 		out.CountList = append(out.CountList, resp[i])
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetPushCount", time.Now(), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetPushCount", time.Now(), resp) != nil {
 		log.Errorf("save push count err %+v", err)
 	}
 
@@ -204,25 +174,15 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetPushDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
+	resp, err := s.mgr.GetPushDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetPushDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get push data by day err %+v", err)
-			return out, err
-		}
+		log.Errorf("get push data by day err %+v", err)
+		return out, err
 	}
 	if len(resp) != 1 {
 		log.Warnf("something is missing")
@@ -232,7 +192,7 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 		out.Statics = statics
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetPushDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetPushDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
 		log.Errorf("save push data by day err %+v", err)
 	}
 
@@ -249,25 +209,15 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetUserDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
+	resp, err := s.mgr.GetUserDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetUserDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get user data by day err %+v", err)
-			return out, err
-		}
+		log.Errorf("get user data by day err %+v", err)
+		return out, err
 	}
 	if len(resp) != 1 {
 		log.Warnf("something is missing")
@@ -288,7 +238,7 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 		}
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetUserDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetUserDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
 		log.Errorf("save user data by day err %+v", err)
 	}
 
@@ -304,25 +254,15 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.Auth.GetAuth(uniqueId, "")
+	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.Mgr.GetOnlineUserBy24H(uniqueId, auth.Token)
+	resp, err := s.mgr.GetOnlineUserBy24H(uniqueId, auth.Token)
 	if err != nil {
-		if err.Error() == core.InvalidTokenErr {
-			auth, err = s.Auth.GetAuth(uniqueId, auth.Token)
-			if err != nil {
-				log.Errorf("get authx2 err %+v", err)
-				return out, err
-			}
-			resp, err = s.Mgr.GetOnlineUserBy24H(uniqueId, auth.Token)
-		}
-		if err != nil {
-			log.Errorf("get online data by day err %+v", err)
-			return out, err
-		}
+		log.Errorf("get online data by day err %+v", err)
+		return out, err
 	}
 	for timestamp, statics := range resp {
 		out.OnlineList = append(out.OnlineList, &proto.GetOnlineUserBy24HResp_OnlineInfo{
@@ -331,7 +271,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 		})
 	}
 
-	if s.Dao.SetStats(uniqueId, "GetOnlineUserBy24H", time.Now(), resp) != nil {
+	if s.dao.SetStats(uniqueId, "GetOnlineUserBy24H", time.Now(), resp) != nil {
 		log.Errorf("save online user by 24h err %+v", err)
 	}
 
@@ -339,5 +279,5 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 }
 
 func (s *Server) Close() {
-	s.Dao.Close()
+	s.dao.Close()
 }

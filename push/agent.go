@@ -25,22 +25,22 @@ type Agent interface {
 }
 
 type AgentMgr struct {
-	Agents map[core.UniqueId]Agent
+	agents map[core.UniqueId]Agent
 }
 
 func NewAgentMgr() (*AgentMgr, error) {
 	return &AgentMgr{
-		Agents: make(map[core.UniqueId]Agent),
+		agents: make(map[core.UniqueId]Agent),
 	}, nil
 }
 
 func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
-	m.Agents[uniqueId] = agent
+	m.agents[uniqueId] = agent
 	return nil
 }
 
 func (m *AgentMgr) PushSingle(uniqueId core.UniqueId, request *SingleReq, token string) (map[string]map[string]string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -51,7 +51,7 @@ func (m *AgentMgr) PushSingle(uniqueId core.UniqueId, request *SingleReq, token 
 }
 
 func (m *AgentMgr) PushBatch(uniqueId core.UniqueId, request *BatchReq, token string) (map[string]map[string]string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -62,7 +62,7 @@ func (m *AgentMgr) PushBatch(uniqueId core.UniqueId, request *BatchReq, token st
 }
 
 func (m *AgentMgr) CreateMsg(uniqueId core.UniqueId, request *CreateReq, token string) (string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -70,7 +70,7 @@ func (m *AgentMgr) CreateMsg(uniqueId core.UniqueId, request *CreateReq, token s
 }
 
 func (m *AgentMgr) PushList(uniqueId core.UniqueId, request *ListReq, token string) (map[string]map[string]string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -81,7 +81,7 @@ func (m *AgentMgr) PushList(uniqueId core.UniqueId, request *ListReq, token stri
 }
 
 func (m *AgentMgr) PushAll(uniqueId core.UniqueId, request *AllReq, token string) (string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -89,7 +89,7 @@ func (m *AgentMgr) PushAll(uniqueId core.UniqueId, request *AllReq, token string
 }
 
 func (m *AgentMgr) PushByTag(uniqueId core.UniqueId, request *ByTagReq, token string) (string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -100,7 +100,7 @@ func (m *AgentMgr) PushByTag(uniqueId core.UniqueId, request *ByTagReq, token st
 }
 
 func (m *AgentMgr) StopPush(uniqueId core.UniqueId, taskId, token string) (bool, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return false, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -108,7 +108,7 @@ func (m *AgentMgr) StopPush(uniqueId core.UniqueId, taskId, token string) (bool,
 }
 
 func (m *AgentMgr) DeleteScheduleTask(uniqueId core.UniqueId, taskId, token string) (bool, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return false, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -116,7 +116,7 @@ func (m *AgentMgr) DeleteScheduleTask(uniqueId core.UniqueId, taskId, token stri
 }
 
 func (m *AgentMgr) QueryScheduleTask(uniqueId core.UniqueId, taskId, token string) (map[string]string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -124,7 +124,7 @@ func (m *AgentMgr) QueryScheduleTask(uniqueId core.UniqueId, taskId, token strin
 }
 
 func (m *AgentMgr) QueryDetail(uniqueId core.UniqueId, taskId, cId, token string) ([][2]string, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}

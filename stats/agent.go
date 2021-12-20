@@ -18,22 +18,22 @@ type Agent interface {
 }
 
 type AgentMgr struct {
-	Agents map[core.UniqueId]Agent
+	agents map[core.UniqueId]Agent
 }
 
 func NewAgentMgr() (*AgentMgr, error) {
 	return &AgentMgr{
-		Agents: make(map[core.UniqueId]Agent),
+		agents: make(map[core.UniqueId]Agent),
 	}, nil
 }
 
 func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
-	m.Agents[uniqueId] = agent
+	m.agents[uniqueId] = agent
 	return nil
 }
 
 func (m *AgentMgr) GetTasks(uniqueId core.UniqueId, taskIds []string, token string) (map[string]*proto.BaseStatics, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -41,7 +41,7 @@ func (m *AgentMgr) GetTasks(uniqueId core.UniqueId, taskIds []string, token stri
 }
 
 func (m *AgentMgr) GetTaskGroup(uniqueId core.UniqueId, group, token string) (map[string]*proto.BaseStatics, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -49,7 +49,7 @@ func (m *AgentMgr) GetTaskGroup(uniqueId core.UniqueId, group, token string) (ma
 }
 
 func (m *AgentMgr) GetPushCount(uniqueId core.UniqueId, token string) ([]*proto.BasePushCount, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -57,7 +57,7 @@ func (m *AgentMgr) GetPushCount(uniqueId core.UniqueId, token string) ([]*proto.
 }
 
 func (m *AgentMgr) GetPushDataByDay(uniqueId core.UniqueId, date time.Time, token string) (map[string]*proto.BaseStatics, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -65,7 +65,7 @@ func (m *AgentMgr) GetPushDataByDay(uniqueId core.UniqueId, date time.Time, toke
 }
 
 func (m *AgentMgr) GetUserDataByDay(uniqueId core.UniqueId, date time.Time, token string) (map[string]map[string]int32, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
@@ -73,7 +73,7 @@ func (m *AgentMgr) GetUserDataByDay(uniqueId core.UniqueId, date time.Time, toke
 }
 
 func (m *AgentMgr) GetOnlineUserBy24H(uniqueId core.UniqueId, token string) (map[int64]int32, error) {
-	agent, ok := m.Agents[uniqueId]
+	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
