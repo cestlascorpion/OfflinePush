@@ -84,6 +84,10 @@ func (g *GeTuiAuth) DelAuth(token string) error {
 	return nil
 }
 
+func (g *GeTuiAuth) Close() {
+	g.cancel()
+}
+
 type authReq struct {
 	Sign      string `json:"sign"`
 	Timestamp string `json:"timestamp"`

@@ -13,6 +13,7 @@ import (
 type AuthCache struct {
 	client proto.AuthClient
 	cache  map[UniqueId]*AuthToken
+	cancel context.CancelFunc
 	mutex  sync.RWMutex
 }
 
@@ -22,26 +23,14 @@ func NewAuthCache() (*AuthCache, error) {
 		log.Errorf("grpc dial err %+v", err)
 		return nil, err
 	}
-	return &AuthCache{
+	cache := &AuthCache{
 		client: proto.NewAuthClient(conn),
 		cache:  make(map[UniqueId]*AuthToken),
-	}, nil
-}
-
-func (c *AuthCache) readAuth(uniqueId UniqueId) *AuthToken {
-	c.mutex.RLock()
-	defer c.mutex.RUnlock()
-	token, ok := c.cache[uniqueId]
-	if !ok {
-		return nil
+		cancel: nil,
 	}
-	return token
-}
 
-func (c *AuthCache) writeAuth(uniqueId UniqueId, auth *AuthToken) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-	c.cache[uniqueId] = auth
+	cache.cancel = cache.watch()
+	return cache, nil
 }
 
 func (c *AuthCache) GetAuth(uniqueId UniqueId) (*AuthToken, error) {
@@ -66,7 +55,29 @@ func (c *AuthCache) GetAuth(uniqueId UniqueId) (*AuthToken, error) {
 	return newAuth, nil
 }
 
-func (c *AuthCache) Start(ctx context.Context) error {
+func (c *AuthCache) Close() {
+	c.Close()
+}
+
+func (c *AuthCache) readAuth(uniqueId UniqueId) *AuthToken {
+	c.mutex.RLock()
+	defer c.mutex.RUnlock()
+	token, ok := c.cache[uniqueId]
+	if !ok {
+		return nil
+	}
+	return token
+}
+
+func (c *AuthCache) writeAuth(uniqueId UniqueId, auth *AuthToken) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+	c.cache[uniqueId] = auth
+}
+
+func (c *AuthCache) watch() context.CancelFunc {
+	ctx, cancel := context.WithCancel(context.TODO())
+
 	go func() {
 		ticker := time.NewTicker(time.Hour)
 		defer ticker.Stop()
@@ -84,7 +95,8 @@ func (c *AuthCache) Start(ctx context.Context) error {
 			}
 		}
 	}()
-	return nil
+
+	return cancel
 }
 
 func (c *AuthCache) check() error {

@@ -15,6 +15,7 @@ type Agent interface {
 	GetPushDataByDay(date time.Time, token string) (map[string]*proto.BaseStatics, error)
 	GetUserDataByDay(date time.Time, token string) (map[string]map[string]int32, error)
 	GetOnlineUserBy24H(token string) (map[int64]int32, error)
+	Close()
 }
 
 type AgentMgr struct {
@@ -78,4 +79,10 @@ func (m *AgentMgr) GetOnlineUserBy24H(uniqueId core.UniqueId, token string) (map
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	return agent.GetOnlineUserBy24H(token)
+}
+
+func (m *AgentMgr) Close() {
+	for _, agent := range m.agents {
+		agent.Close()
+	}
 }

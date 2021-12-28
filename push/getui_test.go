@@ -26,6 +26,7 @@ func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &SingleReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -74,6 +75,7 @@ func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &SingleReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -122,6 +124,7 @@ func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &BatchReq{
 		IsAsync: false,
@@ -175,6 +178,7 @@ func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &BatchReq{
 		IsAsync: false,
@@ -228,6 +232,7 @@ func TestGeTuiPush_PushListByCid(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	create := &CreateReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -287,6 +292,7 @@ func TestGeTuiPush_PushListByAlias(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	create := &CreateReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -346,6 +352,7 @@ func TestGeTuiPush_PushAll(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &AllReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -393,6 +400,7 @@ func TestGeTuiPush_PushByTag(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &ByTagReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -453,6 +461,7 @@ func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	request := &ByTagReq{
 		RequestId: bson.NewObjectId().Hex(),
@@ -502,6 +511,7 @@ func TestGeTuiPush_StopPush(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	result, err := agent.StopPush(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
@@ -525,6 +535,7 @@ func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	result, err := agent.DeleteScheduleTask(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
@@ -548,6 +559,7 @@ func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	result, err := agent.QueryScheduleTask(core.TestTaskId, core.TestAuthToken)
 	if err != nil {
@@ -571,6 +583,7 @@ func TestGeTuiPush_QueryDetail(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	result, err := agent.QueryDetail(core.TestTaskId, core.TestToken, core.TestAuthToken)
 	if err != nil {

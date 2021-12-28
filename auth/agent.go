@@ -9,6 +9,7 @@ import (
 type Agent interface {
 	GetAuth() (auth *core.AuthToken, err error)
 	DelAuth(token string) (err error)
+	Close()
 }
 
 type AgentMgr struct {
@@ -40,4 +41,10 @@ func (m *AgentMgr) DelAuth(uniqueId core.UniqueId, token string) error {
 		return fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	return agent.DelAuth(token)
+}
+
+func (m *AgentMgr) Close() {
+	for _, agent := range m.agents {
+		agent.Close()
+	}
 }

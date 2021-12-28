@@ -44,11 +44,6 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		log.Errorf("new auth cache err %+v", err)
 		return nil, err
 	}
-	err = auth.Start(context.Background())
-	if err != nil {
-		log.Errorf("start auth cache err %+v", err)
-		return nil, err
-	}
 
 	return &Server{
 		mgr:  mgr,
@@ -274,7 +269,8 @@ func (s *Server) ViewDetail(ctx context.Context, in *proto.ViewDetailReq) (*prot
 }
 
 func (s *Server) Close() {
-	// do nothing
+	s.auth.Close()
+	s.mgr.Close()
 }
 
 func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {

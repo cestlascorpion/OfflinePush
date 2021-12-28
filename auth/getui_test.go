@@ -26,6 +26,8 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	auth, err := agent.GetAuth()
 	if err != nil {
 		fmt.Println(err)
@@ -51,6 +53,7 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
 
 	err = agent.DelAuth(core.TestAuthToken)
 	if err != nil {

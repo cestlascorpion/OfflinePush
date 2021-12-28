@@ -547,6 +547,10 @@ func (g *GeTuiUser) QueryUserCount(list *ComplexTagList, token string) (int, err
 	return count, nil
 }
 
+func (g *GeTuiUser) Close() {
+	// do nothing
+}
+
 type userResp struct {
 	Code int                    `json:"code"`
 	Msg  string                 `json:"msg"`

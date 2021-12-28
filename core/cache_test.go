@@ -1,7 +1,6 @@
 package core
 
 import (
-	"context"
 	"fmt"
 	"sync"
 	"testing"
@@ -23,15 +22,9 @@ func TestAuthCache_Start(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
-
-	err = cache.Start(context.Background())
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
+	defer cache.Close()
 
 	var wg sync.WaitGroup
-
 	wg.Add(100)
 	for i := 0; i < 100; i++ {
 		go func(id int) {

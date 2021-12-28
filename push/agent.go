@@ -22,6 +22,7 @@ type Agent interface {
 	DeleteScheduleTask(taskId, token string) (bool, error)
 	QueryScheduleTask(taskId, token string) (map[string]string, error)
 	QueryDetail(taskId, cId, token string) ([][2]string, error)
+	Close()
 }
 
 type AgentMgr struct {
@@ -129,6 +130,12 @@ func (m *AgentMgr) QueryDetail(uniqueId core.UniqueId, taskId, cId, token string
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	return agent.QueryDetail(taskId, cId, token)
+}
+
+func (m *AgentMgr) Close() {
+	for _, agent := range m.agents {
+		agent.Close()
+	}
 }
 
 type SingleReq struct {

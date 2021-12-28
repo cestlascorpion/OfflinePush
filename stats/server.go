@@ -51,11 +51,6 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		log.Errorf("new auth cache err %+v", err)
 		return nil, err
 	}
-	err = auth.Start(context.Background())
-	if err != nil {
-		log.Errorf("start auth cache err %+v", err)
-		return nil, err
-	}
 
 	return &Server{
 		dao:  dao,
@@ -279,5 +274,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 }
 
 func (s *Server) Close() {
+	s.auth.Close()
+	s.mgr.Close()
 	s.dao.Close()
 }

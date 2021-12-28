@@ -84,5 +84,5 @@ func (s *Server) DelToken(ctx context.Context, in *proto.DelTokenReq) (*proto.De
 }
 
 func (s *Server) Close() {
-	// nothing
+	s.mgr.Close()
 }

@@ -13,7 +13,7 @@ import (
 
 type Server struct {
 	*proto.UnimplementedUserServer
-	mgr  *Mgr
+	mgr  *AgentMgr
 	auth *core.AuthCache
 }
 
@@ -41,11 +41,6 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 	auth, err := core.NewAuthCache()
 	if err != nil {
 		log.Errorf("new auth cache err %+v", err)
-		return nil, err
-	}
-	err = auth.Start(context.Background())
-	if err != nil {
-		log.Errorf("start auth cache err %+v", err)
 		return nil, err
 	}
 
@@ -538,6 +533,7 @@ func (s *Server) QueryUserCount(ctx context.Context, in *proto.QueryUserCountReq
 }
 
 func (s *Server) Close() error {
-	// nothing
+	s.auth.Close()
+	s.mgr.Close()
 	return nil
 }

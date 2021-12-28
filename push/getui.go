@@ -302,6 +302,10 @@ func (g *GeTuiPush) QueryDetail(taskId, cId, token string) ([][2]string, error) 
 	return g.resp2Detail(resp.Data)
 }
 
+func (g *GeTuiPush) Close() {
+	// do nothing
+}
+
 type pushResp struct {
 	Code int                    `json:"code"`
 	Msg  string                 `json:"msg"`

@@ -25,6 +25,8 @@ func TestGeTuiStats_GetTasks(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetTasks([]string{core.TestTasks}, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
@@ -47,6 +49,8 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetTaskGroup(core.TestGroup, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
@@ -69,6 +73,8 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetPushCount(core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
@@ -91,6 +97,8 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetPushDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
@@ -113,6 +121,8 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetUserDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
@@ -135,6 +145,8 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	defer agent.Close()
+
 	result, err := agent.GetOnlineUserBy24H(core.TestAuthToken)
 	if err != nil {
 		t.FailNow()

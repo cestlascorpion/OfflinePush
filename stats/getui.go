@@ -143,6 +143,10 @@ func (g *GeTuiStats) GetOnlineUserBy24H(token string) (map[int64]int32, error) {
 	return g.resp2OnlineBy24H(resp.Data)
 }
 
+func (g *GeTuiStats) Close() {
+	// do nothing
+}
+
 type reportResp struct {
 	Code int                    `json:"code"`
 	Msg  string                 `json:"msg"`
