@@ -25,8 +25,8 @@ func TestServer_GetTasks(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetTasks(context.Background(), &proto.GetTasksReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		TaskList:  []string{core.TestTasks},
 	})
 	if err != nil {
@@ -50,8 +50,8 @@ func TestServer_GetTaskGroup(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetTaskGroup(context.Background(), &proto.GetTaskGroupReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		Group:     core.TestGroup,
 	})
 	if err != nil {
@@ -75,8 +75,8 @@ func TestServer_GetPushCount(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetPushCount(context.Background(), &proto.GetPushCountReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -99,8 +99,8 @@ func TestServer_GetPushDataByDay(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetPushDataByDay(context.Background(), &proto.GetPushDataByDayReq{
-		PushAgent:  conf.TestApp.PushAgent,
-		BundleId:   conf.TestApp.BundleId,
+		PushAgent:  conf.GeTui.AgentId,
+		BundleId:   conf.GeTui.BundleId,
 		UnixSecond: time.Now().AddDate(0, 0, -1).Unix(),
 	})
 	if err != nil {
@@ -124,8 +124,8 @@ func TestServer_GetUserDataByDay(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetUserDataByDay(context.Background(), &proto.GetUserDataByDayReq{
-		PushAgent:  conf.TestApp.PushAgent,
-		BundleId:   conf.TestApp.BundleId,
+		PushAgent:  conf.GeTui.AgentId,
+		BundleId:   conf.GeTui.BundleId,
 		UnixSecond: time.Now().AddDate(0, 0, -1).Unix(),
 	})
 	if err != nil {
@@ -149,8 +149,8 @@ func TestServer_GetOnlineUserBy24H(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.GetOnlineUserBy24H(context.Background(), &proto.GetOnlineUserBy24HReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 	})
 	if err != nil {
 		fmt.Println(err)

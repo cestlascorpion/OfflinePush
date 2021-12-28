@@ -58,8 +58,8 @@ func TestServer_PushToSingle(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.PushToSingle(context.Background(), &proto.PushToSingleReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		MsgList: []*proto.SingleMsg{
 			{
 				RequestId:   strconv.FormatInt(time.Now().Unix(), 10),
@@ -92,8 +92,8 @@ func TestServer_PushToList(t *testing.T) {
 	}
 	defer svr.Close()
 	resp1, err := svr.CreateTask(context.Background(), &proto.CreateTaskReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		Msg: &proto.CreateMsg{
 			RequestId:   strconv.FormatInt(time.Now().Unix(), 10),
 			GroupName:   core.TestGroup,
@@ -108,8 +108,8 @@ func TestServer_PushToList(t *testing.T) {
 	}
 	fmt.Println(resp1)
 	resp2, err := svr.PushToList(context.Background(), &proto.PushToListReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		Msg: &proto.ListMsg{
 			Audience: testAudience,
 			TaskId:   resp1.TaskId,
@@ -136,8 +136,8 @@ func TestServer_PushToApp(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.PushToApp(context.Background(), &proto.PushToAppReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		Msg: &proto.AppMsg{
 			RequestId:   strconv.FormatInt(time.Now().Unix(), 10),
 			GroupName:   core.TestGroup,
@@ -168,8 +168,8 @@ func TestServer_StopTask(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.StopTask(context.Background(), &proto.StopTaskReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		TaskId:    core.TestTaskId,
 	})
 	if err != nil {
@@ -193,8 +193,8 @@ func TestServer_RemoveTask(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.RemoveTask(context.Background(), &proto.RemoveTaskReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		TaskId:    core.TestTaskId,
 	})
 	if err != nil {
@@ -218,8 +218,8 @@ func TestServer_CheckTask(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.CheckTask(context.Background(), &proto.CheckTaskReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		TaskId:    core.TestTaskId,
 	})
 	if err != nil {
@@ -243,8 +243,8 @@ func TestServer_ViewDetail(t *testing.T) {
 	}
 	defer svr.Close()
 	resp, err := svr.ViewDetail(context.Background(), &proto.ViewDetailReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		TaskId:    core.TestTaskId,
 		Cid:       core.TestToken,
 	})

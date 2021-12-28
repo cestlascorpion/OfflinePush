@@ -2,63 +2,58 @@ package auth
 
 import (
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/jinzhu/configor"
 )
 
-func TestGeTuiAuth_GetAuthToken(t *testing.T) {
+func TestApnsAuth_GetAuth(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	agent, err := NewGeTuiAgent(
-		core.GTBaseUrl,
-		conf.GeTui.AppId,
-		conf.GeTui.AppKey,
-		conf.GeTui.MasterSecret,
-		http.DefaultClient)
+	agent, err := NewApnsAuth(conf.Apns.Key, conf.Apns.KeyId, conf.Apns.TeamId)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
 	defer agent.Close()
 
-	auth, err := agent.GetAuth()
+	token, err := agent.GetAuth()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	fmt.Println(auth)
+	fmt.Println(token)
 }
 
-func TestGeTuiAuth_DelAuthToken(t *testing.T) {
+func TestApnsAuth_DelAuth(t *testing.T) {
 	conf := &core.PushConfig{}
 	err := configor.Load(conf, "conf.yml")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	agent, err := NewGeTuiAgent(
-		core.GTBaseUrl,
-		conf.GeTui.AppId,
-		conf.GeTui.AppKey,
-		conf.GeTui.MasterSecret,
-		http.DefaultClient)
+	agent, err := NewApnsAuth(conf.Apns.Key, conf.Apns.KeyId, conf.Apns.TeamId)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
 	defer agent.Close()
 
-	err = agent.DelAuth(core.TestAuthToken)
+	token, err := agent.GetAuth()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	fmt.Println(core.TestAuthToken)
+	fmt.Println(token)
+
+	err = agent.DelAuth(token.Token)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
 }

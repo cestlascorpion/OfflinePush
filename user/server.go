@@ -26,13 +26,13 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 
 	agt, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		log.Errorf("new getui agent err %+v", err)
 		return nil, err
 	}
-	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}, agt)
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.GeTui.AgentId, BundleId: conf.GeTui.BundleId}, agt)
 	if err != nil {
 		log.Errorf("register getui agent err %+v", err)
 		return nil, err

@@ -9,12 +9,20 @@ type PushConfig struct {
 		StatsCollection string `required:"true"`
 		PoolSize        int    `default:"100"`
 	}
-	TestApp struct {
-		PushAgent    string `required:"true"`
+	GeTui struct {
+		AgentId      string `required:"true"`
 		BundleId     string `required:"true"`
 		AppId        string `required:"true"`
 		AppKey       string `required:"true"`
 		MasterSecret string `required:"true"`
 		TimeoutSec   int    `default:"5"`
+	}
+	Apns struct {
+		AgentId    string `required:"true"`
+		BundleId   string `required:"true"`
+		Key        []byte `required:"true"`
+		KeyId      string `required:"true"`
+		TeamId     string `required:"true"`
+		TimeoutSec int    `default:"10"`
 	}
 }

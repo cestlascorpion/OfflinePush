@@ -20,7 +20,7 @@ func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -69,7 +69,7 @@ func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -118,7 +118,7 @@ func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -172,7 +172,7 @@ func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -226,7 +226,7 @@ func TestGeTuiPush_PushListByCid(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -286,7 +286,7 @@ func TestGeTuiPush_PushListByAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -346,7 +346,7 @@ func TestGeTuiPush_PushAll(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -394,7 +394,7 @@ func TestGeTuiPush_PushByTag(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -455,7 +455,7 @@ func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -505,7 +505,7 @@ func TestGeTuiPush_StopPush(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -529,7 +529,7 @@ func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -553,7 +553,7 @@ func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -577,7 +577,7 @@ func TestGeTuiPush_QueryDetail(t *testing.T) {
 	}
 	agent, err := NewGeTuiPush(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)

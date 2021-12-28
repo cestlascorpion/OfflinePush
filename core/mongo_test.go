@@ -21,7 +21,7 @@ func TestAuthDao_GetToken(t *testing.T) {
 		t.FailNow()
 	}
 
-	uniqueId := UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}
+	uniqueId := UniqueId{PushAgent: conf.GeTui.AgentId, BundleId: conf.GeTui.BundleId}
 	auth, err := dao.GetAuth(uniqueId)
 	if err != nil {
 		fmt.Println(err)
@@ -45,7 +45,7 @@ func TestAuthDao_SetToken(t *testing.T) {
 		t.FailNow()
 	}
 
-	uniqueId := UniqueId{PushAgent: conf.TestApp.PushAgent, BundleId: conf.TestApp.BundleId}
+	uniqueId := UniqueId{PushAgent: conf.GeTui.AgentId, BundleId: conf.GeTui.BundleId}
 	auth := &AuthToken{Token: TestAuthToken, ExpireAt: TestAuthExpireAt}
 	err = dao.SetAuth(uniqueId, auth)
 	if err != nil {

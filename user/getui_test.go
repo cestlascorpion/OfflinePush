@@ -18,7 +18,7 @@ func TestGeTuiUser_BindAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -49,7 +49,7 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -74,7 +74,7 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -99,7 +99,7 @@ func TestGeTuiUser_UnbindAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -130,7 +130,7 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -154,7 +154,7 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -180,7 +180,7 @@ func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -207,7 +207,7 @@ func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -234,7 +234,7 @@ func TestGeTuiUser_QueryUserTag(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -259,7 +259,7 @@ func TestGeTuiUser_AddBlackList(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -283,7 +283,7 @@ func TestGeTuiUser_DelBlackList(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -307,7 +307,7 @@ func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -332,7 +332,7 @@ func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -357,7 +357,7 @@ func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -383,7 +383,7 @@ func TestGeTuiUser_SetPushBadge(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -409,7 +409,7 @@ func TestGeTuiUser_QueryUserCount(t *testing.T) {
 	}
 	agent, err := NewGeTuiUser(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)

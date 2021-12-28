@@ -19,7 +19,7 @@ func TestGeTuiStats_GetTasks(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -43,7 +43,7 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -67,7 +67,7 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -91,7 +91,7 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -115,7 +115,7 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)
@@ -139,7 +139,7 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 	}
 	agent, err := NewGeTuiStats(
 		core.GTBaseUrl,
-		conf.TestApp.AppId,
+		conf.GeTui.AppId,
 		http.DefaultClient)
 	if err != nil {
 		fmt.Println(err)

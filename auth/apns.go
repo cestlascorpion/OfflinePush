@@ -75,6 +75,10 @@ func (a *ApnsAuth) DelAuth(token string) error {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
 
+	if token != a.cache.Token {
+		return nil
+	}
+
 	auth, err := genJWT(a.key, a.keyId, a.teamId)
 	if err != nil {
 		log.Errorf("generate jwt err %+v", err)

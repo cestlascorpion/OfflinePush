@@ -25,8 +25,8 @@ func TestServer_GetToken(t *testing.T) {
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.GetToken(context.Background(), &proto.GetTokenReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId})
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId})
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -48,9 +48,8 @@ func TestServer_GetToken2(t *testing.T) {
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.GetToken(context.Background(), &proto.GetTokenReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
-	})
+		PushAgent: conf.Apns.AgentId,
+		BundleId:  conf.Apns.BundleId})
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -72,8 +71,8 @@ func TestServer_DelToken(t *testing.T) {
 	}
 	client := proto.NewAuthClient(conn)
 	resp, err := client.DelToken(context.Background(), &proto.DelTokenReq{
-		PushAgent: conf.TestApp.PushAgent,
-		BundleId:  conf.TestApp.BundleId,
+		PushAgent: conf.GeTui.AgentId,
+		BundleId:  conf.GeTui.BundleId,
 		Token:     core.TestAuthToken})
 	if err != nil {
 		fmt.Println(err)
