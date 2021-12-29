@@ -11,7 +11,7 @@ import (
 
 func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -38,7 +38,7 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 
 func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

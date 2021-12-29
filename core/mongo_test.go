@@ -9,7 +9,7 @@ import (
 
 func TestAuthDao_GetToken(t *testing.T) {
 	conf := &PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -33,7 +33,7 @@ func TestAuthDao_GetToken(t *testing.T) {
 
 func TestAuthDao_SetToken(t *testing.T) {
 	conf := &PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

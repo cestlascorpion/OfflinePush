@@ -280,16 +280,16 @@ func file_auth_proto_rawDescGZIP() []byte {
 
 var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_auth_proto_goTypes = []interface{}{
-	(*GetTokenReq)(nil),  // 0: OfflinePush.auth.GetTokenReq
-	(*GetTokenResp)(nil), // 1: OfflinePush.auth.GetTokenResp
-	(*DelTokenReq)(nil),  // 2: OfflinePush.auth.DelTokenReq
-	(*DelTokenResp)(nil), // 3: OfflinePush.auth.DelTokenResp
+	(*GetTokenReq)(nil),  // 0: OfflinePush.Auth.GetTokenReq
+	(*GetTokenResp)(nil), // 1: OfflinePush.Auth.GetTokenResp
+	(*DelTokenReq)(nil),  // 2: OfflinePush.Auth.DelTokenReq
+	(*DelTokenResp)(nil), // 3: OfflinePush.Auth.DelTokenResp
 }
 var file_auth_proto_depIdxs = []int32{
-	0, // 0: OfflinePush.auth.auth.GetToken:input_type -> OfflinePush.auth.GetTokenReq
-	2, // 1: OfflinePush.auth.auth.DelToken:input_type -> OfflinePush.auth.DelTokenReq
-	1, // 2: OfflinePush.auth.auth.GetToken:output_type -> OfflinePush.auth.GetTokenResp
-	3, // 3: OfflinePush.auth.auth.DelToken:output_type -> OfflinePush.auth.DelTokenResp
+	0, // 0: OfflinePush.Auth.Auth.GetToken:input_type -> OfflinePush.Auth.GetTokenReq
+	2, // 1: OfflinePush.Auth.Auth.DelToken:input_type -> OfflinePush.Auth.DelTokenReq
+	1, // 2: OfflinePush.Auth.Auth.GetToken:output_type -> OfflinePush.Auth.GetTokenResp
+	3, // 3: OfflinePush.Auth.Auth.DelToken:output_type -> OfflinePush.Auth.DelTokenResp
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

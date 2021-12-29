@@ -13,7 +13,7 @@ import (
 
 func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -62,7 +62,7 @@ func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 
 func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -111,7 +111,7 @@ func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 
 func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -165,7 +165,7 @@ func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 
 func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -219,7 +219,7 @@ func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 
 func TestGeTuiPush_PushListByCid(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -279,7 +279,7 @@ func TestGeTuiPush_PushListByCid(t *testing.T) {
 
 func TestGeTuiPush_PushListByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -339,7 +339,7 @@ func TestGeTuiPush_PushListByAlias(t *testing.T) {
 
 func TestGeTuiPush_PushAll(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -387,7 +387,7 @@ func TestGeTuiPush_PushAll(t *testing.T) {
 
 func TestGeTuiPush_PushByTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -448,7 +448,7 @@ func TestGeTuiPush_PushByTag(t *testing.T) {
 
 func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -498,7 +498,7 @@ func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 
 func TestGeTuiPush_StopPush(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -522,7 +522,7 @@ func TestGeTuiPush_StopPush(t *testing.T) {
 
 func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -546,7 +546,7 @@ func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 
 func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -570,7 +570,7 @@ func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 
 func TestGeTuiPush_QueryDetail(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

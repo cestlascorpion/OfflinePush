@@ -9,6 +9,7 @@ import (
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/cestlascorpion/offlinepush/proto"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/net/http2"
 )
 
 type Server struct {
@@ -24,18 +25,37 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		return nil, err
 	}
 
-	agent, err := NewGeTuiPush(
+	g, err := NewGeTuiPush(
 		core.GTBaseUrl,
 		conf.GeTui.AppId,
-		http.DefaultClient)
+		&http.Client{
+			Transport: &http.Transport{},
+		})
 	if err != nil {
 		log.Errorf("new getui agent err %+v", err)
 		return nil, err
 	}
 
-	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.GeTui.AgentId, BundleId: conf.GeTui.BundleId}, agent)
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.GeTui.AgentId, BundleId: conf.GeTui.BundleId}, g)
 	if err != nil {
 		log.Errorf("register getui agent err %+v", err)
+		return nil, err
+	}
+
+	a, err := NewApnsPush(
+		conf.Apns.Env,
+		conf.Apns.Key,
+		&http.Client{
+			Transport: &http2.Transport{},
+		})
+	if err != nil {
+		log.Errorf("new apns agent err %+v", err)
+		return nil, err
+	}
+
+	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.Apns.AgentId, BundleId: conf.Apns.BundleId}, a)
+	if err != nil {
+		log.Errorf("register apns agent err %+v", err)
 		return nil, err
 	}
 

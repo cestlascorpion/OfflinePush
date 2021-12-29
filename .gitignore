@@ -2,5 +2,6 @@
 .vscode
 
 *.yml
+*.json
 
 vendor

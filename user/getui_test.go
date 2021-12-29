@@ -11,7 +11,7 @@ import (
 
 func TestGeTuiUser_BindAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -42,7 +42,7 @@ func TestGeTuiUser_BindAlias(t *testing.T) {
 
 func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -67,7 +67,7 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 
 func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -92,7 +92,7 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 
 func TestGeTuiUser_UnbindAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -123,7 +123,7 @@ func TestGeTuiUser_UnbindAlias(t *testing.T) {
 
 func TestGeTuiUser_RevokeAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -147,7 +147,7 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 
 func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -173,7 +173,7 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 
 func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -200,7 +200,7 @@ func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 
 func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -227,7 +227,7 @@ func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 
 func TestGeTuiUser_QueryUserTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -252,7 +252,7 @@ func TestGeTuiUser_QueryUserTag(t *testing.T) {
 
 func TestGeTuiUser_AddBlackList(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -276,7 +276,7 @@ func TestGeTuiUser_AddBlackList(t *testing.T) {
 
 func TestGeTuiUser_DelBlackList(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -300,7 +300,7 @@ func TestGeTuiUser_DelBlackList(t *testing.T) {
 
 func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -325,7 +325,7 @@ func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 
 func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -350,7 +350,7 @@ func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 
 func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -376,7 +376,7 @@ func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 
 func TestGeTuiUser_SetPushBadge(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -402,7 +402,7 @@ func TestGeTuiUser_SetPushBadge(t *testing.T) {
 
 func TestGeTuiUser_QueryUserCount(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

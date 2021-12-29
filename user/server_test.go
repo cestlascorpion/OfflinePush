@@ -12,7 +12,7 @@ import (
 
 func TestServer_BindAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -42,7 +42,7 @@ func TestServer_BindAlias(t *testing.T) {
 
 func TestServer_QueryAliasByCid(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -67,7 +67,7 @@ func TestServer_QueryAliasByCid(t *testing.T) {
 
 func TestServer_QueryCidByAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -92,7 +92,7 @@ func TestServer_QueryCidByAlias(t *testing.T) {
 
 func TestMgr_UnbindAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -122,7 +122,7 @@ func TestMgr_UnbindAlias(t *testing.T) {
 
 func TestServer_RevokeAlias(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -147,7 +147,7 @@ func TestServer_RevokeAlias(t *testing.T) {
 
 func TestServer_BindUserWithTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -173,7 +173,7 @@ func TestServer_BindUserWithTag(t *testing.T) {
 
 func TestServer_BindTagWithUser(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -199,7 +199,7 @@ func TestServer_BindTagWithUser(t *testing.T) {
 
 func TestServer_UnbindTagFromUser(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -225,7 +225,7 @@ func TestServer_UnbindTagFromUser(t *testing.T) {
 
 func TestServer_QueryUserTag(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -250,7 +250,7 @@ func TestServer_QueryUserTag(t *testing.T) {
 
 func TestServer_QueryDeviceStatus(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -275,7 +275,7 @@ func TestServer_QueryDeviceStatus(t *testing.T) {
 
 func TestServer_QueryUserInfo(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -300,7 +300,7 @@ func TestServer_QueryUserInfo(t *testing.T) {
 
 func TestServer_SetPushBadge(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -326,7 +326,7 @@ func TestServer_SetPushBadge(t *testing.T) {
 
 func TestServer_QueryUserCount(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

@@ -10,7 +10,7 @@ import (
 
 func TestApnsAuth_GetAuth(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -32,7 +32,7 @@ func TestApnsAuth_GetAuth(t *testing.T) {
 
 func TestApnsAuth_DelAuth(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

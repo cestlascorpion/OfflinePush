@@ -12,7 +12,7 @@ import (
 
 func TestGeTuiStats_GetTasks(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -36,7 +36,7 @@ func TestGeTuiStats_GetTasks(t *testing.T) {
 
 func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -60,7 +60,7 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 
 func TestGeTuiStats_GetPushCount(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -84,7 +84,7 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 
 func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -108,7 +108,7 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 
 func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -132,7 +132,7 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 
 func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

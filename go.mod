@@ -8,8 +8,10 @@ require (
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-resty/resty/v2 v2.6.0
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/jinzhu/configor v1.2.1
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/sideshow/apns2 v0.20.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f // indirect

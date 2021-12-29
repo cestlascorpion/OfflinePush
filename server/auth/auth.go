@@ -19,7 +19,7 @@ func main() {
 		return
 	}
 	conf := &core.PushConfig{}
-	err = configor.Load(conf, "conf.yml")
+	err = configor.Load(conf, "conf.json")
 	if err != nil {
 		log.Fatalf("config failed err %+v", err)
 		return

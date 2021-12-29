@@ -13,7 +13,7 @@ import (
 
 func TestServer_GetTasks(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -38,7 +38,7 @@ func TestServer_GetTasks(t *testing.T) {
 
 func TestServer_GetTaskGroup(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -63,7 +63,7 @@ func TestServer_GetTaskGroup(t *testing.T) {
 
 func TestServer_GetPushCount(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -87,7 +87,7 @@ func TestServer_GetPushCount(t *testing.T) {
 
 func TestServer_GetPushDataByDay(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -112,7 +112,7 @@ func TestServer_GetPushDataByDay(t *testing.T) {
 
 func TestServer_GetUserDataByDay(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -137,7 +137,7 @@ func TestServer_GetUserDataByDay(t *testing.T) {
 
 func TestServer_GetOnlineUserBy24H(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

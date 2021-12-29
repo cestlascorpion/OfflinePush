@@ -11,7 +11,7 @@ import (
 
 func TestAuthCache_Start(t *testing.T) {
 	conf := &PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

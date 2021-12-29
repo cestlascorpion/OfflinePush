@@ -23,8 +23,8 @@ type ApnsAuth struct {
 	mutex  sync.RWMutex
 }
 
-func NewApnsAuth(privateKey []byte, keyId, teamId string) (*ApnsAuth, error) {
-	block, _ := pem.Decode(privateKey)
+func NewApnsAuth(privateKey, keyId, teamId string) (*ApnsAuth, error) {
+	block, _ := pem.Decode([]byte(privateKey))
 	if block == nil {
 		log.Errorf("pem.Decode failed")
 		return nil, errors.New("invalid pem")

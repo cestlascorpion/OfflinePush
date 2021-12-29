@@ -46,7 +46,7 @@ func init() {
 
 func TestServer_PushToSingle(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -80,7 +80,7 @@ func TestServer_PushToSingle(t *testing.T) {
 
 func TestServer_PushToList(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -124,7 +124,7 @@ func TestServer_PushToList(t *testing.T) {
 
 func TestServer_PushToApp(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -156,7 +156,7 @@ func TestServer_PushToApp(t *testing.T) {
 
 func TestServer_StopTask(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -181,7 +181,7 @@ func TestServer_StopTask(t *testing.T) {
 
 func TestServer_RemoveTask(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -206,7 +206,7 @@ func TestServer_RemoveTask(t *testing.T) {
 
 func TestServer_CheckTask(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -231,7 +231,7 @@ func TestServer_CheckTask(t *testing.T) {
 
 func TestServer_ViewDetail(t *testing.T) {
 	conf := &core.PushConfig{}
-	err := configor.Load(conf, "conf.yml")
+	err := configor.Load(conf, "conf.json")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
