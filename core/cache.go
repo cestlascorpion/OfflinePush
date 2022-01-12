@@ -56,7 +56,7 @@ func (c *AuthCache) GetAuth(uniqueId UniqueId) (*AuthToken, error) {
 }
 
 func (c *AuthCache) Close() {
-	c.Close()
+	c.cancel()
 }
 
 func (c *AuthCache) readAuth(uniqueId UniqueId) *AuthToken {
