@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -28,7 +29,7 @@ func TestGeTuiAuth_GetAuthToken(t *testing.T) {
 	}
 	defer agent.Close()
 
-	auth, err := agent.GetAuth()
+	auth, err := agent.GetAuth(context.TODO())
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -55,7 +56,7 @@ func TestGeTuiAuth_DelAuthToken(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.DelAuth(core.TestAuthToken)
+	err = agent.DelAuth(context.TODO(), core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

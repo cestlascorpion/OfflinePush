@@ -74,7 +74,7 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetTasks(uniqueId, in.TaskList, auth.Token)
+	resp, err := s.mgr.GetTasks(ctx, uniqueId, in.TaskList, auth.Token)
 	if err != nil {
 		log.Errorf("get tasks err %+v", err)
 		return out, err
@@ -109,7 +109,7 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetTaskGroup(uniqueId, in.Group, auth.Token)
+	resp, err := s.mgr.GetTaskGroup(ctx, uniqueId, in.Group, auth.Token)
 	if err != nil {
 		log.Errorf("get task group err %+v", err)
 		return out, err
@@ -143,7 +143,7 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetPushCount(uniqueId, auth.Token)
+	resp, err := s.mgr.GetPushCount(ctx, uniqueId, auth.Token)
 	if err != nil {
 		log.Errorf("get push count err %+v", err)
 		return out, err
@@ -174,7 +174,7 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetPushDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
+	resp, err := s.mgr.GetPushDataByDay(ctx, uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
 		log.Errorf("get push data by day err %+v", err)
 		return out, err
@@ -209,7 +209,7 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetUserDataByDay(uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
+	resp, err := s.mgr.GetUserDataByDay(ctx, uniqueId, time.Unix(in.UnixSecond, 0), auth.Token)
 	if err != nil {
 		log.Errorf("get user data by day err %+v", err)
 		return out, err
@@ -254,7 +254,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.GetOnlineUserBy24H(uniqueId, auth.Token)
+	resp, err := s.mgr.GetOnlineUserBy24H(ctx, uniqueId, auth.Token)
 	if err != nil {
 		log.Errorf("get online data by day err %+v", err)
 		return out, err

@@ -1,6 +1,7 @@
 package push
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -26,8 +27,8 @@ func NewGeTuiPush(apiUrl, appId string, hc *http.Client) (*GeTuiPush, error) {
 	}, nil
 }
 
-func (g *GeTuiPush) PushSingleByCid(request *SingleReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/single/cid"), token, request)
+func (g *GeTuiPush) PushSingleByCid(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/single/cid"), token, request)
 	if err != nil {
 		log.Errorf("PushSingleByCid() POST err %+v", err)
 		return nil, err
@@ -46,8 +47,8 @@ func (g *GeTuiPush) PushSingleByCid(request *SingleReq, token string) (map[strin
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) PushSingleByAlias(request *SingleReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/single/alias"), token, request)
+func (g *GeTuiPush) PushSingleByAlias(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/single/alias"), token, request)
 	if err != nil {
 		log.Errorf("PushSingleByAlias() POST err %+v", err)
 		return nil, err
@@ -66,8 +67,8 @@ func (g *GeTuiPush) PushSingleByAlias(request *SingleReq, token string) (map[str
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) PushBatchByCid(request *BatchReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/single/batch/cid"), token, request)
+func (g *GeTuiPush) PushBatchByCid(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/single/batch/cid"), token, request)
 	if err != nil {
 		log.Errorf("PushBatchByCid() POST err %+v", err)
 		return nil, err
@@ -86,8 +87,8 @@ func (g *GeTuiPush) PushBatchByCid(request *BatchReq, token string) (map[string]
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) PushBatchByAlias(request *BatchReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/single/batch/alias"), token, request)
+func (g *GeTuiPush) PushBatchByAlias(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/single/batch/alias"), token, request)
 	if err != nil {
 		log.Errorf("PushBatchByAlias() POST err %+v", err)
 		return nil, err
@@ -106,8 +107,8 @@ func (g *GeTuiPush) PushBatchByAlias(request *BatchReq, token string) (map[strin
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) CreateMsg(request *CreateReq, token string) (string, error) {
-	result, err := g.client.POST(g.url("/push/list/message"), token, request)
+func (g *GeTuiPush) CreateMsg(ctx context.Context, request *CreateReq, token string) (string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/list/message"), token, request)
 	if err != nil {
 		log.Errorf("CreateMsg() POST err %+v", err)
 		return "", err
@@ -126,8 +127,8 @@ func (g *GeTuiPush) CreateMsg(request *CreateReq, token string) (string, error) 
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GeTuiPush) PushListByCid(request *ListReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/list/cid"), token, request)
+func (g *GeTuiPush) PushListByCid(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/list/cid"), token, request)
 	if err != nil {
 		log.Errorf("PushListByCid() POST err %+v", err)
 		return nil, err
@@ -146,8 +147,8 @@ func (g *GeTuiPush) PushListByCid(request *ListReq, token string) (map[string]ma
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) PushListByAlias(request *ListReq, token string) (map[string]map[string]string, error) {
-	result, err := g.client.POST(g.url("/push/list/alias"), token, request)
+func (g *GeTuiPush) PushListByAlias(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/list/alias"), token, request)
 	if err != nil {
 		log.Errorf("PushListByAlias() POST err %+v", err)
 		return nil, err
@@ -166,8 +167,8 @@ func (g *GeTuiPush) PushListByAlias(request *ListReq, token string) (map[string]
 	return g.resp2PushDetail(resp.Data)
 }
 
-func (g *GeTuiPush) PushAll(request *AllReq, token string) (string, error) {
-	result, err := g.client.POST(g.url("/push/all"), token, request)
+func (g *GeTuiPush) PushAll(ctx context.Context, request *AllReq, token string) (string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/all"), token, request)
 	if err != nil {
 		log.Errorf("PushAll() POST err %+v", err)
 		return "", err
@@ -186,8 +187,8 @@ func (g *GeTuiPush) PushAll(request *AllReq, token string) (string, error) {
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GeTuiPush) PushByTag(request *ByTagReq, token string) (string, error) {
-	result, err := g.client.POST(g.url("/push/tag"), token, request)
+func (g *GeTuiPush) PushByTag(ctx context.Context, request *ByTagReq, token string) (string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/tag"), token, request)
 	if err != nil {
 		log.Errorf("PushByTag() POST err %+v", err)
 		return "", err
@@ -206,8 +207,8 @@ func (g *GeTuiPush) PushByTag(request *ByTagReq, token string) (string, error) {
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GeTuiPush) PushByFastCustomTag(request *ByTagReq, token string) (string, error) {
-	result, err := g.client.POST(g.url("/push/fast_custom_tag"), token, request)
+func (g *GeTuiPush) PushByFastCustomTag(ctx context.Context, request *ByTagReq, token string) (string, error) {
+	result, err := g.client.POST(ctx, g.url("/push/fast_custom_tag"), token, request)
 	if err != nil {
 		log.Errorf("PushByFastCustomTag() POST err %+v", err)
 		return "", err
@@ -226,8 +227,8 @@ func (g *GeTuiPush) PushByFastCustomTag(request *ByTagReq, token string) (string
 	return g.resp2PushTaskId(resp.Data)
 }
 
-func (g *GeTuiPush) StopPush(taskId, token string) (bool, error) {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/task/%s", taskId)), token, nil)
+func (g *GeTuiPush) StopPush(ctx context.Context, taskId, token string) (bool, error) {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/task/%s", taskId)), token, nil)
 	if err != nil {
 		log.Errorf("StopPush() POST err %+v", err)
 		return false, err
@@ -245,8 +246,8 @@ func (g *GeTuiPush) StopPush(taskId, token string) (bool, error) {
 	return true, nil
 }
 
-func (g *GeTuiPush) DeleteScheduleTask(taskId, token string) (bool, error) {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/task/schedule/%s", taskId)), token, nil)
+func (g *GeTuiPush) DeleteScheduleTask(ctx context.Context, taskId, token string) (bool, error) {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/task/schedule/%s", taskId)), token, nil)
 	if err != nil {
 		log.Errorf("DeleteScheduleTask() POST err %+v", err)
 		return false, err
@@ -264,8 +265,8 @@ func (g *GeTuiPush) DeleteScheduleTask(taskId, token string) (bool, error) {
 	return true, nil
 }
 
-func (g *GeTuiPush) QueryScheduleTask(taskId, token string) (map[string]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/task/schedule/%s", taskId)), token, nil)
+func (g *GeTuiPush) QueryScheduleTask(ctx context.Context, taskId, token string) (map[string]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/task/schedule/%s", taskId)), token, nil)
 	if err != nil {
 		log.Errorf("QueryScheduleTask() GET err %+v", err)
 		return nil, err
@@ -283,8 +284,8 @@ func (g *GeTuiPush) QueryScheduleTask(taskId, token string) (map[string]string, 
 	return g.resp2Schedule(resp.Data)
 }
 
-func (g *GeTuiPush) QueryDetail(taskId, cId, token string) ([][2]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/task/detail/%s/%s", cId, taskId)), token, nil)
+func (g *GeTuiPush) QueryDetail(ctx context.Context, taskId, cId, token string) ([][2]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/task/detail/%s/%s", cId, taskId)), token, nil)
 	if err != nil {
 		log.Errorf("QueryDetail() GET err %+v", err)
 		return nil, err

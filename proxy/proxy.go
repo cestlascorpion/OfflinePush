@@ -37,14 +37,14 @@ func NewPushProxy(msgConv MsgConverter) (*PushProxy, error) {
 	}, nil
 }
 
-func (p *PushProxy) Unicast(msg interface{}) error {
+func (p *PushProxy) Unicast(ctx context.Context, msg interface{}) error {
 	reqList, err := p.conv.ToUnicast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err
 	}
 	for _, req := range reqList {
-		resp, err := p.client.PushToSingle(context.TODO(), req)
+		resp, err := p.client.PushToSingle(ctx, req)
 		if err != nil {
 			log.Errorf("push single err %+v", err)
 			return err
@@ -54,20 +54,20 @@ func (p *PushProxy) Unicast(msg interface{}) error {
 	return nil
 }
 
-func (p *PushProxy) Multicast(msg interface{}) error {
+func (p *PushProxy) Multicast(ctx context.Context, msg interface{}) error {
 	req1, req2List, err := p.conv.ToMulticast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err
 	}
-	resp1, err := p.client.CreateTask(context.TODO(), req1)
+	resp1, err := p.client.CreateTask(ctx, req1)
 	if err != nil {
 		log.Errorf("push list err %+v", err)
 		return err
 	}
 	for _, req2 := range req2List {
 		req2.Msg.TaskId = resp1.TaskId
-		resp2, err := p.client.PushToList(context.TODO(), req2)
+		resp2, err := p.client.PushToList(ctx, req2)
 		if err != nil {
 			log.Errorf("push list err %+v", err)
 			return err
@@ -77,13 +77,13 @@ func (p *PushProxy) Multicast(msg interface{}) error {
 	return nil
 }
 
-func (p *PushProxy) Broadcast(msg interface{}) error {
+func (p *PushProxy) Broadcast(ctx context.Context, msg interface{}) error {
 	req, err := p.conv.ToBroadcast(msg)
 	if err != nil {
 		log.Errorf("conv msg err %+v", err)
 		return err
 	}
-	resp, err := p.client.PushToApp(context.TODO(), req)
+	resp, err := p.client.PushToApp(ctx, req)
 	if err != nil {
 		log.Errorf("push app err %+v", err)
 		return err

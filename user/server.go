@@ -75,7 +75,7 @@ func (s *Server) BindAlias(ctx context.Context, in *proto.BindAliasReq) (*proto.
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.BindAlias(uniqueId, aliasList, auth.Token)
+	err = s.mgr.BindAlias(ctx, uniqueId, aliasList, auth.Token)
 	if err != nil {
 		log.Errorf("bind alias err %+v", err)
 		return out, err
@@ -98,7 +98,7 @@ func (s *Server) QueryAliasByCid(ctx context.Context, in *proto.QueryAliasReq) (
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	alias, err := s.mgr.QueryAliasByCid(uniqueId, in.CId, auth.Token)
+	alias, err := s.mgr.QueryAliasByCid(ctx, uniqueId, in.CId, auth.Token)
 	if err != nil {
 		log.Errorf("query alias err %+v", err)
 		return out, err
@@ -122,7 +122,7 @@ func (s *Server) QueryCidByAlias(ctx context.Context, in *proto.QueryCidReq) (*p
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	cidList, err := s.mgr.QueryCidByAlias(uniqueId, in.Alias, auth.Token)
+	cidList, err := s.mgr.QueryCidByAlias(ctx, uniqueId, in.Alias, auth.Token)
 	if err != nil {
 		log.Errorf("query cid err %+v", err)
 		return out, err
@@ -156,7 +156,7 @@ func (s *Server) UnbindAlias(ctx context.Context, in *proto.UnbindAliasReq) (*pr
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.UnbindAlias(uniqueId, aliasList, auth.Token)
+	err = s.mgr.UnbindAlias(ctx, uniqueId, aliasList, auth.Token)
 	if err != nil {
 		log.Errorf("unbind alias err %+v", err)
 		return out, err
@@ -179,7 +179,7 @@ func (s *Server) RevokeAlias(ctx context.Context, in *proto.RevokeAliasReq) (*pr
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.RevokeAlias(uniqueId, in.Alias, auth.Token)
+	err = s.mgr.RevokeAlias(ctx, uniqueId, in.Alias, auth.Token)
 	if err != nil {
 		log.Errorf("revoke alias err %+v", err)
 		return out, err
@@ -206,7 +206,7 @@ func (s *Server) BindUserWithTag(ctx context.Context, in *proto.BindUserWithTagR
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.BindUserWithTag(uniqueId, in.CId, tagList, auth.Token)
+	err = s.mgr.BindUserWithTag(ctx, uniqueId, in.CId, tagList, auth.Token)
 	if err != nil {
 		log.Errorf("bind user with tag err %+v", err)
 		return out, err
@@ -233,7 +233,7 @@ func (s *Server) BindTagWithUser(ctx context.Context, in *proto.BindTagWithUserR
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.BindTagWithUser(uniqueId, in.Tag, cidList, auth.Token)
+	resp, err := s.mgr.BindTagWithUser(ctx, uniqueId, in.Tag, cidList, auth.Token)
 	if err != nil {
 		log.Errorf("bind tag with user err %+v", err)
 		return out, err
@@ -267,7 +267,7 @@ func (s *Server) UnbindTagFromUser(ctx context.Context, in *proto.UnbindTagFromU
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.UnbindTagFromUser(uniqueId, in.Tag, cidList, auth.Token)
+	resp, err := s.mgr.UnbindTagFromUser(ctx, uniqueId, in.Tag, cidList, auth.Token)
 	if err != nil {
 		log.Errorf("unbind tag from user err %+v", err)
 		return out, err
@@ -297,7 +297,7 @@ func (s *Server) QueryUserTag(ctx context.Context, in *proto.QueryUserTagReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.QueryUserTag(uniqueId, in.CId, auth.Token)
+	resp, err := s.mgr.QueryUserTag(ctx, uniqueId, in.CId, auth.Token)
 	if err != nil {
 		log.Errorf("query user tag err %+v", err)
 		return out, err
@@ -321,7 +321,7 @@ func (s *Server) AddBlackList(ctx context.Context, in *proto.AddBlackListReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.AddBlackList(uniqueId, in.CIdList, auth.Token)
+	err = s.mgr.AddBlackList(ctx, uniqueId, in.CIdList, auth.Token)
 	if err != nil {
 		log.Errorf("add black list err %+v", err)
 		return out, err
@@ -344,7 +344,7 @@ func (s *Server) DelBlackList(ctx context.Context, in *proto.DelBlackListReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.DelBlackList(uniqueId, in.CIdList, auth.Token)
+	err = s.mgr.DelBlackList(ctx, uniqueId, in.CIdList, auth.Token)
 	if err != nil {
 		log.Errorf("del black list err %+v", err)
 		return out, err
@@ -367,7 +367,7 @@ func (s *Server) QueryUserStatus(ctx context.Context, in *proto.QueryUserStatusR
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.QueryUserStatus(uniqueId, in.CIdList, auth.Token)
+	resp, err := s.mgr.QueryUserStatus(ctx, uniqueId, in.CIdList, auth.Token)
 	if err != nil {
 		log.Errorf("query user status err %+v", err)
 		return out, err
@@ -398,7 +398,7 @@ func (s *Server) QueryDeviceStatus(ctx context.Context, in *proto.QueryDeviceSta
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.QueryDeviceStatus(uniqueId, in.CIdList, auth.Token)
+	resp, err := s.mgr.QueryDeviceStatus(ctx, uniqueId, in.CIdList, auth.Token)
 	if err != nil {
 		log.Errorf("query device status err %+v", err)
 		return out, err
@@ -430,7 +430,7 @@ func (s *Server) QueryUserInfo(ctx context.Context, in *proto.QueryUserInfoReq) 
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	invalid, validDetail, err := s.mgr.QueryUserInfo(uniqueId, in.CIdList, auth.Token)
+	invalid, validDetail, err := s.mgr.QueryUserInfo(ctx, uniqueId, in.CIdList, auth.Token)
 	if err != nil {
 		log.Errorf("query user info err %+v", err)
 		return out, err
@@ -490,7 +490,7 @@ func (s *Server) SetPushBadge(ctx context.Context, in *proto.SetPushBadgeReq) (*
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	err = s.mgr.SetPushBadge(uniqueId, in.CIdList, operation, auth.Token)
+	err = s.mgr.SetPushBadge(ctx, uniqueId, in.CIdList, operation, auth.Token)
 	if err != nil {
 		log.Errorf("set push badge err %+v", err)
 		return out, err
@@ -523,7 +523,7 @@ func (s *Server) QueryUserCount(ctx context.Context, in *proto.QueryUserCountReq
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	count, err := s.mgr.QueryUserCount(uniqueId, tagList, auth.Token)
+	count, err := s.mgr.QueryUserCount(ctx, uniqueId, tagList, auth.Token)
 	if err != nil {
 		log.Errorf("query push count err %+v", err)
 		return out, err

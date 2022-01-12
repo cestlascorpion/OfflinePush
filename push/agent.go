@@ -1,6 +1,7 @@
 package push
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/cestlascorpion/offlinepush/core"
@@ -8,20 +9,20 @@ import (
 )
 
 type Agent interface {
-	PushSingleByCid(request *SingleReq, token string) (map[string]map[string]string, error)
-	PushSingleByAlias(request *SingleReq, token string) (map[string]map[string]string, error)
-	PushBatchByCid(request *BatchReq, token string) (map[string]map[string]string, error)
-	PushBatchByAlias(request *BatchReq, token string) (map[string]map[string]string, error)
-	CreateMsg(request *CreateReq, token string) (string, error)
-	PushListByCid(request *ListReq, token string) (map[string]map[string]string, error)
-	PushListByAlias(request *ListReq, token string) (map[string]map[string]string, error)
-	PushAll(request *AllReq, token string) (string, error)
-	PushByTag(request *ByTagReq, token string) (string, error)
-	PushByFastCustomTag(request *ByTagReq, token string) (string, error)
-	StopPush(taskId, token string) (bool, error)
-	DeleteScheduleTask(taskId, token string) (bool, error)
-	QueryScheduleTask(taskId, token string) (map[string]string, error)
-	QueryDetail(taskId, cId, token string) ([][2]string, error)
+	PushSingleByCid(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error)
+	PushSingleByAlias(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error)
+	PushBatchByCid(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error)
+	PushBatchByAlias(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error)
+	CreateMsg(ctx context.Context, request *CreateReq, token string) (string, error)
+	PushListByCid(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error)
+	PushListByAlias(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error)
+	PushAll(ctx context.Context, request *AllReq, token string) (string, error)
+	PushByTag(ctx context.Context, request *ByTagReq, token string) (string, error)
+	PushByFastCustomTag(ctx context.Context, request *ByTagReq, token string) (string, error)
+	StopPush(ctx context.Context, taskId, token string) (bool, error)
+	DeleteScheduleTask(ctx context.Context, taskId, token string) (bool, error)
+	QueryScheduleTask(ctx context.Context, taskId, token string) (map[string]string, error)
+	QueryDetail(ctx context.Context, taskId, cId, token string) ([][2]string, error)
 	Close()
 }
 
@@ -40,96 +41,96 @@ func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
 	return nil
 }
 
-func (m *AgentMgr) PushSingle(uniqueId core.UniqueId, request *SingleReq, token string) (map[string]map[string]string, error) {
+func (m *AgentMgr) PushSingle(ctx context.Context, uniqueId core.UniqueId, request *SingleReq, token string) (map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	if len(request.Audience.Cid) != 0 {
-		return agent.PushSingleByCid(request, token)
+		return agent.PushSingleByCid(ctx, request, token)
 	}
-	return agent.PushSingleByAlias(request, token)
+	return agent.PushSingleByAlias(ctx, request, token)
 }
 
-func (m *AgentMgr) PushBatch(uniqueId core.UniqueId, request *BatchReq, token string) (map[string]map[string]string, error) {
+func (m *AgentMgr) PushBatch(ctx context.Context, uniqueId core.UniqueId, request *BatchReq, token string) (map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	if len(request.MsgList[0].Audience.Cid) != 0 {
-		return agent.PushBatchByCid(request, token)
+		return agent.PushBatchByCid(ctx, request, token)
 	}
-	return agent.PushBatchByAlias(request, token)
+	return agent.PushBatchByAlias(ctx, request, token)
 }
 
-func (m *AgentMgr) CreateMsg(uniqueId core.UniqueId, request *CreateReq, token string) (string, error) {
+func (m *AgentMgr) CreateMsg(ctx context.Context, uniqueId core.UniqueId, request *CreateReq, token string) (string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.CreateMsg(request, token)
+	return agent.CreateMsg(ctx, request, token)
 }
 
-func (m *AgentMgr) PushList(uniqueId core.UniqueId, request *ListReq, token string) (map[string]map[string]string, error) {
+func (m *AgentMgr) PushList(ctx context.Context, uniqueId core.UniqueId, request *ListReq, token string) (map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	if len(request.Audience.Cid) != 0 {
-		return agent.PushListByCid(request, token)
+		return agent.PushListByCid(ctx, request, token)
 	}
-	return agent.PushListByAlias(request, token)
+	return agent.PushListByAlias(ctx, request, token)
 }
 
-func (m *AgentMgr) PushAll(uniqueId core.UniqueId, request *AllReq, token string) (string, error) {
+func (m *AgentMgr) PushAll(ctx context.Context, uniqueId core.UniqueId, request *AllReq, token string) (string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.PushAll(request, token)
+	return agent.PushAll(ctx, request, token)
 }
 
-func (m *AgentMgr) PushByTag(uniqueId core.UniqueId, request *ByTagReq, token string) (string, error) {
+func (m *AgentMgr) PushByTag(ctx context.Context, uniqueId core.UniqueId, request *ByTagReq, token string) (string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
 	if len(request.Audience.FastCustomTag) != 0 {
-		return agent.PushByFastCustomTag(request, token)
+		return agent.PushByFastCustomTag(ctx, request, token)
 	}
-	return agent.PushByTag(request, token)
+	return agent.PushByTag(ctx, request, token)
 }
 
-func (m *AgentMgr) StopPush(uniqueId core.UniqueId, taskId, token string) (bool, error) {
+func (m *AgentMgr) StopPush(ctx context.Context, uniqueId core.UniqueId, taskId, token string) (bool, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return false, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.StopPush(taskId, token)
+	return agent.StopPush(ctx, taskId, token)
 }
 
-func (m *AgentMgr) DeleteScheduleTask(uniqueId core.UniqueId, taskId, token string) (bool, error) {
+func (m *AgentMgr) DeleteScheduleTask(ctx context.Context, uniqueId core.UniqueId, taskId, token string) (bool, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return false, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.DeleteScheduleTask(taskId, token)
+	return agent.DeleteScheduleTask(ctx, taskId, token)
 }
 
-func (m *AgentMgr) QueryScheduleTask(uniqueId core.UniqueId, taskId, token string) (map[string]string, error) {
+func (m *AgentMgr) QueryScheduleTask(ctx context.Context, uniqueId core.UniqueId, taskId, token string) (map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryScheduleTask(taskId, token)
+	return agent.QueryScheduleTask(ctx, taskId, token)
 }
 
-func (m *AgentMgr) QueryDetail(uniqueId core.UniqueId, taskId, cId, token string) ([][2]string, error) {
+func (m *AgentMgr) QueryDetail(ctx context.Context, uniqueId core.UniqueId, taskId, cId, token string) ([][2]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryDetail(taskId, cId, token)
+	return agent.QueryDetail(ctx, taskId, cId, token)
 }
 
 func (m *AgentMgr) Close() {

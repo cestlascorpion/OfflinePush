@@ -1,6 +1,7 @@
 package core
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -12,7 +13,7 @@ func TestGET(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	resp, err := client.GET("https://httpbin.org/get", "", nil)
+	resp, err := client.GET(context.TODO(), "https://httpbin.org/get", "", nil)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -26,7 +27,7 @@ func TestGET2(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	resp, err := client.GET("https://www.baidu.com", "", nil)
+	resp, err := client.GET(context.TODO(), "https://www.baidu.com", "", nil)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

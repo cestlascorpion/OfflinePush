@@ -1,6 +1,7 @@
 package stats
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -27,7 +28,7 @@ func TestGeTuiStats_GetTasks(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetTasks([]string{core.TestTasks}, core.TestAuthToken)
+	result, err := agent.GetTasks(context.TODO(), []string{core.TestTasks}, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -51,7 +52,7 @@ func TestGeTuiStats_GetTaskGroup(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetTaskGroup(core.TestGroup, core.TestAuthToken)
+	result, err := agent.GetTaskGroup(context.TODO(), core.TestGroup, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -75,7 +76,7 @@ func TestGeTuiStats_GetPushCount(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetPushCount(core.TestAuthToken)
+	result, err := agent.GetPushCount(context.TODO(), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -99,7 +100,7 @@ func TestGeTuiStats_GetPushDataByDay(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetPushDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
+	result, err := agent.GetPushDataByDay(context.TODO(), time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -123,7 +124,7 @@ func TestGeTuiStats_GetUserDataByDay(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetUserDataByDay(time.Now().AddDate(0, 0, -1), core.TestAuthToken)
+	result, err := agent.GetUserDataByDay(context.TODO(), time.Now().AddDate(0, 0, -1), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -147,7 +148,7 @@ func TestGeTuiStats_GetOnlineUserBy24H(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.GetOnlineUserBy24H(core.TestAuthToken)
+	result, err := agent.GetOnlineUserBy24H(context.TODO(), core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}

@@ -68,7 +68,7 @@ func (s *Server) GetToken(ctx context.Context, in *proto.GetTokenReq) (*proto.Ge
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	auth, err := s.mgr.GetAuth(uniqueId)
+	auth, err := s.mgr.GetAuth(ctx, uniqueId)
 	if err != nil {
 		log.Errorf("mgr get token err %+v", err)
 		return out, err
@@ -89,7 +89,7 @@ func (s *Server) DelToken(ctx context.Context, in *proto.DelTokenReq) (*proto.De
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	err := s.mgr.DelAuth(uniqueId, in.Token)
+	err := s.mgr.DelAuth(ctx, uniqueId, in.Token)
 	if err != nil {
 		log.Errorf("mgr del token err %+v", err)
 		return out, err

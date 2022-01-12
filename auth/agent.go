@@ -1,14 +1,15 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/cestlascorpion/offlinepush/core"
 )
 
 type Agent interface {
-	GetAuth() (auth *core.AuthToken, err error)
-	DelAuth(token string) (err error)
+	GetAuth(ctx context.Context) (auth *core.AuthToken, err error)
+	DelAuth(ctx context.Context, token string) (err error)
 	Close()
 }
 
@@ -27,20 +28,20 @@ func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
 	return nil
 }
 
-func (m *AgentMgr) GetAuth(uniqueId core.UniqueId) (*core.AuthToken, error) {
+func (m *AgentMgr) GetAuth(ctx context.Context, uniqueId core.UniqueId) (*core.AuthToken, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.GetAuth()
+	return agent.GetAuth(ctx)
 }
 
-func (m *AgentMgr) DelAuth(uniqueId core.UniqueId, token string) error {
+func (m *AgentMgr) DelAuth(ctx context.Context, uniqueId core.UniqueId, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("unsupported uniqueId %s", uniqueId)
 	}
-	return agent.DelAuth(token)
+	return agent.DelAuth(ctx, token)
 }
 
 func (m *AgentMgr) Close() {

@@ -79,7 +79,7 @@ func (c *AuthCache) watch() context.CancelFunc {
 	ctx, cancel := context.WithCancel(context.TODO())
 
 	go func() {
-		ticker := time.NewTicker(time.Hour)
+		ticker := time.NewTicker(time.Minute)
 		defer ticker.Stop()
 		for {
 			select {
@@ -100,24 +100,17 @@ func (c *AuthCache) watch() context.CancelFunc {
 }
 
 func (c *AuthCache) check() error {
-	expired := make(map[UniqueId]*AuthToken)
+	changelog := make(map[UniqueId]*AuthToken)
 
-	{
-		c.mutex.RLock()
-		for id, auth := range c.cache {
-			if auth.ExpireAt < time.Now().Add(time.Minute).Unix() {
-				expired[id] = auth
-			}
-		}
-		c.mutex.RUnlock()
+	c.mutex.RLock()
+	for id, auth := range c.cache {
+		changelog[id] = auth
 	}
+	c.mutex.RUnlock()
 
-	if len(expired) == 0 {
-		return nil
-	}
-	log.Infof("expire in next %d sec, expired %+v", 30, expired)
+	log.Infof("current %+v", changelog)
 
-	for id := range expired {
+	for id, auth := range changelog {
 		resp, err := c.client.GetToken(context.Background(), &proto.GetTokenReq{
 			PushAgent: id.PushAgent,
 			BundleId:  id.BundleId,
@@ -126,21 +119,23 @@ func (c *AuthCache) check() error {
 			log.Errorf("client get token failed, push agent %s bundle id %s err %+v", id.PushAgent, id.BundleId, err)
 			continue
 		}
-		expired[id] = &AuthToken{
-			Token:    resp.Token,
-			ExpireAt: resp.ExpireAt,
+		if auth.Token != resp.Token {
+			auth.Token = resp.Token
+			auth.ExpireAt = resp.ExpireAt
+		} else {
+			auth = nil
 		}
 	}
 
-	{
-		c.mutex.Lock()
-		for key, value := range expired {
-			if value != nil {
-				c.cache[key] = value
-			}
+	log.Infof("changelog %v+", changelog)
+
+	c.mutex.Lock()
+	for id, auth := range changelog {
+		if auth != nil {
+			c.cache[id] = auth
 		}
-		c.mutex.Unlock()
 	}
+	c.mutex.Unlock()
 
 	return nil
 }

@@ -2,6 +2,7 @@ package push
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -36,7 +37,7 @@ func NewApnsPush(env, topic string, hc *http.Client) (*ApnsPush, error) {
 	}, nil
 }
 
-func (a *ApnsPush) PushSingleByCid(request *SingleReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushSingleByCid(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error) {
 	notify, err := a.buildNotify(request)
 	if err != nil {
 		log.Errorf("build notify err %+v", err)
@@ -79,6 +80,7 @@ func (a *ApnsPush) PushSingleByCid(request *SingleReq, token string) (map[string
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 
+	req.WithContext(ctx)
 	httpRes, err := a.client.Do(req)
 	if err != nil {
 		log.Errorf("http client do err %+v", err)
@@ -112,55 +114,55 @@ func (a *ApnsPush) PushSingleByCid(request *SingleReq, token string) (map[string
 	}, nil
 }
 
-func (a *ApnsPush) PushSingleByAlias(request *SingleReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushSingleByAlias(ctx context.Context, request *SingleReq, token string) (map[string]map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushBatchByCid(request *BatchReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushBatchByCid(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushBatchByAlias(request *BatchReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushBatchByAlias(ctx context.Context, request *BatchReq, token string) (map[string]map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) CreateMsg(request *CreateReq, token string) (string, error) {
+func (a *ApnsPush) CreateMsg(ctx context.Context, request *CreateReq, token string) (string, error) {
 	return "", errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushListByCid(request *ListReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushListByCid(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushListByAlias(request *ListReq, token string) (map[string]map[string]string, error) {
+func (a *ApnsPush) PushListByAlias(ctx context.Context, request *ListReq, token string) (map[string]map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushAll(request *AllReq, token string) (string, error) {
+func (a *ApnsPush) PushAll(ctx context.Context, request *AllReq, token string) (string, error) {
 	return "", errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushByTag(request *ByTagReq, token string) (string, error) {
+func (a *ApnsPush) PushByTag(ctx context.Context, request *ByTagReq, token string) (string, error) {
 	return "", errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) PushByFastCustomTag(request *ByTagReq, token string) (string, error) {
+func (a *ApnsPush) PushByFastCustomTag(ctx context.Context, request *ByTagReq, token string) (string, error) {
 	return "", errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) StopPush(taskId, token string) (bool, error) {
+func (a *ApnsPush) StopPush(ctx context.Context, taskId, token string) (bool, error) {
 	return false, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) DeleteScheduleTask(taskId, token string) (bool, error) {
+func (a *ApnsPush) DeleteScheduleTask(ctx context.Context, taskId, token string) (bool, error) {
 	return false, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) QueryScheduleTask(taskId, token string) (map[string]string, error) {
+func (a *ApnsPush) QueryScheduleTask(ctx context.Context, taskId, token string) (map[string]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 
-func (a *ApnsPush) QueryDetail(taskId, cId, token string) ([][2]string, error) {
+func (a *ApnsPush) QueryDetail(ctx context.Context, taskId, cId, token string) ([][2]string, error) {
 	return nil, errors.New("unsupported for now")
 }
 

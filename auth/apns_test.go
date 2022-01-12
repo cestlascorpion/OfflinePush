@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -22,7 +23,7 @@ func TestApnsAuth_GetAuth(t *testing.T) {
 	}
 	defer agent.Close()
 
-	token, err := agent.GetAuth()
+	token, err := agent.GetAuth(context.TODO())
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -44,14 +45,14 @@ func TestApnsAuth_DelAuth(t *testing.T) {
 	}
 	defer agent.Close()
 
-	token, err := agent.GetAuth()
+	token, err := agent.GetAuth(context.TODO())
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
 	fmt.Println(token)
 
-	err = agent.DelAuth(token.Token)
+	err = agent.DelAuth(context.TODO(), token.Token)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

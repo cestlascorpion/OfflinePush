@@ -32,7 +32,7 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, hc *http.Client)
 	}
 
 	apiUrl := fmt.Sprintf(baseUrl, appId)
-	token, err := getAuth(apiUrl, appKey, masterSecret, time.Second*5)
+	token, err := getAuth(context.TODO(), apiUrl, appKey, masterSecret, time.Second*5)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func NewGeTuiAgent(baseUrl, appId, appKey, masterSecret string, hc *http.Client)
 	return auth, nil
 }
 
-func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
+func (g *GeTuiAuth) GetAuth(ctx context.Context) (*core.AuthToken, error) {
 	g.mutex.RLock()
 	defer g.mutex.RUnlock()
 
@@ -64,8 +64,8 @@ func (g *GeTuiAuth) GetAuth() (*core.AuthToken, error) {
 	return auth, nil
 }
 
-func (g *GeTuiAuth) DelAuth(token string) error {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/auth/%s", token)), "", nil)
+func (g *GeTuiAuth) DelAuth(ctx context.Context, token string) error {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/auth/%s", token)), "", nil)
 	if err != nil {
 		log.Errorf("delete failed err %+v", err)
 		return err
@@ -118,7 +118,7 @@ func (g *GeTuiAuth) watch() context.CancelFunc {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
-				token, err := getAuth(g.apiUrl, g.appKey, g.masterSecret, time.Second*5)
+				token, err := getAuth(ctx, g.apiUrl, g.appKey, g.masterSecret, time.Second*5)
 				if err != nil {
 					log.Warnf("watch get auth err %+v", err)
 					continue
@@ -146,9 +146,9 @@ func signature(appKey string, masterSecret string) (signature string, timestamp 
 	return fmt.Sprintf("%x", sum), timestamp
 }
 
-func getAuth(apiUrl, appKey, masterSecret string, timeout time.Duration) (*core.AuthToken, error) {
+func getAuth(ctx context.Context, apiUrl, appKey, masterSecret string, timeout time.Duration) (*core.AuthToken, error) {
 	sign, tp := signature(appKey, masterSecret)
-	result, err := core.POST(apiUrl+"/auth", "", authReq{
+	result, err := core.POST(ctx, apiUrl+"/auth", "", authReq{
 		Sign:      sign,
 		Timestamp: tp,
 		AppKey:    appKey,
@@ -180,6 +180,6 @@ func getAuth(apiUrl, appKey, masterSecret string, timeout time.Duration) (*core.
 	log.Debugf("get auth ok token %s expireAtSec %d", token, expireAtMs/1000)
 	return &core.AuthToken{
 		Token:    token,
-		ExpireAt: expireAtMs / 1000,
+		ExpireAt: expireAtMs/1000 - int64(time.Hour.Seconds()),
 	}, nil
 }

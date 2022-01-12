@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,7 +27,7 @@ func TestGeTuiUser_BindAlias(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.BindAlias(&AliasList{
+	err = agent.BindAlias(context.TODO(), &AliasList{
 		DataList: []*DataList{
 			{
 				Cid:   core.TestToken,
@@ -57,7 +58,7 @@ func TestGeTuiUser_QueryAliasByCid(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryAliasByCid(core.TestToken, core.TestAuthToken)
+	resp, err := agent.QueryAliasByCid(context.TODO(), core.TestToken, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -82,7 +83,7 @@ func TestGeTuiUser_QueryCidByAlias(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryCidByAlias(core.TestAlias, core.TestAuthToken)
+	resp, err := agent.QueryCidByAlias(context.TODO(), core.TestAlias, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -107,7 +108,7 @@ func TestGeTuiUser_UnbindAlias(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.UnbindAlias(&AliasList{
+	err = agent.UnbindAlias(context.TODO(), &AliasList{
 		DataList: []*DataList{
 			{
 				Cid:   core.TestToken,
@@ -138,7 +139,7 @@ func TestGeTuiUser_RevokeAlias(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.RevokeAlias(core.TestAlias, core.TestAuthToken)
+	err = agent.RevokeAlias(context.TODO(), core.TestAlias, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -162,7 +163,7 @@ func TestGeTuiUser_BindUserWithTag(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.BindUserWithTag(core.TestToken, &CustomTagList{
+	err = agent.BindUserWithTag(context.TODO(), core.TestToken, &CustomTagList{
 		TagList: []string{core.TestTag},
 	}, core.TestAuthToken)
 	if err != nil {
@@ -188,7 +189,7 @@ func TestGeTuiUser_BindTagWithUser(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.BindTagWithUser(core.TestTag, &CidList{
+	resp, err := agent.BindTagWithUser(context.TODO(), core.TestTag, &CidList{
 		CidList: []string{core.TestToken},
 	}, core.TestAuthToken)
 	if err != nil {
@@ -215,7 +216,7 @@ func TestGeTuiUser_UnbindTagFromUser(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.UnbindTagFromUser(core.TestTag, &CidList{
+	resp, err := agent.UnbindTagFromUser(context.TODO(), core.TestTag, &CidList{
 		CidList: []string{core.TestToken},
 	}, core.TestAuthToken)
 	if err != nil {
@@ -242,7 +243,7 @@ func TestGeTuiUser_QueryUserTag(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryUserTag(core.TestToken, core.TestAuthToken)
+	resp, err := agent.QueryUserTag(context.TODO(), core.TestToken, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -267,7 +268,7 @@ func TestGeTuiUser_AddBlackList(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.AddBlackList([]string{core.TestToken}, core.TestAuthToken)
+	err = agent.AddBlackList(context.TODO(), []string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -291,7 +292,7 @@ func TestGeTuiUser_DelBlackList(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.DelBlackList([]string{core.TestToken}, core.TestAuthToken)
+	err = agent.DelBlackList(context.TODO(), []string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -315,7 +316,7 @@ func TestGeTuiUser_QueryUserStatus(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryUserStatus([]string{core.TestToken}, core.TestAuthToken)
+	resp, err := agent.QueryUserStatus(context.TODO(), []string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -340,7 +341,7 @@ func TestGeTuiUser_QueryDeviceStatus(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryDeviceStatus([]string{core.TestToken}, core.TestAuthToken)
+	resp, err := agent.QueryDeviceStatus(context.TODO(), []string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -365,7 +366,7 @@ func TestGeTuiUser_QueryUserInfo(t *testing.T) {
 	}
 	defer agent.Close()
 
-	invalid, validDetail, err := agent.QueryUserInfo([]string{core.TestToken}, core.TestAuthToken)
+	invalid, validDetail, err := agent.QueryUserInfo(context.TODO(), []string{core.TestToken}, core.TestAuthToken)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -391,7 +392,7 @@ func TestGeTuiUser_SetPushBadge(t *testing.T) {
 	}
 	defer agent.Close()
 
-	err = agent.SetPushBadge([]string{core.TestToken}, &Operation{
+	err = agent.SetPushBadge(context.TODO(), []string{core.TestToken}, &Operation{
 		Badge: "1",
 	}, core.TestAuthToken)
 	if err != nil {
@@ -417,7 +418,7 @@ func TestGeTuiUser_QueryUserCount(t *testing.T) {
 	}
 	defer agent.Close()
 
-	resp, err := agent.QueryUserCount(&ComplexTagList{
+	resp, err := agent.QueryUserCount(context.TODO(), &ComplexTagList{
 		Tag: []*Tag{
 			{
 				Key:     "custom_tag",

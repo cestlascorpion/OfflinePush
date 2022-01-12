@@ -1,6 +1,7 @@
 package stats
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -29,8 +30,8 @@ func NewGeTuiStats(apiUrl, appId string, hc *http.Client) (*GeTuiStats, error) {
 	}, nil
 }
 
-func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/report/push/task/%s", strings.Join(taskIds, ","))), token, nil)
+func (g *GeTuiStats) GetTasks(ctx context.Context, taskIds []string, token string) (map[string]*proto.BaseStatics, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/report/push/task/%s", strings.Join(taskIds, ","))), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -48,8 +49,8 @@ func (g *GeTuiStats) GetTasks(taskIds []string, token string) (map[string]*proto
 	return g.resp2Tasks(resp.Data)
 }
 
-func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/report/push/task_group/%s", group)), token, nil)
+func (g *GeTuiStats) GetTaskGroup(ctx context.Context, group, token string) (map[string]*proto.BaseStatics, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/report/push/task_group/%s", group)), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -67,8 +68,8 @@ func (g *GeTuiStats) GetTaskGroup(group, token string) (map[string]*proto.BaseSt
 	return g.resp2Group(resp.Data)
 }
 
-func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) {
-	result, err := g.client.GET(g.url("/report/push/count"), token, nil)
+func (g *GeTuiStats) GetPushCount(ctx context.Context, token string) ([]*proto.BasePushCount, error) {
+	result, err := g.client.GET(ctx, g.url("/report/push/count"), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -86,8 +87,8 @@ func (g *GeTuiStats) GetPushCount(token string) ([]*proto.BasePushCount, error) 
 	return g.resp2Count(resp.Data)
 }
 
-func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]*proto.BaseStatics, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/report/push/date/%s", date.Format("2006-01-02"))), token, nil)
+func (g *GeTuiStats) GetPushDataByDay(ctx context.Context, date time.Time, token string) (map[string]*proto.BaseStatics, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/report/push/date/%s", date.Format("2006-01-02"))), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -105,8 +106,8 @@ func (g *GeTuiStats) GetPushDataByDay(date time.Time, token string) (map[string]
 	return g.resp2PushByDay(resp.Data)
 }
 
-func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]map[string]int32, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/report/user/date/%s", date.Format("2006-01-02"))), token, nil)
+func (g *GeTuiStats) GetUserDataByDay(ctx context.Context, date time.Time, token string) (map[string]map[string]int32, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/report/user/date/%s", date.Format("2006-01-02"))), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err
@@ -124,8 +125,8 @@ func (g *GeTuiStats) GetUserDataByDay(date time.Time, token string) (map[string]
 	return g.resp2UserByDay(resp.Data)
 }
 
-func (g *GeTuiStats) GetOnlineUserBy24H(token string) (map[int64]int32, error) {
-	result, err := g.client.GET(g.url("/report/online_user"), token, nil)
+func (g *GeTuiStats) GetOnlineUserBy24H(ctx context.Context, token string) (map[int64]int32, error) {
+	result, err := g.client.GET(ctx, g.url("/report/online_user"), token, nil)
 	if err != nil {
 		log.Errorf("post failed err %+v", err)
 		return nil, err

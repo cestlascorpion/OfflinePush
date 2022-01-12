@@ -1,6 +1,7 @@
 package push
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -33,7 +34,7 @@ func TestApnsPush_PushSingleByCid(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.PushSingleByCid(&SingleReq{
+	result, err := agent.PushSingleByCid(context.TODO(), &SingleReq{
 		RequestId: bson.NewObjectId().Hex(),
 		Audience: &proto.Audience{
 			Cid: []string{core.TestToken},

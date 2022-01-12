@@ -82,7 +82,7 @@ func (s *Server) PushToSingle(ctx context.Context, in *proto.PushToSingleReq) (*
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	if len(in.MsgList) == 1 {
-		err := s.pushSingle(uniqueId, in, out)
+		err := s.pushSingle(ctx, uniqueId, in, out)
 		if err != nil {
 			log.Errorf("push single err %+v", err)
 			return out, err
@@ -90,7 +90,7 @@ func (s *Server) PushToSingle(ctx context.Context, in *proto.PushToSingleReq) (*
 		return out, nil
 	}
 
-	err := s.pushBatch(uniqueId, in, out)
+	err := s.pushBatch(ctx, uniqueId, in, out)
 	if err != nil {
 		log.Errorf("push batch err %+v", err)
 		return out, err
@@ -108,7 +108,7 @@ func (s *Server) CreateTask(ctx context.Context, in *proto.CreateTaskReq) (*prot
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	err := s.createTask(uniqueId, in, out)
+	err := s.createTask(ctx, uniqueId, in, out)
 	if err != nil {
 		log.Errorf("create task err %+v", err)
 		return out, err
@@ -126,7 +126,7 @@ func (s *Server) PushToList(ctx context.Context, in *proto.PushToListReq) (*prot
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
-	err := s.pushList(uniqueId, in, out)
+	err := s.pushList(ctx, uniqueId, in, out)
 	if err != nil {
 		log.Errorf("push list err %+v", err)
 		return out, err
@@ -145,14 +145,14 @@ func (s *Server) PushToApp(ctx context.Context, in *proto.PushToAppReq) (*proto.
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
 	if in.Msg.Audience != nil {
-		err := s.pushByTag(uniqueId, in, out)
+		err := s.pushByTag(ctx, uniqueId, in, out)
 		if err != nil {
 			log.Errorf("push by tag err %+v", err)
 			return out, err
 		}
 		return out, nil
 	}
-	err := s.pushAll(uniqueId, in, out)
+	err := s.pushAll(ctx, uniqueId, in, out)
 	if err != nil {
 		log.Errorf("push all err %+v", err)
 		return out, err
@@ -175,7 +175,7 @@ func (s *Server) StopTask(ctx context.Context, in *proto.StopTaskReq) (*proto.St
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	success, err := s.mgr.StopPush(uniqueId, in.TaskId, auth.Token)
+	success, err := s.mgr.StopPush(ctx, uniqueId, in.TaskId, auth.Token)
 	if err != nil {
 		log.Errorf("stop push err %+v", err)
 		return out, err
@@ -202,7 +202,7 @@ func (s *Server) CheckTask(ctx context.Context, in *proto.CheckTaskReq) (*proto.
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.QueryScheduleTask(uniqueId, in.TaskId, auth.Token)
+	resp, err := s.mgr.QueryScheduleTask(ctx, uniqueId, in.TaskId, auth.Token)
 	if err != nil {
 		log.Errorf("query shcedule task err %+v", err)
 		return out, err
@@ -247,7 +247,7 @@ func (s *Server) RemoveTask(ctx context.Context, in *proto.RemoveTaskReq) (*prot
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	success, err := s.mgr.DeleteScheduleTask(uniqueId, in.TaskId, auth.Token)
+	success, err := s.mgr.DeleteScheduleTask(ctx, uniqueId, in.TaskId, auth.Token)
 	if err != nil {
 		log.Errorf("delete schedule task err %+v", err)
 		return out, err
@@ -274,7 +274,7 @@ func (s *Server) ViewDetail(ctx context.Context, in *proto.ViewDetailReq) (*prot
 		log.Errorf("get auth err %+v", err)
 		return out, err
 	}
-	resp, err := s.mgr.QueryDetail(uniqueId, in.TaskId, in.Cid, auth.Token)
+	resp, err := s.mgr.QueryDetail(ctx, uniqueId, in.TaskId, in.Cid, auth.Token)
 	if err != nil {
 		log.Errorf("query task detail err %+v", err)
 		return out, err
@@ -293,7 +293,7 @@ func (s *Server) Close() {
 	s.mgr.Close()
 }
 
-func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
+func (s *Server) pushSingle(ctx context.Context, uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -307,7 +307,7 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, o
 		PushChannel: in.MsgList[0].PushChannel,
 	}
 
-	resp, err := s.mgr.PushSingle(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushSingle(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("push single err %+v", err)
 		return err
@@ -338,7 +338,7 @@ func (s *Server) pushSingle(uniqueId core.UniqueId, in *proto.PushToSingleReq, o
 	return nil
 }
 
-func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
+func (s *Server) pushBatch(ctx context.Context, uniqueId core.UniqueId, in *proto.PushToSingleReq, out *proto.PushToSingleResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -358,7 +358,7 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, ou
 		})
 	}
 
-	resp, err := s.mgr.PushBatch(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushBatch(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("push batch err %+v", err)
 		return err
@@ -384,7 +384,7 @@ func (s *Server) pushBatch(uniqueId core.UniqueId, in *proto.PushToSingleReq, ou
 	return nil
 }
 
-func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out *proto.CreateTaskResp) error {
+func (s *Server) createTask(ctx context.Context, uniqueId core.UniqueId, in *proto.CreateTaskReq, out *proto.CreateTaskResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -398,7 +398,7 @@ func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.mgr.CreateMsg(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.CreateMsg(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("create msg err %+v", err)
 		return err
@@ -407,7 +407,7 @@ func (s *Server) createTask(uniqueId core.UniqueId, in *proto.CreateTaskReq, out
 	return nil
 }
 
-func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *proto.PushToListResp) error {
+func (s *Server) pushList(ctx context.Context, uniqueId core.UniqueId, in *proto.PushToListReq, out *proto.PushToListResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -419,7 +419,7 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *
 		TaskId:   in.Msg.TaskId,
 	}
 
-	resp, err := s.mgr.PushList(uniqueId, req, auth.Token)
+	resp, err := s.mgr.PushList(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("push list err %+v", err)
 		return err
@@ -449,7 +449,7 @@ func (s *Server) pushList(uniqueId core.UniqueId, in *proto.PushToListReq, out *
 	return nil
 }
 
-func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
+func (s *Server) pushAll(ctx context.Context, uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -464,7 +464,7 @@ func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *pr
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.mgr.PushAll(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.PushAll(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("push all err %+v", err)
 		return err
@@ -473,7 +473,7 @@ func (s *Server) pushAll(uniqueId core.UniqueId, in *proto.PushToAppReq, out *pr
 	return nil
 }
 
-func (s *Server) pushByTag(uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
+func (s *Server) pushByTag(ctx context.Context, uniqueId core.UniqueId, in *proto.PushToAppReq, out *proto.PushToAppResp) error {
 	auth, err := s.auth.GetAuth(uniqueId)
 	if err != nil {
 		log.Errorf("get auth err %+v", err)
@@ -488,7 +488,7 @@ func (s *Server) pushByTag(uniqueId core.UniqueId, in *proto.PushToAppReq, out *
 		PushChannel: in.Msg.PushChannel,
 	}
 
-	taskId, err := s.mgr.PushByTag(uniqueId, req, auth.Token)
+	taskId, err := s.mgr.PushByTag(ctx, uniqueId, req, auth.Token)
 	if err != nil {
 		log.Errorf("push by tag err %+v", err)
 		return err

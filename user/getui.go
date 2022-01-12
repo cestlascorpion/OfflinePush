@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -27,8 +28,8 @@ func NewGeTuiUser(apiUrl, appId string, hc *http.Client) (*GeTuiUser, error) {
 	}, nil
 }
 
-func (g *GeTuiUser) BindAlias(list *AliasList, token string) error {
-	result, err := g.client.POST(g.url("/user/alias"), token, list)
+func (g *GeTuiUser) BindAlias(ctx context.Context, list *AliasList, token string) error {
+	result, err := g.client.POST(ctx, g.url("/user/alias"), token, list)
 	if err != nil {
 		log.Errorf("BindAlias() POST err %+v", err)
 		return err
@@ -47,8 +48,8 @@ func (g *GeTuiUser) BindAlias(list *AliasList, token string) error {
 	return nil
 }
 
-func (g *GeTuiUser) QueryAliasByCid(cid string, token string) (string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/alias/cid/%s", cid)), token, nil)
+func (g *GeTuiUser) QueryAliasByCid(ctx context.Context, cid string, token string) (string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/alias/cid/%s", cid)), token, nil)
 	if err != nil {
 		log.Errorf("QueryAliasByCid() GET err %+v", err)
 		return "", err
@@ -76,8 +77,8 @@ func (g *GeTuiUser) QueryAliasByCid(cid string, token string) (string, error) {
 	return alias, nil
 }
 
-func (g *GeTuiUser) QueryCidByAlias(alias string, token string) ([]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/cid/alias/%s", alias)), token, nil)
+func (g *GeTuiUser) QueryCidByAlias(ctx context.Context, alias string, token string) ([]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/cid/alias/%s", alias)), token, nil)
 	if err != nil {
 		log.Errorf("QueryCidByAlias() GET err %+v", err)
 		return nil, err
@@ -112,8 +113,8 @@ func (g *GeTuiUser) QueryCidByAlias(alias string, token string) ([]string, error
 	return cidList, nil
 }
 
-func (g *GeTuiUser) UnbindAlias(list *AliasList, token string) error {
-	result, err := g.client.DELETE(g.url("/user/alias"), token, list)
+func (g *GeTuiUser) UnbindAlias(ctx context.Context, list *AliasList, token string) error {
+	result, err := g.client.DELETE(ctx, g.url("/user/alias"), token, list)
 	if err != nil {
 		log.Errorf("UnbindAlias() DELETE err %+v", err)
 		return err
@@ -132,8 +133,8 @@ func (g *GeTuiUser) UnbindAlias(list *AliasList, token string) error {
 	return nil
 }
 
-func (g *GeTuiUser) RevokeAlias(alias string, token string) error {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/alias/%s", alias)), token, nil)
+func (g *GeTuiUser) RevokeAlias(ctx context.Context, alias string, token string) error {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/user/alias/%s", alias)), token, nil)
 	if err != nil {
 		log.Errorf("RevokeAlias() DELETE err %+v", err)
 		return err
@@ -152,8 +153,8 @@ func (g *GeTuiUser) RevokeAlias(alias string, token string) error {
 	return nil
 }
 
-func (g *GeTuiUser) BindUserWithTag(cid string, list *CustomTagList, token string) error {
-	result, err := g.client.POST(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, list)
+func (g *GeTuiUser) BindUserWithTag(ctx context.Context, cid string, list *CustomTagList, token string) error {
+	result, err := g.client.POST(ctx, g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, list)
 	if err != nil {
 		log.Errorf("BindUserWithTag() POST err %+v", err)
 		return err
@@ -172,8 +173,8 @@ func (g *GeTuiUser) BindUserWithTag(cid string, list *CustomTagList, token strin
 	return nil
 }
 
-func (g *GeTuiUser) BindTagWithUser(tag string, list *CidList, token string) (map[string]bool, error) {
-	result, err := g.client.PUT(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
+func (g *GeTuiUser) BindTagWithUser(ctx context.Context, tag string, list *CidList, token string) (map[string]bool, error) {
+	result, err := g.client.PUT(ctx, g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
 	if err != nil {
 		log.Errorf("BindTagWithUser() PUT err %+v", err)
 		return nil, err
@@ -206,8 +207,8 @@ func (g *GeTuiUser) BindTagWithUser(tag string, list *CidList, token string) (ma
 	return success, nil
 }
 
-func (g *GeTuiUser) UnbindTagFromUser(tag string, list *CidList, token string) (map[string]bool, error) {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
+func (g *GeTuiUser) UnbindTagFromUser(ctx context.Context, tag string, list *CidList, token string) (map[string]bool, error) {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/user/custom_tag/batch/%s", tag)), token, list)
 	if err != nil {
 		log.Errorf("UnbindTagFromUser() DELETE err %+v", err)
 		return nil, err
@@ -240,8 +241,8 @@ func (g *GeTuiUser) UnbindTagFromUser(tag string, list *CidList, token string) (
 	return success, nil
 }
 
-func (g *GeTuiUser) QueryUserTag(cid string, token string) ([]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, nil)
+func (g *GeTuiUser) QueryUserTag(ctx context.Context, cid string, token string) ([]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/custom_tag/cid/%s", cid)), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserTag() GET err %+v", err)
 		return nil, err
@@ -276,8 +277,8 @@ func (g *GeTuiUser) QueryUserTag(cid string, token string) ([]string, error) {
 	return cidList, nil
 }
 
-func (g *GeTuiUser) AddBlackList(cidList []string, token string) error {
-	result, err := g.client.POST(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
+func (g *GeTuiUser) AddBlackList(ctx context.Context, cidList []string, token string) error {
+	result, err := g.client.POST(ctx, g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("AddBlackList() POST err %+v", err)
 		return err
@@ -296,8 +297,8 @@ func (g *GeTuiUser) AddBlackList(cidList []string, token string) error {
 	return nil
 }
 
-func (g *GeTuiUser) DelBlackList(cidList []string, token string) error {
-	result, err := g.client.DELETE(g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
+func (g *GeTuiUser) DelBlackList(ctx context.Context, cidList []string, token string) error {
+	result, err := g.client.DELETE(ctx, g.url(fmt.Sprintf("/user/black/cid/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("DelBlackList() DELETE err %+v", err)
 		return err
@@ -316,8 +317,8 @@ func (g *GeTuiUser) DelBlackList(cidList []string, token string) error {
 	return nil
 }
 
-func (g *GeTuiUser) QueryUserStatus(cidList []string, token string) (map[string]map[string]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/status/%s", strings.Join(cidList, ","))), token, nil)
+func (g *GeTuiUser) QueryUserStatus(ctx context.Context, cidList []string, token string) (map[string]map[string]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/status/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserStatus() GET err %+v", err)
 		return nil, err
@@ -357,8 +358,8 @@ func (g *GeTuiUser) QueryUserStatus(cidList []string, token string) (map[string]
 	return status, nil
 }
 
-func (g *GeTuiUser) QueryDeviceStatus(cidList []string, token string) (map[string]map[string]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/deviceStatus/%s", strings.Join(cidList, ","))), token, nil)
+func (g *GeTuiUser) QueryDeviceStatus(ctx context.Context, cidList []string, token string) (map[string]map[string]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/deviceStatus/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryDeviceStatus() GET err %+v", err)
 		return nil, err
@@ -387,8 +388,8 @@ func (g *GeTuiUser) QueryDeviceStatus(cidList []string, token string) (map[strin
 	return status, nil
 }
 
-func (g *GeTuiUser) QueryUserInfo(cidList []string, token string) ([]string, map[string]map[string]string, error) {
-	result, err := g.client.GET(g.url(fmt.Sprintf("/user/detail/%s", strings.Join(cidList, ","))), token, nil)
+func (g *GeTuiUser) QueryUserInfo(ctx context.Context, cidList []string, token string) ([]string, map[string]map[string]string, error) {
+	result, err := g.client.GET(ctx, g.url(fmt.Sprintf("/user/detail/%s", strings.Join(cidList, ","))), token, nil)
 	if err != nil {
 		log.Errorf("QueryUserInfo() GET err %+v", err)
 		return nil, nil, err
@@ -498,8 +499,8 @@ func (g *GeTuiUser) QueryUserInfo(cidList []string, token string) ([]string, map
 	return invalid, validInfo, nil
 }
 
-func (g *GeTuiUser) SetPushBadge(cidList []string, op *Operation, token string) error {
-	result, err := g.client.POST(g.url(fmt.Sprintf("/user/badge/%s", strings.Join(cidList, ","))), token, op)
+func (g *GeTuiUser) SetPushBadge(ctx context.Context, cidList []string, op *Operation, token string) error {
+	result, err := g.client.POST(ctx, g.url(fmt.Sprintf("/user/badge/%s", strings.Join(cidList, ","))), token, op)
 	if err != nil {
 		log.Errorf("SetPushBadge() POST err %+v", err)
 		return err
@@ -518,8 +519,8 @@ func (g *GeTuiUser) SetPushBadge(cidList []string, op *Operation, token string) 
 	return nil
 }
 
-func (g *GeTuiUser) QueryUserCount(list *ComplexTagList, token string) (int, error) {
-	result, err := g.client.POST(g.url("/user/count"), token, list)
+func (g *GeTuiUser) QueryUserCount(ctx context.Context, list *ComplexTagList, token string) (int, error) {
+	result, err := g.client.POST(ctx, g.url("/user/count"), token, list)
 	if err != nil {
 		log.Errorf("QueryUserCount() POST err %+v", err)
 		return 0, err

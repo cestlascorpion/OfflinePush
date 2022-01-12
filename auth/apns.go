@@ -60,7 +60,7 @@ func NewApnsAuth(privateKey, keyId, teamId string) (*ApnsAuth, error) {
 	return auth, nil
 }
 
-func (a *ApnsAuth) GetAuth() (*core.AuthToken, error) {
+func (a *ApnsAuth) GetAuth(ctx context.Context) (*core.AuthToken, error) {
 	a.mutex.RLock()
 	defer a.mutex.RUnlock()
 
@@ -71,7 +71,7 @@ func (a *ApnsAuth) GetAuth() (*core.AuthToken, error) {
 	return auth, nil
 }
 
-func (a *ApnsAuth) DelAuth(token string) error {
+func (a *ApnsAuth) DelAuth(ctx context.Context, token string) error {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
 
@@ -144,6 +144,6 @@ func genJWT(pk *ecdsa.PrivateKey, keyId, teamId string) (*core.AuthToken, error)
 
 	return &core.AuthToken{
 		Token:    signedToken,
-		ExpireAt: ts.Add(time.Hour).Unix(),
+		ExpireAt: ts.Add(time.Hour - time.Minute*10).Unix(),
 	}, nil
 }

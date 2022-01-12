@@ -1,28 +1,29 @@
 package user
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/cestlascorpion/offlinepush/core"
 )
 
 type Agent interface {
-	BindAlias(list *AliasList, token string) error
-	QueryAliasByCid(cid string, token string) (string, error)
-	QueryCidByAlias(alias string, token string) ([]string, error)
-	UnbindAlias(list *AliasList, token string) error
-	RevokeAlias(alias string, token string) error
-	BindUserWithTag(cid string, list *CustomTagList, token string) error
-	BindTagWithUser(tag string, list *CidList, token string) (map[string]bool, error)
-	UnbindTagFromUser(tag string, list *CidList, token string) (map[string]bool, error)
-	QueryUserTag(cid string, token string) ([]string, error)
-	AddBlackList(cidList []string, token string) error
-	DelBlackList(cidList []string, token string) error
-	QueryUserStatus(cidList []string, token string) (map[string]map[string]string, error)
-	QueryDeviceStatus(cidList []string, token string) (map[string]map[string]string, error)
-	QueryUserInfo(cidList []string, token string) ([]string, map[string]map[string]string, error)
-	SetPushBadge(cidList []string, op *Operation, token string) error
-	QueryUserCount(list *ComplexTagList, token string) (int, error)
+	BindAlias(ctx context.Context, list *AliasList, token string) error
+	QueryAliasByCid(ctx context.Context, cid string, token string) (string, error)
+	QueryCidByAlias(ctx context.Context, alias string, token string) ([]string, error)
+	UnbindAlias(ctx context.Context, list *AliasList, token string) error
+	RevokeAlias(ctx context.Context, alias string, token string) error
+	BindUserWithTag(ctx context.Context, cid string, list *CustomTagList, token string) error
+	BindTagWithUser(ctx context.Context, tag string, list *CidList, token string) (map[string]bool, error)
+	UnbindTagFromUser(ctx context.Context, tag string, list *CidList, token string) (map[string]bool, error)
+	QueryUserTag(ctx context.Context, cid string, token string) ([]string, error)
+	AddBlackList(ctx context.Context, cidList []string, token string) error
+	DelBlackList(ctx context.Context, cidList []string, token string) error
+	QueryUserStatus(ctx context.Context, cidList []string, token string) (map[string]map[string]string, error)
+	QueryDeviceStatus(ctx context.Context, cidList []string, token string) (map[string]map[string]string, error)
+	QueryUserInfo(ctx context.Context, cidList []string, token string) ([]string, map[string]map[string]string, error)
+	SetPushBadge(ctx context.Context, cidList []string, op *Operation, token string) error
+	QueryUserCount(ctx context.Context, list *ComplexTagList, token string) (int, error)
 	Close()
 }
 
@@ -41,132 +42,132 @@ func (m *AgentMgr) RegisterAgent(uniqueId core.UniqueId, agent Agent) error {
 	return nil
 }
 
-func (m *AgentMgr) BindAlias(uniqueId core.UniqueId, list *AliasList, token string) error {
+func (m *AgentMgr) BindAlias(ctx context.Context, uniqueId core.UniqueId, list *AliasList, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("BindAlias() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.BindAlias(list, token)
+	return agent.BindAlias(ctx, list, token)
 }
 
-func (m *AgentMgr) QueryAliasByCid(uniqueId core.UniqueId, cid string, token string) (string, error) {
+func (m *AgentMgr) QueryAliasByCid(ctx context.Context, uniqueId core.UniqueId, cid string, token string) (string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return "", fmt.Errorf("QueryAliasByCid() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryAliasByCid(cid, token)
+	return agent.QueryAliasByCid(ctx, cid, token)
 }
 
-func (m *AgentMgr) QueryCidByAlias(uniqueId core.UniqueId, alias string, token string) ([]string, error) {
+func (m *AgentMgr) QueryCidByAlias(ctx context.Context, uniqueId core.UniqueId, alias string, token string) ([]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("QueryCidByAlias() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryCidByAlias(alias, token)
+	return agent.QueryCidByAlias(ctx, alias, token)
 }
 
-func (m *AgentMgr) UnbindAlias(uniqueId core.UniqueId, list *AliasList, token string) error {
+func (m *AgentMgr) UnbindAlias(ctx context.Context, uniqueId core.UniqueId, list *AliasList, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("UnbindAlias() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.UnbindAlias(list, token)
+	return agent.UnbindAlias(ctx, list, token)
 }
 
-func (m *AgentMgr) RevokeAlias(uniqueId core.UniqueId, alias string, token string) error {
+func (m *AgentMgr) RevokeAlias(ctx context.Context, uniqueId core.UniqueId, alias string, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("RevokeAlias() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.RevokeAlias(alias, token)
+	return agent.RevokeAlias(ctx, alias, token)
 }
 
-func (m *AgentMgr) BindUserWithTag(uniqueId core.UniqueId, cid string, list *CustomTagList, token string) error {
+func (m *AgentMgr) BindUserWithTag(ctx context.Context, uniqueId core.UniqueId, cid string, list *CustomTagList, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("BindUserWithTag() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.BindUserWithTag(cid, list, token)
+	return agent.BindUserWithTag(ctx, cid, list, token)
 }
 
-func (m *AgentMgr) BindTagWithUser(uniqueId core.UniqueId, tag string, list *CidList, token string) (map[string]bool, error) {
+func (m *AgentMgr) BindTagWithUser(ctx context.Context, uniqueId core.UniqueId, tag string, list *CidList, token string) (map[string]bool, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("BindTagWithUser() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.BindTagWithUser(tag, list, token)
+	return agent.BindTagWithUser(ctx, tag, list, token)
 }
 
-func (m *AgentMgr) UnbindTagFromUser(uniqueId core.UniqueId, tag string, list *CidList, token string) (map[string]bool, error) {
+func (m *AgentMgr) UnbindTagFromUser(ctx context.Context, uniqueId core.UniqueId, tag string, list *CidList, token string) (map[string]bool, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("UnbindTagFromUser() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.UnbindTagFromUser(tag, list, token)
+	return agent.UnbindTagFromUser(ctx, tag, list, token)
 }
 
-func (m *AgentMgr) QueryUserTag(uniqueId core.UniqueId, cid string, token string) ([]string, error) {
+func (m *AgentMgr) QueryUserTag(ctx context.Context, uniqueId core.UniqueId, cid string, token string) ([]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("QueryUserTag() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryUserTag(cid, token)
+	return agent.QueryUserTag(ctx, cid, token)
 }
 
-func (m *AgentMgr) AddBlackList(uniqueId core.UniqueId, cidList []string, token string) error {
+func (m *AgentMgr) AddBlackList(ctx context.Context, uniqueId core.UniqueId, cidList []string, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("AddBlackList() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.AddBlackList(cidList, token)
+	return agent.AddBlackList(ctx, cidList, token)
 }
 
-func (m *AgentMgr) DelBlackList(uniqueId core.UniqueId, cidList []string, token string) error {
+func (m *AgentMgr) DelBlackList(ctx context.Context, uniqueId core.UniqueId, cidList []string, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("DelBlackList() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.DelBlackList(cidList, token)
+	return agent.DelBlackList(ctx, cidList, token)
 }
 
-func (m *AgentMgr) QueryUserStatus(uniqueId core.UniqueId, cidList []string, token string) (map[string]map[string]string, error) {
+func (m *AgentMgr) QueryUserStatus(ctx context.Context, uniqueId core.UniqueId, cidList []string, token string) (map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("QueryUserStatus() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryUserStatus(cidList, token)
+	return agent.QueryUserStatus(ctx, cidList, token)
 }
 
-func (m *AgentMgr) QueryDeviceStatus(uniqueId core.UniqueId, cidList []string, token string) (map[string]map[string]string, error) {
+func (m *AgentMgr) QueryDeviceStatus(ctx context.Context, uniqueId core.UniqueId, cidList []string, token string) (map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, fmt.Errorf("QueryDeviceStatus() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryDeviceStatus(cidList, token)
+	return agent.QueryDeviceStatus(ctx, cidList, token)
 }
 
-func (m *AgentMgr) QueryUserInfo(uniqueId core.UniqueId, cidList []string, token string) ([]string, map[string]map[string]string, error) {
+func (m *AgentMgr) QueryUserInfo(ctx context.Context, uniqueId core.UniqueId, cidList []string, token string) ([]string, map[string]map[string]string, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return nil, nil, fmt.Errorf("QueryUserInfo() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryUserInfo(cidList, token)
+	return agent.QueryUserInfo(ctx, cidList, token)
 }
 
-func (m *AgentMgr) SetPushBadge(uniqueId core.UniqueId, cidList []string, op *Operation, token string) error {
+func (m *AgentMgr) SetPushBadge(ctx context.Context, uniqueId core.UniqueId, cidList []string, op *Operation, token string) error {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return fmt.Errorf("SetPushBadge() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.SetPushBadge(cidList, op, token)
+	return agent.SetPushBadge(ctx, cidList, op, token)
 }
 
-func (m *AgentMgr) QueryUserCount(uniqueId core.UniqueId, list *ComplexTagList, token string) (int, error) {
+func (m *AgentMgr) QueryUserCount(ctx context.Context, uniqueId core.UniqueId, list *ComplexTagList, token string) (int, error) {
 	agent, ok := m.agents[uniqueId]
 	if !ok {
 		return 0, fmt.Errorf("QueryUserCount() unsupported uniqueId %s", uniqueId)
 	}
-	return agent.QueryUserCount(list, token)
+	return agent.QueryUserCount(ctx, list, token)
 }
 
 func (m *AgentMgr) Close() {

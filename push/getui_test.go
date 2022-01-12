@@ -1,6 +1,7 @@
 package push
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -53,7 +54,7 @@ func TestGeTuiPush_PushSingleByCid(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushSingleByCid(request, core.TestAuthToken)
+	result, err := agent.PushSingleByCid(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -102,7 +103,7 @@ func TestGeTuiPush_PushSingleByAlias(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushSingleByAlias(request, core.TestAuthToken)
+	result, err := agent.PushSingleByAlias(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -156,7 +157,7 @@ func TestGeTuiPush_PushBatchByCid(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushBatchByCid(request, core.TestAuthToken)
+	result, err := agent.PushBatchByCid(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -210,7 +211,7 @@ func TestGeTuiPush_PushBatchByAlias(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushBatchByAlias(request, core.TestAuthToken)
+	result, err := agent.PushBatchByAlias(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -257,7 +258,7 @@ func TestGeTuiPush_PushListByCid(t *testing.T) {
 			},
 		},
 	}
-	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
+	taskId, err := agent.CreateMsg(context.TODO(), create, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -270,7 +271,7 @@ func TestGeTuiPush_PushListByCid(t *testing.T) {
 		IsAsync: false,
 		TaskId:  taskId,
 	}
-	result, err := agent.PushListByCid(request, core.TestAuthToken)
+	result, err := agent.PushListByCid(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -317,7 +318,7 @@ func TestGeTuiPush_PushListByAlias(t *testing.T) {
 			},
 		},
 	}
-	taskId, err := agent.CreateMsg(create, core.TestAuthToken)
+	taskId, err := agent.CreateMsg(context.TODO(), create, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -330,7 +331,7 @@ func TestGeTuiPush_PushListByAlias(t *testing.T) {
 		IsAsync: false,
 		TaskId:  taskId,
 	}
-	result, err := agent.PushListByAlias(request, core.TestAuthToken)
+	result, err := agent.PushListByAlias(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -378,7 +379,7 @@ func TestGeTuiPush_PushAll(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushAll(request, core.TestAuthToken)
+	result, err := agent.PushAll(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -439,7 +440,7 @@ func TestGeTuiPush_PushByTag(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushByTag(request, core.TestAuthToken)
+	result, err := agent.PushByTag(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -489,7 +490,7 @@ func TestGeTuiPush_PushByFastCustomTag(t *testing.T) {
 			},
 		},
 	}
-	result, err := agent.PushByFastCustomTag(request, core.TestAuthToken)
+	result, err := agent.PushByFastCustomTag(context.TODO(), request, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -513,7 +514,7 @@ func TestGeTuiPush_StopPush(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.StopPush(core.TestTaskId, core.TestAuthToken)
+	result, err := agent.StopPush(context.TODO(), core.TestTaskId, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -537,7 +538,7 @@ func TestGeTuiPush_DeleteScheduleTask(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.DeleteScheduleTask(core.TestTaskId, core.TestAuthToken)
+	result, err := agent.DeleteScheduleTask(context.TODO(), core.TestTaskId, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -561,7 +562,7 @@ func TestGeTuiPush_QueryScheduleTask(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.QueryScheduleTask(core.TestTaskId, core.TestAuthToken)
+	result, err := agent.QueryScheduleTask(context.TODO(), core.TestTaskId, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
@@ -585,7 +586,7 @@ func TestGeTuiPush_QueryDetail(t *testing.T) {
 	}
 	defer agent.Close()
 
-	result, err := agent.QueryDetail(core.TestTaskId, core.TestToken, core.TestAuthToken)
+	result, err := agent.QueryDetail(context.TODO(), core.TestTaskId, core.TestToken, core.TestAuthToken)
 	if err != nil {
 		t.FailNow()
 	}
