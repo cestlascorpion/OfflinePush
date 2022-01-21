@@ -311,7 +311,7 @@ message AndroidChannel {
       }
       message OP {
         // @gotags: json:"/channel_id,omitempty"
-        string channel = 1 [json_name = "/channel_id,omitempty"];
+        string channel_id = 1 [json_name = "/channel_id,omitempty"];
         // @gotags: json:"/style,omitempty"
         int32 style = 2 [json_name = "/style,omitempty"];
         // @gotags: json:"/small_picture_id,omitempty"
