@@ -214,7 +214,7 @@ message IosChannel {
   string payload = 4;
   repeated Multimedia multimedia = 5;
   // @gotags: json:"apns-collapse-id,omitempty"
-  string apns_collapse_id = 6 [json_name = "apns-collapse-id"];
+  string apns_collapse_id = 6 [json_name = "apns-collapse-id,omitempty"];
 }
 
 message AndroidChannel {
@@ -233,54 +233,125 @@ message AndroidChannel {
     message Options {
       message HW {
         // @gotags: json:"/message/android/notification/badge/class,omitempty"
-        string class = 1 [json_name = "/message/android/notification/badge/class"];
+        string badge_class = 1 [json_name = "/message/android/notification/badge/class,omitempty"];
         // @gotags: json:"/message/android/notification/badge/add_num,omitempty"
-        int32  add_num = 2 [json_name = "/message/android/notification/badge/add_num"];
+        int32  badge_add_num = 2 [json_name = "/message/android/notification/badge/add_num,omitempty"];
         // @gotags: json:"/message/android/notification/badge/set_num,omitempty"
-        int32  set_num = 3 [json_name = "/message/android/notification/badge/set_num"];
+        int32  badge_set_num = 3 [json_name = "/message/android/notification/badge/set_num,omitempty"];
         // @gotags: json:"/message/android/notification/badge/image,omitempty"
-        string image = 4 [json_name = "/message/android/notification/image"];
+        string image = 4 [json_name = "/message/android/notification/image,omitempty"];
         // @gotags: json:"/message/android/notification/badge/style,omitempty"
-        int32 style = 5 [json_name = "/message/android/notification/style"];
+        int32 style = 5 [json_name = "/message/android/notification/style,omitempty"];
         // @gotags: json:"/message/android/notification/big_title,omitempty"
-        string big_title = 6 [json_name = "/message/android/notification/big_title"];
+        string big_title = 6 [json_name = "/message/android/notification/big_title,omitempty"];
         // @gotags: json:"/message/android/notification/big_body,omitempty"
-        string big_body = 7 [json_name = "/message/android/notification/big_body"];
+        string big_body = 7 [json_name = "/message/android/notification/big_body,omitempty"];
         // @gotags: json:"/message/android/notification/importance,omitempty"
-        string importance = 8 [json_name = "/message/android/notification/importance"];
+        string importance = 8 [json_name = "/message/android/notification/importance,omitempty"];
         // @gotags: json:"/message/android/notification/default_sound,omitempty"
-        bool default_sound = 9 [json_name = "/message/android/notification/default_sound"];
+        bool default_sound = 9 [json_name = "/message/android/notification/default_sound,omitempty"];
+        // @gotags: json:"/message/android/notification/channel_id,omitempty"
+        string channel_id = 10 [json_name = "/message/android/notification/channel_id,omitempty"];
         // @gotags: json:"/message/android/notification/sound,omitempty"
-        string channel_id = 10 [json_name = "/message/android/notification/sound"];
-        // @gotags: json:"/message/android/notification/importance,omitempty"
-        string sound = 11 [json_name = "/message/android/notification/importance"];
+        string sound = 11 [json_name = "/message/android/notification/sound,omitempty"];
       }
       message XM {
-        string channel = 1;
-        string notification_large_icon_uri = 2;
-        string notification_style_type = 3;
-        string notification_bigTxt = 4;
-        string notification_bigPic_uri = 5;
-        string sound_uri = 6;
+        // @gotags: json:"/extra.channel_id,omitempty"
+        string channel_id = 1 [json_name = "/extra.channel_id,omitempty"];
+        // @gotags: json:"/extra.notification_style_type,omitempty"
+        string notification_style_type = 2 [json_name = "/extra.notification_style_type,omitempty"];
+        // @gotags: json "/extra.notification_bigPic_uri,omitempty"
+        string notification_bigPic_uri = 3 [json_name = "/extra.notification_bigPic_uri,omitempty"];
+        // @gotags: json:"/extra.notification_large_icon_uri,omitempty"
+        string notification_large_icon_uri = 4 [json_name = "/extra.notification_large_icon_uri,omitempty"];
+        // @gotags: json:"/extra.sound_uri,omitempty"
+        string sound_uri = 6 [json_name = "/extra.sound_uri,omitempty"];
+        // @gotags: json:"/extra.locale,omitempty"
+        string locale = 7 [json_name = "/extra.locale,omitempty"];
+        // @gotags: json:"/extra.locale_not_in,omitempty"
+        string locale_not_in = 8 [json_name = "/extra.locale_not_in,omitempty"];
+        // @gotags: json:"/extra.model,omitempty"
+        string model = 9 [json_name = "/extra.model,omitempty"];
+        // @gotags: json:"/extra.model_not_in,omitempty"
+        string model_not_in = 10 [json_name = "/extra.model_not_in,omitempty"];
+        // @gotags: json:"/extra.app_version,omitempty"
+        string app_version = 11 [json_name = "/extra.app_version,omitempty"];
+        // @gotags: json:"/extra.app_version_not_in,omitempty"
+        string app_version_not_in = 12 [json_name = "/extra.app_version_not_in,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_left_notify_effect,omitempty"
+        string style_button_left_notify_effect = 13 [json_name = "/extra.notification_style_button_left_notify_effect,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_left_name,omitempty"
+        string style_button_left_name = 14 [json_name = "/extra.notification_style_button_left_name,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_left_intent_uri,omitempty"
+        string style_button_left_intent_uri = 15 [json_name = "/extra.notification_style_button_left_intent_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_left_web_uri,omitempty"
+        string style_button_left_web_uri = 16 [json_name = "/extra.notification_style_button_left_web_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_left_intent_class,omitempty"
+        string style_button_left_intent_class = 17 [json_name = "/extra.notification_style_button_left_intent_class,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_right_notify_effect,omitempty"
+        string style_button_right_notify_effect = 18 [json_name = "/extra.notification_style_button_right_notify_effect,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_right_name,omitempty"
+        string style_button_right_name = 19 [json_name = "/extra.notification_style_button_right_name,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_right_intent_uri,omitempty"
+        string style_button_right_intent_uri = 20 [json_name = "/extra.notification_style_button_right_intent_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_right_web_uri,omitempty"
+        string style_button_right_web_uri = 21 [json_name = "/extra.notification_style_button_right_web_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_right_intent_class,omitempty"
+        string style_button_right_intent_class = 22 [json_name = "/extra.notification_style_button_right_intent_class,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_mid_notify_effect,omitempty"
+        string style_button_mid_notify_effect = 23 [json_name = "/extra.notification_style_button_mid_notify_effect,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_mid_name,omitempty"
+        string style_button_mid_name = 24 [json_name = "/extra.notification_style_button_mid_name,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_mid_intent_uri,omitempty"
+        string style_button_mid_intent_uri = 25 [json_name = "/extra.notification_style_button_mid_intent_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_mid_web_uri,omitempty"
+        string style_button_mid_web_uri = 26 [json_name = "/extra.notification_style_button_mid_web_uri,omitempty"];
+        // @gotags: json:"/extra.notification_style_button_mid_intent_class,omitempty"
+        string style_button_mid_intent_class = 27 [json_name = "/extra.notification_style_button_mid_intent_class,omitempty"];
       }
       message OP {
-        string channel = 1;
-        string small_picture_id = 2;
-        int32 style = 3;
-        string big_picture_id = 4;
+        // @gotags: json:"/channel_id,omitempty"
+        string channel = 1 [json_name = "/channel_id,omitempty"];
+        // @gotags: json:"/style,omitempty"
+        int32 style = 2 [json_name = "/style,omitempty"];
+        // @gotags: json:"/small_picture_id,omitempty"
+        string small_picture_id = 3 [json_name = "/small_picture_id,omitempty"];
+        // @gotags: json:"/big_picture_id,omitempty"
+        string big_picture_id = 4 [json_name = "/big_picture_id,omitempty"];
+        // @gotags: json:"/app_message_id,omitempty"
+        string app_message_id = 5 [json_name = "/app_message_id,omitempty"];
+        // @gotags: json:"/show_time_type,omitempty"
+        int32 show_time_type = 6 [json_name = "/show_time_type,omitempty"];
+        // @gotags: json:"/show_start_time,omitempty"
+        int64 show_start_time = 7 [json_name = "/show_start_time,omitempty"];
+        // @gotags: json:"/show_end_time,omitempty"
+        int64 show_end_time = 8 [json_name = "/show_end_time,omitempty"];
+        // @gotags: json:"/off_line,omitempty"
+        bool off_line = 9 [json_name = "/off_line,omitempty"];
+        // @gotags: json:"/off_line_ttl,omitempty"
+        int32 off_line_ttl = 10 [json_name = "/off_line_ttl,omitempty"];
+        // @gotags: json:"/show_ttl,omitempty"
+        int32 show_ttl = 11 [json_name = "/show_ttl,omitempty"];
       }
       message VV {
-        int32 classification = 1;
+        // @gotags: json:"/classification,omitempty"
+        int32 classification = 1 [json_name = "/classification,omitempty"];
+        // @gotags: json:"/notifyType,omitempty"
+        int32 notify_type = 2 [json_name = "/notifyType,omitempty"];
+        // @gotags: json:"/networkType,omitempty"
+        int32 network_type = 3 [json_name = "/networkType,omitempty"];
+        // @gotags: json:"/timeToLive,omitempty"
+        int32 time_to_live = 4 [json_name = "/timeToLive,omitempty"];
       }
 
       // @gotags: json:"HW,omitempty"
-      HW hw = 1 [json_name = "HW"];
+      HW hw = 1 [json_name = "HW,omitempty"];
       // @gotags: json:"XM,omitempty"
-      XM xm = 2 [json_name = "XM"];
+      XM xm = 2 [json_name = "XM,omitempty"];
       // @gotags: json:"OP,omitempty"
-      OP op = 3 [json_name = "OP"];
+      OP op = 3 [json_name = "OP,omitempty"];
       // @gotags: json:"VV,omitempty"
-      VV vv = 4 [json_name = "VV"];
+      VV vv = 4 [json_name = "VV,omitempty"];
     }
 
     Notification notification = 1;
