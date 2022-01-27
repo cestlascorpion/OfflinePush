@@ -2719,10 +2719,10 @@ type AndroidChannel_Ups_Options_HW struct {
 	BadgeAddNum int32 `protobuf:"varint,2,opt,name=badge_add_num,json=/message/android/notification/badge/add_num,omitempty,proto3" json:"/message/android/notification/badge/add_num,omitempty"`
 	// @gotags: json:"/message/android/notification/badge/set_num,omitempty"
 	BadgeSetNum int32 `protobuf:"varint,3,opt,name=badge_set_num,json=/message/android/notification/badge/set_num,omitempty,proto3" json:"/message/android/notification/badge/set_num,omitempty"`
-	// @gotags: json:"/message/android/notification/badge/image,omitempty"
-	Image string `protobuf:"bytes,4,opt,name=image,json=/message/android/notification/image,omitempty,proto3" json:"/message/android/notification/badge/image,omitempty"`
-	// @gotags: json:"/message/android/notification/badge/style,omitempty"
-	Style int32 `protobuf:"varint,5,opt,name=style,json=/message/android/notification/style,omitempty,proto3" json:"/message/android/notification/badge/style,omitempty"`
+	// @gotags: json:"/message/android/notification/image,omitempty"
+	Image string `protobuf:"bytes,4,opt,name=image,json=/message/android/notification/image,omitempty,proto3" json:"/message/android/notification/image,omitempty"`
+	// @gotags: json:"/message/android/notification/style,omitempty"
+	Style int32 `protobuf:"varint,5,opt,name=style,json=/message/android/notification/style,omitempty,proto3" json:"/message/android/notification/style,omitempty"`
 	// @gotags: json:"/message/android/notification/big_title,omitempty"
 	BigTitle string `protobuf:"bytes,6,opt,name=big_title,json=/message/android/notification/big_title,omitempty,proto3" json:"/message/android/notification/big_title,omitempty"`
 	// @gotags: json:"/message/android/notification/big_body,omitempty"

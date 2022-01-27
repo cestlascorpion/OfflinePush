@@ -238,9 +238,9 @@ message AndroidChannel {
         int32  badge_add_num = 2 [json_name = "/message/android/notification/badge/add_num,omitempty"];
         // @gotags: json:"/message/android/notification/badge/set_num,omitempty"
         int32  badge_set_num = 3 [json_name = "/message/android/notification/badge/set_num,omitempty"];
-        // @gotags: json:"/message/android/notification/badge/image,omitempty"
+        // @gotags: json:"/message/android/notification/image,omitempty"
         string image = 4 [json_name = "/message/android/notification/image,omitempty"];
-        // @gotags: json:"/message/android/notification/badge/style,omitempty"
+        // @gotags: json:"/message/android/notification/style,omitempty"
         int32 style = 5 [json_name = "/message/android/notification/style,omitempty"];
         // @gotags: json:"/message/android/notification/big_title,omitempty"
         string big_title = 6 [json_name = "/message/android/notification/big_title,omitempty"];
