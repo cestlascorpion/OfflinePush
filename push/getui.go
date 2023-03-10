@@ -80,8 +80,8 @@ func (g *GeTuiPush) PushBatchByCid(ctx context.Context, request *BatchReq, token
 		return nil, err
 	}
 	if resp.Code != 0 {
-		log.Errorf("PushBatchByCid() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
+		log.Warnf("PushBatchByCid() resp.Code %d, resp.Msg %s, resp.Data %+v", resp.Code, resp.Msg, resp.Data)
+		// return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushBatchByCid data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -100,8 +100,8 @@ func (g *GeTuiPush) PushBatchByAlias(ctx context.Context, request *BatchReq, tok
 		return nil, err
 	}
 	if resp.Code != 0 {
-		log.Errorf("PushBatchByAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
+		log.Warnf("PushBatchByAlias() resp.Code %d, resp.Msg %s, resp.Data %+v", resp.Code, resp.Msg, resp.Data)
+		// return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushBatchByAlias data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -140,8 +140,8 @@ func (g *GeTuiPush) PushListByCid(ctx context.Context, request *ListReq, token s
 		return nil, err
 	}
 	if resp.Code != 0 {
-		log.Errorf("PushListByCid() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
+		log.Warnf("PushListByCid() resp.Code %d, resp.Msg %s, resp.Data %+v", resp.Code, resp.Msg, resp.Data)
+		// return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushListByCid data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
@@ -160,8 +160,8 @@ func (g *GeTuiPush) PushListByAlias(ctx context.Context, request *ListReq, token
 		return nil, err
 	}
 	if resp.Code != 0 {
-		log.Errorf("PushListByAlias() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
-		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
+		log.Warnf("PushListByAlias() resp.Code %d, resp.Msg %s, resp.Data %+v", resp.Code, resp.Msg, resp.Data)
+		// return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
 	}
 	log.Debugf("PushListByAlias data %+v", resp.Data)
 	return g.resp2PushDetail(resp.Data)
