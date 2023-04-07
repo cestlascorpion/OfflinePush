@@ -125,11 +125,16 @@ message Settings {
   message Strategy {
     int32 default = 1;
     int32 ios = 2;
-    int32 st = 3;
-    int32 hw = 4;
+    int32 hw = 3;
+    int32 ho = 4;
     int32 xm = 5;
-    int32 vv = 6;
-    int32 op = 7;
+    int32 xmg = 6;
+    int32 vv = 7;
+    int32 op = 8;
+    int32 opg = 9;
+    int32 mz = 10;
+    int32 st = 11;
+    int32 wx = 12;
   }
 
   int64 ttl = 1;
@@ -254,6 +259,8 @@ message AndroidChannel {
         string channel_id = 10 [json_name = "/message/android/notification/channel_id,omitempty"];
         // @gotags: json:"/message/android/notification/sound,omitempty"
         string sound = 11 [json_name = "/message/android/notification/sound,omitempty"];
+        // @gotags: json:"/message/android/category,omitempty"
+        string category = 12 [json_name = "/message/android/category,omitempty"];
       }
       message XM {
         // @gotags: json:"/extra.channel_id,omitempty"
@@ -308,6 +315,12 @@ message AndroidChannel {
         string style_button_mid_web_uri = 26 [json_name = "/extra.notification_style_button_mid_web_uri,omitempty"];
         // @gotags: json:"/extra.notification_style_button_mid_intent_class,omitempty"
         string style_button_mid_intent_class = 27 [json_name = "/extra.notification_style_button_mid_intent_class,omitempty"];
+        // @gotags: json:"/time_to_live,omitempty"
+        int64 time_to_live = 28 [json_name = "/time_to_live,omitempty"];
+        // @gotags: json:"/extra.only_send_once,omitempty"
+        string only_send_once = 29 [json_name = "/extra.only_send_once,omitempty"];
+        // @gotags: json:"/time_to_send,omitempty"
+        int64 time_to_send = 30 [json_name = "/time_to_send,omitempty"];
       }
       message OP {
         // @gotags: json:"/channel_id,omitempty"
@@ -342,6 +355,49 @@ message AndroidChannel {
         int32 network_type = 3 [json_name = "/networkType,omitempty"];
         // @gotags: json:"/timeToLive,omitempty"
         int32 time_to_live = 4 [json_name = "/timeToLive,omitempty"];
+        // @gotags: json:"/category,omitempty"
+        string category = 5 [json_name = "/category,omitempty"];
+      }
+      message HO {
+        message Button {
+          string name = 1;
+          int32  actionType = 2;
+          int32  intentType = 3;
+          string intent = 4;
+          string data = 5;
+        }
+
+        // @gotags: json:"/android/notification/badge/badgeClass,omitempty"
+        string badge_class = 1 [json_name = "/android/notification/badge/badgeClass,omitempty"];
+        // @gotags: json:"/android/notification/badge/addNum,omitempty"
+        int32  badge_add_num = 2 [json_name = "/android/notification/badge/addNum,omitempty"];
+        // @gotags: json:"/android/notification/badge/setNum,omitempty"
+        int32  badge_set_num = 3 [json_name = "/android/notification/badge/setNum,omitempty"];
+        // @gotags: json:"/android/notification/icon,omitempty"
+        string icon = 4 [json_name = "/android/notification/icon,omitempty"];
+        // @gotags: json:"/android/notification/image,omitempty"
+        string image = 5 [json_name = "/android/notification/image,omitempty"];
+        // @gotags: json:"/android/notification/style,omitempty"
+        int32 style = 6 [json_name = "/android/notification/style,omitempty"];
+        // @gotags: json:"/android/notification/bigTitle,omitempty"
+        string big_title = 7 [json_name = "/android/notification/bigTitle,omitempty"];
+        // @gotags: json:"/android/notification/bigBody,omitempty"
+        string big_body = 8 [json_name = "/android/notification/bigBody,omitempty"];
+        // @gotags: json:"/android/notification/notifySummary,omitempty"
+        string notifiy_summary = 9 [json_name = "/android/notification/notifySummary,omitempty"];
+        // @gotags: json:"/android/notification/importance,omitempty"
+        string importance = 10 [json_name = "/android/notification/importance,omitempty"];
+        // @gotags: json:"/android/notification/buttons,omitempty"
+        repeated Button buttons = 11 [json_name = "/android/notification/buttons,omitempty"];
+        // @gotags: json:"/android/notification/when,omitempty"
+        string when = 12 [json_name = "/android/notification/when,omitempty"];
+      }
+
+      message UPS {
+        // @gotags: json:"bigText,omitempty"
+        string big_text = 1 [json_name = "bigText,omitempty"];
+        // @gotags: json:"bigImageUrl,omitempty"
+        string big_image_url = 2 [json_name = "bigImageUrl,omitempty"];
       }
 
       // @gotags: json:"HW,omitempty"
@@ -352,6 +408,14 @@ message AndroidChannel {
       OP op = 3 [json_name = "OP,omitempty"];
       // @gotags: json:"VV,omitempty"
       VV vv = 4 [json_name = "VV,omitempty"];
+      // @gotags: json:"HO,omitempty"
+      HO ho = 5 [json_name = "HO,omitempty"];
+      // @gotags: json:"XMG,omitempty"
+      XM xmg = 6 [json_name = "XMG,omitempty"];
+      // @gotags: json:"OPG,omitempty"
+      OP opg = 7 [json_name = "OPG,omitempty"];
+      // @gotags: json:"UPS,omitempty"
+      UPS ups = 20 [json_name = "UPS,omitempty"];
     }
 
     Notification notification = 1;
@@ -363,9 +427,22 @@ message AndroidChannel {
   Ups ups = 1;
 }
 
+message MiniProgram {
+  message WX {
+    string templated_id = 1;
+    string page = 2;
+    string miniprogram_state = 3;
+    string lang = 4;
+    map<string, string> data = 5;
+  }
+
+  WX wx = 1;
+}
+
 message PushChannel {
   IosChannel ios = 1;
   AndroidChannel android = 2;
+  MiniProgram mp = 3;
 }
 
 // -------------------------------

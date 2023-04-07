@@ -548,7 +548,82 @@ func (g *GeTuiUser) QueryUserCount(ctx context.Context, list *ComplexTagList, to
 	return count, nil
 }
 
+func (g *GeTuiUser) ManageCidAndDeviceToken(ctx context.Context, manufacturer string, dtList *CidAndDeviceTokenList, token string) ([]*DTError, error) {
+	result, err := g.client.POST(ctx, g.url(fmt.Sprintf("/user/bind_dt/%s", manufacturer)), token, dtList)
+	if err != nil {
+		log.Errorf("ManageCidAndDeviceToken() POST err %+v", err)
+		return nil, err
+	}
+	var resp userResp
+	err = json.Unmarshal(result, &resp)
+	if err != nil {
+		log.Errorf("ManageCidAndDeviceToken() unmarshal err %+v", err)
+		return nil, err
+	}
+	if resp.Code != 0 {
+		log.Errorf("ManageCidAndDeviceToken() resp.Code %d, resp.Msg %s", resp.Code, resp.Msg)
+		return nil, fmt.Errorf("resp.Code %d resp.Msg %s", resp.Code, resp.Msg)
+	}
+	log.Debugf("ManageCidAndDeviceToken data %+v", resp.Data)
+
+	errorList := make([]*DTError, 0)
+	if unknown, ok := resp.Data["errorList"]; ok {
+		list, ok := unknown.([]interface{})
+		if !ok {
+			log.Errorf("unknown type %+v %T", unknown, unknown)
+			return nil, fmt.Errorf("unknown type %+v %T", unknown, unknown)
+		}
+
+		for i := range list {
+			data, ok := list[i].(map[string]interface{})
+			if !ok {
+				log.Warnf("unknown type of data %+v %T", list[i], list[i])
+				return nil, fmt.Errorf("unknown type of data %+v %T", list[i], list[i])
+			}
+
+			cid, ok := data["cid"]
+			if !ok {
+				log.Warnf("cid not found")
+				continue
+			}
+			c, ok := cid.(string)
+			if !ok {
+				log.Errorf("unknown type of cid %+v %T", cid, cid)
+				return nil, fmt.Errorf("unknown type of cid %+v %T", cid, cid)
+			}
+			deviceToken, ok := data["device_token"]
+			if !ok {
+				log.Warnf("device_token not found")
+				continue
+			}
+			d, ok := deviceToken.(string)
+			if !ok {
+				log.Errorf("unknown type of deviceToken %+v %T", cid, cid)
+				return nil, fmt.Errorf("unknown type of deviceToken %+v %T", deviceToken, deviceToken)
+			}
+			errorCode, ok := data["error_code"]
+			if !ok {
+				log.Warnf("error_code not found")
+				continue
+			}
+			e, ok := errorCode.(float64)
+			if !ok {
+				log.Errorf("unknown type of errorCode %+v %T", cid, cid)
+				return nil, fmt.Errorf("unknown type of errorCode %+v %T", errorCode, errorCode)
+			}
+
+			errorList = append(errorList, &DTError{
+				Cid:         c,
+				DeviceToken: d,
+				ErrorCode:   int(e),
+			})
+		}
+	}
+	return errorList, nil
+}
+
 func (g *GeTuiUser) Close() {
+
 	// do nothing
 }
 
@@ -561,7 +636,7 @@ type userResp struct {
 func (g *GeTuiUser) decodeNestedResp(unknown interface{}) (map[string]string, error) {
 	nested, ok := unknown.(map[string]interface{})
 	if !ok {
-		return nil, fmt.Errorf("unknwon type %+v %T", unknown, unknown)
+		return nil, fmt.Errorf("unknown type %+v %T", unknown, unknown)
 	}
 
 	resp := make(map[string]string)

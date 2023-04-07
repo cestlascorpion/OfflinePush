@@ -21,6 +21,7 @@ service User {
   rpc QueryUserInfo(QueryUserInfoReq) returns (QueryUserInfoResp) {}
   rpc SetPushBadge(SetPushBadgeReq) returns (SetPushBadgeResp) {}
   rpc QueryUserCount(QueryUserCountReq) returns (QueryUserCountResp) {}
+  rpc ManageCidAndDeviceToken(ManageCidAndDeviceTokenReq) returns (ManageCidAndDeviceTokenResp) {}
 }
 
 message BindAliasReq {
@@ -181,7 +182,7 @@ message QueryDeviceStatusReq {
 message QueryDeviceStatusResp {
   message DeviceStatus {
     string c_id = 1;
-    bool availiable = 2;
+    bool available = 2;
     string c_id_status = 3;
     string device_status = 4;
   }
@@ -237,4 +238,21 @@ message QueryUserCountReq {
 
 message QueryUserCountResp {
   int32 count = 1;
+}
+
+message ManageCidAndDeviceTokenReq {
+  string push_agent = 1;
+  string bundle_id = 2;
+  string manufacturer = 3;
+  map<string, string> dt_list = 4;
+}
+
+message ManageCidAndDeviceTokenResp {
+  message Result {
+    string cid = 1;
+    string device_token = 2;
+    int32 error_code = 3;
+  }
+
+  repeated Result error_list = 1;
 }

@@ -24,6 +24,7 @@ type Agent interface {
 	QueryUserInfo(ctx context.Context, cidList []string, token string) ([]string, map[string]map[string]string, error)
 	SetPushBadge(ctx context.Context, cidList []string, op *Operation, token string) error
 	QueryUserCount(ctx context.Context, list *ComplexTagList, token string) (int, error)
+	ManageCidAndDeviceToken(ctx context.Context, manufacturer string, dtList *CidAndDeviceTokenList, token string) ([]*DTError, error)
 	Close()
 }
 
@@ -170,6 +171,14 @@ func (m *AgentMgr) QueryUserCount(ctx context.Context, uniqueId core.UniqueId, l
 	return agent.QueryUserCount(ctx, list, token)
 }
 
+func (m *AgentMgr) ManageCidAndDeviceToken(ctx context.Context, uniqueId core.UniqueId, manufacturer string, dtList *CidAndDeviceTokenList, token string) ([]*DTError, error) {
+	agent, ok := m.agents[uniqueId]
+	if !ok {
+		return nil, fmt.Errorf("ManageCidAndDeviceToken() unsupported uniqueId %s", uniqueId)
+	}
+	return agent.ManageCidAndDeviceToken(ctx, manufacturer, dtList, token)
+}
+
 func (m *AgentMgr) Close() {
 	for _, agent := range m.agents {
 		agent.Close()
@@ -205,4 +214,19 @@ type Tag struct {
 
 type ComplexTagList struct {
 	Tag []*Tag `json:"tag"`
+}
+
+type DT struct {
+	Cid         string `json:"cid"`
+	DeviceToken string `json:"device_token"`
+}
+
+type CidAndDeviceTokenList struct {
+	DTList []*DT `json:"dt_list"`
+}
+
+type DTError struct {
+	Cid         string `json:"cid"`
+	DeviceToken string `json:"device_token"`
+	ErrorCode   int    `json:"error_code"`
 }

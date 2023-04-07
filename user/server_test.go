@@ -354,3 +354,32 @@ func TestServer_QueryUserCount(t *testing.T) {
 	}
 	fmt.Println(resp)
 }
+
+func TestServer_ManageCidAndDeviceToken(t *testing.T) {
+	conf := &core.PushConfig{}
+	err := configor.Load(conf, "conf.json")
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	svr, err := NewServer(conf)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	defer svr.Close()
+	resp, err := svr.ManageCidAndDeviceToken(context.Background(), &proto.ManageCidAndDeviceTokenReq{
+		PushAgent:    conf.GeTui.AgentId,
+		BundleId:     conf.GeTui.BundleId,
+		Manufacturer: "wx",
+		DtList: map[string]string{
+			"f5fc768b8f3d0ac24d6b7df65e0221b0": "oX-Yr4ICsWkJaydB8mdRD3DMahkA",
+			"9497869031e1fa74adaa84458f73cc62": "oX-BfgICsWkJurdB3odRDcDjyskB",
+		},
+	})
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(resp)
+}

@@ -433,3 +433,35 @@ func TestGeTuiUser_QueryUserCount(t *testing.T) {
 	}
 	fmt.Println(resp)
 }
+
+func TestGeTuiUser_ManageCidAndDeviceToken(t *testing.T) {
+	conf := &core.PushConfig{}
+	err := configor.Load(conf, "conf.json")
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	agent, err := NewGeTuiUser(
+		core.GTBaseUrl,
+		conf.GeTui.AppId,
+		http.DefaultClient)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	defer agent.Close()
+
+	resp, err := agent.ManageCidAndDeviceToken(context.TODO(), "wx", &CidAndDeviceTokenList{
+		DTList: []*DT{
+			{
+				Cid:         "f5fc768b8f3d0ac24d6b7df65e0221b0",
+				DeviceToken: "oX-Yr4ICsWkJaydB8mdRD3DMahkA",
+			},
+		},
+	}, core.TestAuthToken)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(resp)
+}

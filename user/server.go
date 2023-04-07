@@ -407,7 +407,7 @@ func (s *Server) QueryDeviceStatus(ctx context.Context, in *proto.QueryDeviceSta
 	for cid, detail := range resp {
 		out.StatusList = append(out.StatusList, &proto.QueryDeviceStatusResp_DeviceStatus{
 			CId:          cid,
-			Availiable:   detail["available"] == "true",
+			Available:    detail["available"] == "true",
 			CIdStatus:    detail["cid_status"],
 			DeviceStatus: detail["device_status"],
 		})
@@ -529,6 +529,44 @@ func (s *Server) QueryUserCount(ctx context.Context, in *proto.QueryUserCountReq
 		return out, err
 	}
 	out.Count = int32(count)
+	return out, nil
+}
+
+func (s *Server) ManageCidAndDeviceToken(ctx context.Context, in *proto.ManageCidAndDeviceTokenReq) (*proto.ManageCidAndDeviceTokenResp, error) {
+	out := &proto.ManageCidAndDeviceTokenResp{}
+
+	if len(in.DtList) == 0 || len(in.Manufacturer) == 0 {
+		log.Errorf("invalid parameter in %+v", in)
+		return out, errors.New("invalid parameter")
+	}
+
+	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
+	C2DList := &CidAndDeviceTokenList{
+		DTList: make([]*DT, 0, len(in.DtList)),
+	}
+	for cid, deviceToken := range in.DtList {
+		C2DList.DTList = append(C2DList.DTList, &DT{
+			Cid:         cid,
+			DeviceToken: deviceToken,
+		})
+	}
+	auth, err := s.auth.GetAuth(uniqueId)
+	if err != nil {
+		log.Errorf("get auth err %+v", err)
+		return out, err
+	}
+	errorList, err := s.mgr.ManageCidAndDeviceToken(ctx, uniqueId, in.Manufacturer, C2DList, auth.Token)
+	if err != nil {
+		log.Errorf("manage cid and deviceToken err %+v", err)
+		return out, err
+	}
+	for i := range errorList {
+		out.ErrorList = append(out.ErrorList, &proto.ManageCidAndDeviceTokenResp_Result{
+			Cid:         errorList[i].Cid,
+			DeviceToken: errorList[i].DeviceToken,
+			ErrorCode:   int32(errorList[i].ErrorCode),
+		})
+	}
 	return out, nil
 }
 
