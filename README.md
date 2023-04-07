@@ -15,3 +15,5 @@ stats/user/push svr are base on auth svr (using cache pkg, of course).
 ```txt
 |stats.svr| & |user.svr| & |push.svr| ----> (cache pkg) ----> |auth.svr|
 ```
+
+upload icon or picture, see repo <https://github.com/cestlascorpion/Tamias>.
