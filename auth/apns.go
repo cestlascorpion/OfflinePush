@@ -39,7 +39,7 @@ func NewApnsAuth(privateKey, keyId, teamId string) (*ApnsAuth, error) {
 	pk, ok := key.(*ecdsa.PrivateKey)
 	if !ok {
 		log.Errorf("unexpected key type %T", key)
-		return nil, err
+		return nil, errors.New("unexpected private key type")
 	}
 
 	token, err := genJWT(pk, keyId, teamId)

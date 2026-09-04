@@ -26,7 +26,7 @@ type ApnsPush struct {
 
 func NewApnsPush(env, topic string, hc *http.Client) (*ApnsPush, error) {
 	api := apns2.HostDevelopment
-	if env != "Production" {
+	if env == "Production" {
 		api = apns2.HostProduction
 	}
 
@@ -51,7 +51,7 @@ func (a *ApnsPush) PushSingleByCid(ctx context.Context, request *SingleReq, toke
 	}
 
 	url := fmt.Sprintf("%s/3/device/%s", a.apiUrl, notify.DeviceToken)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(content))
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(content))
 	if err != nil {
 		log.Errorf("new http request err %+v", err)
 		return nil, err
@@ -80,7 +80,6 @@ func (a *ApnsPush) PushSingleByCid(ctx context.Context, request *SingleReq, toke
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 
-	req.WithContext(ctx)
 	httpRes, err := a.client.Do(req)
 	if err != nil {
 		log.Errorf("http client do err %+v", err)

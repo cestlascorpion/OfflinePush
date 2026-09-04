@@ -3,6 +3,7 @@ package proxy
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/cestlascorpion/offlinepush/core"
 	"github.com/cestlascorpion/offlinepush/proto"
@@ -26,7 +27,9 @@ func NewPushProxy(msgConv MsgConverter) (*PushProxy, error) {
 		log.Error("nil converter")
 		return nil, errors.New("invalid parameter")
 	}
-	conn, err := grpc.Dial(core.PushServerAddr, grpc.WithBlock(), grpc.WithInsecure())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	conn, err := grpc.DialContext(ctx, core.PushServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		log.Errorf("grpc dial err %+v", err)
 		return nil, err

@@ -18,7 +18,9 @@ type AuthCache struct {
 }
 
 func NewAuthCache() (*AuthCache, error) {
-	conn, err := grpc.Dial(AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	conn, err := grpc.DialContext(ctx, AuthServerAddr, grpc.WithBlock(), grpc.WithInsecure())
 	if err != nil {
 		log.Errorf("grpc dial err %+v", err)
 		return nil, err
@@ -66,7 +68,10 @@ func (c *AuthCache) readAuth(uniqueId UniqueId) *AuthToken {
 	if !ok {
 		return nil
 	}
-	return token
+	return &AuthToken{
+		Token:    token.Token,
+		ExpireAt: token.ExpireAt,
+	}
 }
 
 func (c *AuthCache) writeAuth(uniqueId UniqueId, auth *AuthToken) {
@@ -104,7 +109,10 @@ func (c *AuthCache) check() error {
 
 	c.mutex.RLock()
 	for id, auth := range c.cache {
-		changelog[id] = auth
+		changelog[id] = &AuthToken{
+			Token:    auth.Token,
+			ExpireAt: auth.ExpireAt,
+		}
 	}
 	c.mutex.RUnlock()
 

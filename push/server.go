@@ -44,7 +44,7 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 
 	a, err := NewApnsPush(
 		conf.Apns.Env,
-		conf.Apns.Key,
+		conf.Apns.BundleId,
 		&http.Client{
 			Transport: &http2.Transport{},
 		})
