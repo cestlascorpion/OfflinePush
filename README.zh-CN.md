@@ -42,8 +42,14 @@ go test ./...
 
 ## 生成协议代码
 
+生成前安装 `protoc-go-inject-tag`
+
 ```sh
-./generatePB.sh
+go install github.com/favadi/protoc-go-inject-tag@latest
+```
+
+```sh
+./genPb.sh
 ```
 
 ## 许可证

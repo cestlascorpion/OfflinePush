@@ -42,8 +42,14 @@ Tests can call dependent services and providers. Use non-production credentials 
 
 ## Generate Protocol Code
 
+Install `protoc-go-inject-tag` before generating protocol code:
+
 ```sh
-./generatePB.sh
+go install github.com/favadi/protoc-go-inject-tag@latest
+```
+
+```sh
+./genPb.sh
 ```
 
 ## License

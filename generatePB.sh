@@ -1,1 +1,0 @@
-cd proto && sh protoc.sh
