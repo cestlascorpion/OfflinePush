@@ -1,6 +1,6 @@
 # OfflinePush
 
-[Simplified Chinese](README.zh-CN.md)
+[中文](README.zh-CN.md)
 
 OfflinePush is a gRPC service suite for GeTui REST API v2 and APNs token-based delivery. It includes authentication, push, device and tag management, statistics, and an application-facing proxy package.
 
