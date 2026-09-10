@@ -25,3 +25,14 @@ type PushConfig struct {
 		TeamId   string `json:"team_id"`
 	} `json:"apns"`
 }
+
+func (c *PushConfig) HasApns() bool {
+	return c.Apns.AgentId != "" || c.Apns.BundleId != "" ||
+		c.Apns.Env != "" || c.Apns.Key != "" ||
+		c.Apns.KeyId != "" || c.Apns.TeamId != ""
+}
+
+func (c *PushConfig) ApnsOK() bool {
+	return c.Apns.AgentId != "" && c.Apns.BundleId != "" &&
+		c.Apns.Key != "" && c.Apns.KeyId != "" && c.Apns.TeamId != ""
+}

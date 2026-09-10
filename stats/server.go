@@ -87,7 +87,7 @@ func (s *Server) GetTasks(ctx context.Context, in *proto.GetTasksReq) (*proto.Ge
 		out.StaticsList = append(out.StaticsList, statics)
 	}
 
-	if s.dao.SetStats(uniqueId, "GetTasks", time.Now(), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetTasks", time.Now(), resp); err != nil {
 		log.Errorf("save tasks err %+v", err)
 	}
 
@@ -122,7 +122,7 @@ func (s *Server) GetTaskGroup(ctx context.Context, in *proto.GetTaskGroupReq) (*
 		out.Statics = statics
 	}
 
-	if s.dao.SetStats(uniqueId, "GetTaskGroup", time.Now(), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetTaskGroup", time.Now(), resp); err != nil {
 		log.Errorf("save task group err %+v", err)
 	}
 
@@ -152,7 +152,7 @@ func (s *Server) GetPushCount(ctx context.Context, in *proto.GetPushCountReq) (*
 		out.CountList = append(out.CountList, resp[i])
 	}
 
-	if s.dao.SetStats(uniqueId, "GetPushCount", time.Now(), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetPushCount", time.Now(), resp); err != nil {
 		log.Errorf("save push count err %+v", err)
 	}
 
@@ -187,7 +187,7 @@ func (s *Server) GetPushDataByDay(ctx context.Context, in *proto.GetPushDataByDa
 		out.Statics = statics
 	}
 
-	if s.dao.SetStats(uniqueId, "GetPushDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetPushDataByDay", time.Unix(in.UnixSecond, 0), resp); err != nil {
 		log.Errorf("save push data by day err %+v", err)
 	}
 
@@ -233,7 +233,7 @@ func (s *Server) GetUserDataByDay(ctx context.Context, in *proto.GetUserDataByDa
 		}
 	}
 
-	if s.dao.SetStats(uniqueId, "GetUserDataByDay", time.Unix(in.UnixSecond, 0), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetUserDataByDay", time.Unix(in.UnixSecond, 0), resp); err != nil {
 		log.Errorf("save user data by day err %+v", err)
 	}
 
@@ -266,7 +266,7 @@ func (s *Server) GetOnlineUserBy24H(ctx context.Context, in *proto.GetOnlineUser
 		})
 	}
 
-	if s.dao.SetStats(uniqueId, "GetOnlineUserBy24H", time.Now(), resp) != nil {
+	if err := s.dao.SetStats(uniqueId, "GetOnlineUserBy24H", time.Now(), resp); err != nil {
 		log.Errorf("save online user by 24h err %+v", err)
 	}
 

@@ -14,7 +14,7 @@ OfflinePush is a gRPC service suite for GeTui REST API v2 and APNs token-based d
 
 ## Configuration
 
-Create `conf.json` in the repository root. It is intentionally ignored by Git and must contain MongoDB, GeTui, and, when applicable, APNs credentials. All services read this file from their current working directory.
+Create `conf.json` in the repository root. It is intentionally ignored by Git and must contain MongoDB and GeTui credentials. APNs configuration is optional: omit the whole `apns` section when APNs delivery is not needed. When present, `agent_id`, `bundle_id`, `key`, `key_id`, and `team_id` are required. All services read this file from their current working directory.
 
 The default local gRPC addresses are `localhost:8080` (Auth), `:8082` (Push), `:8084` (User), and `:8086` (Stats). Services use insecure gRPC and should remain on a private network.
 
@@ -29,7 +29,7 @@ go run ./server/user
 go run ./server/stats
 ```
 
-The service contracts are in [`proto`](proto). APNs currently supports single-device push only; the remaining APIs use GeTui.
+The service contracts are in [`proto`](proto). APNs currently supports single-device push only; a background APNs push requires `ios.aps.content_available` to be `1`. The remaining APIs use GeTui.
 
 ## Test
 

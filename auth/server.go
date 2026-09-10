@@ -39,19 +39,24 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		return nil, err
 	}
 
-	a, err := NewApnsAuth(
-		conf.Apns.Key,
-		conf.Apns.KeyId,
-		conf.Apns.TeamId)
-	if err != nil {
-		log.Errorf("new apns agent err %+v", err)
-		return nil, err
-	}
+	if conf.HasApns() {
+		if !conf.ApnsOK() {
+			return nil, errors.New("invalid apns config")
+		}
+		a, err := NewApnsAuth(
+			conf.Apns.Key,
+			conf.Apns.KeyId,
+			conf.Apns.TeamId)
+		if err != nil {
+			log.Errorf("new apns agent err %+v", err)
+			return nil, err
+		}
 
-	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.Apns.AgentId, BundleId: conf.Apns.BundleId}, a)
-	if err != nil {
-		log.Errorf("register apns agent err %+v", err)
-		return nil, err
+		err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.Apns.AgentId, BundleId: conf.Apns.BundleId}, a)
+		if err != nil {
+			log.Errorf("register apns agent err %+v", err)
+			return nil, err
+		}
 	}
 
 	return &Server{

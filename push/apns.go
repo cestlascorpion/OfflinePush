@@ -173,6 +173,10 @@ func (a *ApnsPush) buildNotify(req *SingleReq) (*apns2.Notification, error) {
 	if req.PushChannel == nil || req.PushChannel.Ios == nil || req.Audience == nil || len(req.Audience.Cid) != 1 {
 		return nil, errors.New("invalid request")
 	}
+	aps := req.PushChannel.Ios.GetAps()
+	if aps == nil {
+		return nil, errors.New("invalid request")
+	}
 
 	ttl := time.Duration(req.Settings.GetTtl()) * time.Millisecond
 	if ttl == 0 {
@@ -181,7 +185,7 @@ func (a *ApnsPush) buildNotify(req *SingleReq) (*apns2.Notification, error) {
 
 	priority := apns2.PriorityHigh
 	pushType := apns2.PushTypeAlert
-	if req.PushChannel.Ios.GetAps().GetContentAvailable() == 1 && req.PushChannel.Ios.GetAps().Alert == nil {
+	if aps.GetContentAvailable() == 1 && aps.Alert == nil {
 		priority = apns2.PriorityLow
 		pushType = apns2.PushTypeBackground
 	}
@@ -190,7 +194,10 @@ func (a *ApnsPush) buildNotify(req *SingleReq) (*apns2.Notification, error) {
 	}
 
 	content := payload.NewPayload()
-	if alert := req.PushChannel.Ios.GetAps().GetAlert(); alert != nil {
+	if aps.GetContentAvailable() == 1 {
+		content.ContentAvailable()
+	}
+	if alert := aps.GetAlert(); alert != nil {
 		content.Alert(alert)
 	}
 	if badge := req.PushChannel.Ios.GetAutoBadge(); len(badge) != 0 {
@@ -204,7 +211,7 @@ func (a *ApnsPush) buildNotify(req *SingleReq) (*apns2.Notification, error) {
 			content.UnsetBadge()
 		}
 	}
-	if sound := req.PushChannel.Ios.GetAps().GetSound(); len(sound) != 0 {
+	if sound := aps.GetSound(); len(sound) != 0 {
 		content.Sound(sound)
 	}
 	if ext := req.PushChannel.Ios.GetPayload(); len(ext) != 0 {

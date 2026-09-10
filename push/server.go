@@ -42,21 +42,26 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 		return nil, err
 	}
 
-	a, err := NewApnsPush(
-		conf.Apns.Env,
-		conf.Apns.BundleId,
-		&http.Client{
-			Transport: &http2.Transport{},
-		})
-	if err != nil {
-		log.Errorf("new apns agent err %+v", err)
-		return nil, err
-	}
+	if conf.HasApns() {
+		if !conf.ApnsOK() {
+			return nil, errors.New("invalid apns config")
+		}
+		a, err := NewApnsPush(
+			conf.Apns.Env,
+			conf.Apns.BundleId,
+			&http.Client{
+				Transport: &http2.Transport{},
+			})
+		if err != nil {
+			log.Errorf("new apns agent err %+v", err)
+			return nil, err
+		}
 
-	err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.Apns.AgentId, BundleId: conf.Apns.BundleId}, a)
-	if err != nil {
-		log.Errorf("register apns agent err %+v", err)
-		return nil, err
+		err = mgr.RegisterAgent(core.UniqueId{PushAgent: conf.Apns.AgentId, BundleId: conf.Apns.BundleId}, a)
+		if err != nil {
+			log.Errorf("register apns agent err %+v", err)
+			return nil, err
+		}
 	}
 
 	auth, err := core.NewAuthCache()
@@ -74,10 +79,16 @@ func NewServer(conf *core.PushConfig) (*Server, error) {
 func (s *Server) PushToSingle(ctx context.Context, in *proto.PushToSingleReq) (*proto.PushToSingleResp, error) {
 	out := &proto.PushToSingleResp{}
 
-	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+	if in == nil || len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		len(in.MsgList) == 0 {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
+	}
+	for _, msg := range in.MsgList {
+		if msg == nil || msg.Audience == nil {
+			log.Errorf("invalid parameter in %+v", in)
+			return out, errors.New("invalid parameter")
+		}
 	}
 
 	uniqueId := core.UniqueId{PushAgent: in.PushAgent, BundleId: in.BundleId}
@@ -101,7 +112,7 @@ func (s *Server) PushToSingle(ctx context.Context, in *proto.PushToSingleReq) (*
 func (s *Server) CreateTask(ctx context.Context, in *proto.CreateTaskReq) (*proto.CreateTaskResp, error) {
 	out := &proto.CreateTaskResp{}
 
-	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+	if in == nil || len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
 		in.Msg == nil {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
@@ -119,8 +130,8 @@ func (s *Server) CreateTask(ctx context.Context, in *proto.CreateTaskReq) (*prot
 func (s *Server) PushToList(ctx context.Context, in *proto.PushToListReq) (*proto.PushToListResp, error) {
 	out := &proto.PushToListResp{}
 
-	if len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
-		in.Msg == nil {
+	if in == nil || len(in.PushAgent) == 0 || len(in.BundleId) == 0 ||
+		in.Msg == nil || in.Msg.Audience == nil {
 		log.Errorf("invalid parameter in %+v", in)
 		return out, errors.New("invalid parameter")
 	}
